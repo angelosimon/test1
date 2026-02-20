@@ -1,509 +1,240 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SunShield — Главная</title>
-
-  <!-- Fonts (можешь оставить так) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      /* ====== Быстрые настройки ====== */
-      --brand: #ffd36a;         /* “солнечный” акцент */
-      --blue:  #4aa7ff;
-      --panel: rgba(18, 22, 30, .70);
-      --panel2: rgba(18, 22, 30, .55);
-      --line: rgba(255,255,255,.10);
-      --text: #e9eef7;
-      --muted:#b2bdd1;
-
-      /* ====== Картинки (ПРОСТО ВСТАВЬ СВОИ ССЫЛКИ) ====== */
-      --hero-bg: url("https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1600&q=60");
-      --hero-right-img: url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=60");
-      --card1-img: url("https://images.unsplash.com/photo-1520975682031-ae50e52f21f8?auto=format&fit=crop&w=900&q=60");
-      --card2-img: url("https://images.unsplash.com/photo-1520975958221-97edc1c3531b?auto=format&fit=crop&w=900&q=60");
-      --mini1-img: url("https://images.unsplash.com/photo-1613921568536-3f3b6b4a3a50?auto=format&fit=crop&w=700&q=60");
-      --mini2-img: url("https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=700&q=60");
-
-      --radius: 14px;
-      --shadow: 0 18px 60px rgba(0,0,0,.55);
-      --blur: blur(10px);
-    }
-
-    *{ box-sizing: border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--text);
-      overflow-x:hidden;
-
-      /* фон “как на примере”: тёмный + мягкие пятна */
-      background:
-        radial-gradient(900px 600px at 20% 15%, rgba(255,211,106,.10), transparent 65%),
-        radial-gradient(800px 500px at 80% 25%, rgba(74,167,255,.10), transparent 60%),
-        radial-gradient(900px 700px at 50% 80%, rgba(255,255,255,.06), transparent 60%),
-        #0a0c10;
-    }
-
-    /* лёгкий шум/текстура */
-    body:before{
-      content:"";
-      position:fixed; inset:0;
-      pointer-events:none;
-      background-image:
-        radial-gradient(circle at 10% 10%, rgba(255,255,255,.06) 0 1px, transparent 2px),
-        radial-gradient(circle at 30% 60%, rgba(255,255,255,.05) 0 1px, transparent 2px),
-        radial-gradient(circle at 70% 30%, rgba(255,255,255,.05) 0 1px, transparent 2px),
-        radial-gradient(circle at 85% 75%, rgba(255,255,255,.04) 0 1px, transparent 2px);
-      background-size: 220px 220px, 260px 260px, 280px 280px, 300px 300px;
-      opacity:.35;
-      filter: blur(.2px);
-    }
-
-    .wrap{
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 18px 18px 40px;
-    }
-
-    /* ===== Topbar ===== */
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      padding: 6px 2px 18px;
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      user-select:none;
-    }
-    .brand .logo{
-      width:34px; height:34px;
-      border-radius:10px;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 55%),
-        linear-gradient(135deg, rgba(255,211,106,.75), rgba(74,167,255,.25));
-      border: 1px solid rgba(255,255,255,.12);
-      box-shadow: 0 10px 25px rgba(0,0,0,.35);
-      display:grid; place-items:center;
-      font-weight:900;
-      color:#111;
-    }
-    .brand .name{
-      font-weight:800;
-      letter-spacing:.2px;
-      opacity:.95;
-    }
-
-    .nav{
-      display:flex;
-      gap:22px;
-      align-items:center;
-      justify-content:center;
-      flex:1;
-      min-width: 0;
-    }
-    .nav a{
-      color: rgba(233,238,247,.70);
-      text-decoration:none;
-      font-weight:500;
-      font-size:14px;
-      padding: 8px 6px;
-      border-radius:10px;
-      transition: .15s ease;
-    }
-    .nav a:hover{
-      color: rgba(233,238,247,.95);
-      background: rgba(255,255,255,.06);
-    }
-
-    .user{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .avatar{
-      width:34px; height:34px;
-      border-radius:12px;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,.20), transparent 55%),
-        linear-gradient(135deg, rgba(255,211,106,.25), rgba(255,255,255,.08));
-      border: 1px solid rgba(255,255,255,.12);
-      box-shadow: 0 10px 25px rgba(0,0,0,.35);
-      overflow:hidden;
-    }
-    .avatar img{
-      width:100%; height:100%;
-      object-fit:cover;
-      display:block;
-    }
-    .caret{
-      width: 10px; height: 10px;
-      border-right:2px solid rgba(233,238,247,.65);
-      border-bottom:2px solid rgba(233,238,247,.65);
-      transform: rotate(45deg);
-      margin-right: 4px;
-      opacity:.85;
-    }
-
-    /* ===== Main grid ===== */
-    .grid{
-      display:grid;
-      grid-template-columns: 1.65fr 1fr;
-      gap: 18px;
-      align-items:start;
-      margin-top: 8px;
-    }
-
-    /* общий стиль карточек */
-    .card{
-      position:relative;
-      border-radius: var(--radius);
-      border: 1px solid var(--line);
-      background: var(--panel);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      backdrop-filter: var(--blur);
-    }
-
-    /* ===== HERO ===== */
-    .hero{
-      min-height: 520px;
-      display:flex;
-      flex-direction:column;
-    }
-
-    .hero .media{
-      position:absolute; inset:0;
-      background:
-        linear-gradient(90deg, rgba(0,0,0,.72) 0 52%, rgba(0,0,0,.10) 72%, rgba(0,0,0,.00) 100%),
-        linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.55)),
-        var(--hero-bg);
-      background-size: cover;
-      background-position:center;
-      filter: saturate(1.05) contrast(1.05);
-    }
-
-    /* декоративные “лучи” как на примере */
-    .hero:before,
-    .side:before,
-    .mini:before{
-      content:"";
-      position:absolute; inset:-120px -120px auto auto;
-      width: 520px; height: 520px;
-      background:
-        conic-gradient(from 220deg,
-          rgba(255,255,255,.0),
-          rgba(255,255,255,.08),
-          rgba(255,255,255,.0),
-          rgba(255,255,255,.06),
-          rgba(255,255,255,.0)
-        );
-      transform: rotate(10deg);
-      opacity:.55;
-      pointer-events:none;
-      filter: blur(.3px);
-    }
-
-    .hero .content{
-      position:relative;
-      padding: 26px 26px 16px;
-      flex:1;
-      display:flex;
-      gap:20px;
-    }
-
-    .hero-left{
-      max-width: 62%;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      padding-top: 18px;
-    }
-
-    .pretitle{
-      font-size: 12px;
-      letter-spacing:.25px;
-      color: rgba(233,238,247,.80);
-      margin-bottom: 10px;
-      font-weight:600;
-    }
-
-    .title{
-      font-family: "Press Start 2P", system-ui;
-      font-size: 52px;
-      line-height: 1.02;
-      margin: 0 0 14px;
-      text-transform: uppercase;
-
-      /* “металлический” эффект как на скрине */
-      background: linear-gradient(180deg, #f3f6ff 0%, #cdd7e6 40%, #aab6ca 70%, #eaf0ff 100%);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color: transparent;
-
-      text-shadow:
-        0 2px 0 rgba(0,0,0,.55),
-        0 14px 35px rgba(0,0,0,.55);
-    }
-
-    .subtitle{
-      margin: 0 0 18px;
-      color: rgba(233,238,247,.85);
-      font-size: 14px;
-      line-height:1.55;
-      font-weight:600;
-      max-width: 340px;
-    }
-
-    .cta-row{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      align-items:flex-start;
-      margin-top: 10px;
-    }
-
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      padding: 12px 18px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: linear-gradient(180deg, rgba(74,167,255,.85), rgba(74,167,255,.55));
-      color: #081018;
-      font-weight:800;
-      box-shadow: 0 14px 35px rgba(0,0,0,.45);
-      cursor:pointer;
-      transition: transform .12s ease, filter .12s ease;
-      text-decoration:none;
-      user-select:none;
-    }
-    .btn:hover{ transform: translateY(-1px); filter: brightness(1.02); }
-    .price{
-      font-weight:800;
-      color: rgba(233,238,247,.85);
-      font-size: 14px;
-      margin-left: 6px;
-    }
-
-    .hero-right{
-      position:absolute;
-      right:0; top:0; bottom:0;
-      width: 46%;
-      background:
-        linear-gradient(90deg, rgba(0,0,0,.00), rgba(0,0,0,.35)),
-        var(--hero-right-img);
-      background-size: cover;
-      background-position:center;
-      opacity:.95;
-      clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
-      filter: saturate(1.05) contrast(1.05);
-    }
-
-    .hero .footer{
-      position:relative;
-      display:flex;
-      justify-content:flex-start;
-      padding: 14px 22px 18px;
-      gap:10px;
-      border-top: 1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(0,0,0,.00), rgba(0,0,0,.18));
-    }
-    .hero .footer p{
-      margin:0;
-      font-size: 12.5px;
-      color: rgba(233,238,247,.80);
-      font-weight:600;
-    }
-    .hero .footer p strong{ color: rgba(233,238,247,.95); }
-
-    /* ===== Right column cards ===== */
-    .right{
-      display:flex;
-      flex-direction:column;
-      gap:18px;
-    }
-
-    .side{
-      height: 250px;
-      padding: 18px 18px 16px;
-      display:flex;
-      flex-direction:column;
-      justify-content:flex-start;
-      gap:14px;
-      background: var(--panel2);
-    }
-    .side h3{
-      margin:0;
-      font-size: 14px;
-      font-weight:800;
-      color: rgba(233,238,247,.92);
-      max-width: 210px;
-      line-height:1.25;
-    }
-    .side .img{
-      flex:1;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.10);
-      background:
-        linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.35)),
-        var(--card1-img);
-      background-size: cover;
-      background-position:center;
-      box-shadow: 0 14px 30px rgba(0,0,0,.35);
-      overflow:hidden;
-    }
-    .side.second .img{ background-image:
-        linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.35)),
-        var(--card2-img);
-    }
-
-    /* ===== Bottom minis ===== */
-    .bottom{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      margin-top: 18px;
-    }
-    .mini{
-      height: 92px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding: 16px 16px;
-      background: rgba(18,22,30,.62);
-    }
-    .mini h4{
-      margin:0;
-      font-size: 13px;
-      font-weight:800;
-      color: rgba(233,238,247,.92);
-      line-height:1.25;
-      max-width: 170px;
-    }
-    .mini .thumb{
-      width: 86px; height: 56px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.10);
-      background:
-        linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.35)),
-        var(--mini1-img);
-      background-size: cover;
-      background-position:center;
-      box-shadow: 0 12px 26px rgba(0,0,0,.35);
-      flex: 0 0 auto;
-    }
-    .mini.second .thumb{
-      background-image:
-        linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.35)),
-        var(--mini2-img);
-    }
-
-    /* ===== Responsive ===== */
-    @media (max-width: 980px){
-      .grid{ grid-template-columns: 1fr; }
-      .hero-right{ display:none; }
-      .hero-left{ max-width: 100%; }
-      .bottom{ grid-template-columns: 1fr; }
-      .nav{ justify-content:flex-start; overflow:auto; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Торговая Федерация Sun Federation SunShield</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: #1e1e1e;
+        }
+        .title {
+            font-size: 3em;
+            margin: 0;
+        }
+        .subtitle {
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+        .main-site {
+            font-size: 1.2em;
+            margin-top: 20px;
+            color: #bbbbbb;
+        }
+        .button {
+            display: inline-block;
+            background-color: #6a1b9a;
+            color: #ffffff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .category {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .category h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .item-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .item-list li {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #1e1e1e;
+            font-size: 0.9em;
+            color: #bbbbbb;
+        }
+    </style>
 </head>
-
 <body>
-  <div class="wrap">
-    <!-- Topbar -->
-    <header class="topbar">
-      <div class="brand">
-        <div class="logo">☀️</div>
-        <div class="name">SunShield</div>
-      </div>
-
-      <nav class="nav" aria-label="Навигация">
-        <a href="#">ТО</a>
-        <a href="#">Правила</a>
-        <a href="#">Вики</a>
-        <a href="#">Города</a>
-        <a href="#">Форум</a>
-      </nav>
-
-      <div class="user">
-        <div class="avatar">
-          <!-- поставь скин/аву игрока -->
-          <img src="https://mc-heads.net/avatar/Steve/64" alt="avatar">
-        </div>
-        <div class="caret" aria-hidden="true"></div>
-      </div>
+    <header>
+        <h1 class="title">Торговая Федерация Sun Federation</h1>
+        <p class="subtitle">SunShield</p>
+        <p class="main-site">Основной сайт: <a href="https://chanland4.vercel.app" style="color: #ffffff;">chanland4.vercel.app</a></p>
+        <a href="#" class="button">Начать торговлю</a>
     </header>
 
-    <!-- Main -->
-    <section class="grid">
-      <!-- HERO -->
-      <article class="card hero">
-        <div class="media" aria-hidden="true"></div>
-        <div class="hero-right" aria-hidden="true"></div>
-
-        <div class="content">
-          <div class="hero-left">
-            <div class="pretitle">Вы ждали — и вот он</div>
-            <h1 class="title">SUNSHIELD</h1>
-            <p class="subtitle">
-              присоединяйся и начинай<br>
-              играть прямо сейчас
-            </p>
-
-            <div class="cta-row">
-              <a class="btn" href="#" onclick="alert('Здесь будет покупка/магазин.'); return false;">
-                Купить проходку
-              </a>
-              <div class="price">1500 ₽</div>
-            </div>
-          </div>
+    <section>
+        <div class="category">
+            <h2>⚙️ СНАРЯЖЕНИЕ</h2>
+            <ul class="item-list">
+                <li>Алмазная кирка (фулл зачар без починки) — 24 вон</li>
+                <li>Незеритовая кирка — 25 вон</li>
+                <li>Незеритовая кирка (топ зачар без починки) — 40 вон</li>
+                <li>Незеритовый меч — 24 вон</li>
+                <li>Незеритовый меч (фулл зачар без починки) — 80 вон</li>
+                <li>Незеритовый топор — 21 вон</li>
+                <li>Незеритовая лопата — 21 вон</li>
+                <li>Незеритовая мотыга — 20 вон</li>
+                <li>Незеритовые ботинки — 23 вон</li>
+                <li>Незеритовые ботинки (топ зачар) — 75 вон</li>
+                <li>Незеритовые поножи — 26 вон</li>
+                <li>Незеритовые поножи (топ зачар) — 42 вон</li>
+                <li>Незеритовый нагрудник — 26 вон</li>
+                <li>Незеритовый нагрудник (топ зачар) — 21 вон</li>
+                <li>Незеритовый шлем — 24 вон</li>
+                <li>Незеритовый шлем (топ зачар) — 54 вон</li>
+                <li>Алмазные ботинки — 2 вон</li>
+                <li>Алмазные поножи — 2 вон</li>
+                <li>Алмазный нагрудник — 3 вон</li>
+                <li>Алмазный шлем — 2 вон</li>
+                <li>Лук (фулл зачар) — 8 вон</li>
+                <li>Трезубец - 30 вон</li>
+                <li>Булава — 60 вон</li>
+                <li>Тотем бессмертия — 2 вон</li>
+                <li>Любая Отделка ( Шаблон ) - 10-15 вон</li>
+                <li>Незеритовое улучшение — 7 вон</li>
+                <li>Эндер-жемчуг (16 шт.) - 4 вон</li>
+            </ul>
         </div>
 
-        <div class="footer">
-          <p><strong>Minecraft:</strong> Java Edition</p>
-          <p>Лицензия не обязательная, проходка остается навсегда</p>
+        <div class="category">
+            <h2>🔮 ЗАЧАРОВАНИЯ</h2>
+            <ul class="item-list">
+                <li>Починка — 260 вон</li>
+                <li>Проворство III — 450 вон</li>
+                <li>Скорость души III — 15 вон</li>
+                <li>Защита IV — 16 вон</li>
+                <li>Шёлковое касание — 14 вон</li>
+                <li>Прочность III — 16 вон</li>
+                <li>Добыча III — 21 вон</li>
+                <li>Острота V — 22 вон</li>
+                <li>Удача III — 10 вон</li>
+                <li>Шипы III — 23 вон</li>
+                <li>Эффективность V — 15 вон</li>
+                <li>Бесконечность — 10 вон</li>
+                <li>Быстрая перезарядка III — 6 вон</li>
+                <li>Везучий рыбак III — 8 вон</li>
+                <li>Верность III — 8 вон</li>
+                <li>Взрывоустойчивость IV — 10 вон</li>
+                <li>Воспламенение — 6 вон</li>
+                <li>Громовержец — 10 вон</li>
+                <li>Заговор огня II — 10 вон</li>
+                <li>Защита от снарядов IV — 8 вон</li>
+                <li>Ледоход II — 10 вон</li>
+                <li>Небесная кара V — 5 вон</li>
+                <li>Невесомость IV — 25 вон</li>
+                <li>Бич членистоногих V — 4 вон</li>
+            </ul>
         </div>
-      </article>
 
-      <!-- RIGHT COLUMN -->
-      <aside class="right">
-        <article class="card side">
-          <h3>Классные системы для взаимодействия</h3>
-          <div class="img" aria-hidden="true"></div>
-        </article>
+        <div class="category">
+            <h2>💎 РЕСУРСЫ</h2>
+            <ul class="item-list">
+                <li>Незеритовый слиток — 23 вон</li>
+                <li>Древние обломки — 5 вон</li>
+                <li>Алмаз (3 шт.) — 1 вон</li>
+                <li>Алмазный блок (16 шт.) — 48 вон</li>
+                <li>Железо (64 шт.) — 1 вон</li>
+                <li>Железный блок (64 шт.) — 7 вон</li>
+                <li>Золото (64 шт.) — 3 вон</li>
+                <li>Золотой блок (64 шт.) — 24 вон</li>
+                <li>Изумруд (64 шт.) — 1 вон</li>
+                <li>Изумрудная руда — 10 вон</li>
+                <li>Изумрудный блок (64 шт.) — 8 вон</li>
+                <li>Медь (64 шт.) — 1 вон</li>
+                <li>Медный блок (64 шт.) — 4 вон</li>
+                <li>Кварцевый блок (64 шт.) — 2 вон</li>
+                <li>Костяной блок (64 шт.) — 8 вон</li>
+                <li>Обсидиан (64 шт.) — 10 вон</li>
+                <li>Морской фонарь (64 шт.) — 5 вон</li>
+                <li>Малахитовая квампа (64 шт.) — 4 вон</li>
+                <li>Кристалл Края (16 шт.) — 12 вон</li>
+                <li>Зачарованное золотое яблоко - 9 вон</li>
+                <li>3олотое яблоко (16 шт.) - 8 вон</li>
+                <li>Золотая морковь (64 шт.) - 5 вон</li>
+                <li>Маяк — 60 вон</li>
+                <li>Зелье опыта (1шт.) - 1 вон</li>
+            </ul>
+        </div>
 
-        <article class="card side second">
-          <h3>Большое сообщество игроков</h3>
-          <div class="img" aria-hidden="true"></div>
-        </article>
-      </aside>
+        <div class="category">
+            <h2>🧪 ЗЕЛЬЯ И ЭФФЕКТЫ</h2>
+            <ul class="item-list">
+                <li>Зелье невидимости (1 шт) — 3 вон</li>
+                <li>Зелье ночного зрения (1 шт) — 1 вон</li>
+                <li>Зелье огнестойкости (1 шт) — 1 вон</li>
+                <li>Зелье опыта (2 шт) — 2 вон</li>
+                <li>Зелье прыгучести (1 шт) — 2 вон</li>
+                <li>Зелье регенерации (1 шт) — 2 вон</li>
+                <li>Зелье силы — 3 вон</li>
+                <li>Зелье стремительности — 2 вон</li>
+                <li>Зелье черепашьей мощи IV — 7 вон</li>
+                <li>Зловещая бутылочка I (2 шт) — 2 вон</li>
+                <li>Зловещая бутылочка II — 2 вон</li>
+                <li>Зловещая бутылочка III — 4 вон</li>
+                <li>Зловещая бутылочка IV — 6 вон</li>
+                <li>Зловещая бутылочка V — 8 вон</li>
+                <li>Зловещий ключ испытаний — 5 вон</li>
+                <li>Ключ испытаний — 2 вон</li>
+            </ul>
+        </div>
+
+        <div class="category">
+            <h2>🌈 КРАСИТЕЛИ И ПРОЧЕЕ</h2>
+            <ul class="item-list">
+                <li>Белый краситель (128 шт.) — 2 вон</li>
+                <li>Жёлтый краситель (128 шт.) — 2 вон</li>
+                <li>Красный краситель (128 шт.) — 2 вон</li>
+                <li>Зелёный краситель (128 шт.) — 2 вон</li>
+                <li>Бирюзовый краситель (128шт.) — 4 вон</li>
+                <li>Голубой краситель (64 шт.) — 2 вон</li>
+                <li>Лаймовый краситель (64 шт.) — 2 вон</li>
+                <li>Коричневый краситель (128 шт.) — 2 вон</li>
+                <li>Кактус (128 шт.) — 1 вон</li>
+                <li>Жареная рыба (64 шт.) — 2 вон</li>
+                <li>Жареное мясо (64 шт.) — 2 вон</li>
+                <li>Золотая морковь (64 шт.) — 5 вон</li>
+                <li>морковь (64 шт.) — 2 вон</li>
+                <li>Хлеб (64 шт.) - 2 вон</li>
+                <li>Золотой слиток (64 шт.) — 3 вон</li>
+                <li>Золотое яблоко (16 шт.) — 5 вон</li>
+                <li>Зачарованное золотое яблоко — 6 вон</li>
+                <li>Блок мёда (16 шт.) — 4 вон</li>
+                <li>Блок слизи (64 шт.) — 8 вон</li>
+                <li>Блок света (32 шт.) — 6 вон</li>
+                <li>Динамит (64 шт.) — 16 вон</li>
+                <li>Драконье дыхание (16 шт.) — 8 вон</li>
+                <li>Книга (64 шт.) — 4 вон</li>
+                <li>Кожа (64 шт.) — 2 вон</li>
+                <li>Незерский нарост (64 шт.) — 4 вон</li>
+                <li>Лазурит (128 шт.) — 2 вон</li>
+                <li>Пластинка PigStep - 150 вон</li>
+                <li>Пластинка Relic - 150 вон</li>
+                <li>Пластинка Aaron Cherof - 175 вон</li>
+                <li>Лазуритовый блок (64 шт.) — 9 вон</li>
+            </ul>
+        </div>
     </section>
 
-    <!-- Bottom minis -->
-    <section class="bottom">
-      <article class="card mini">
-        <h4>Работающая<br>экономика</h4>
-        <div class="thumb" aria-hidden="true"></div>
-      </article>
-
-      <article class="card mini second">
-        <h4>Интересные и приятные<br>впечатления</h4>
-        <div class="thumb" aria-hidden="true"></div>
-      </article>
-    </section>
-  </div>
+    <footer>
+        <p>Copyright © Sun Federation 2026. Все права защищены.</p>
+    </footer>
 </body>
 </html>
