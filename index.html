@@ -3,238 +3,436 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Торговая Федерация Sun Federation SunShield</title>
+    <title>Торговая Федерация Sun Federation | SunShield</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
+        :root {
+            --bg-color: #0f1015;
+            --card-bg: #1a1b23;
+            --primary-color: #6c5ce7;
+            --primary-hover: #5a4bcf;
+            --text-main: #ffffff;
+            --text-muted: #a0a5b5;
+            --accent: #ff9f43;
+        }
+
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
-        header {
-            text-align: center;
-            padding: 50px 20px;
-            background-color: #1e1e1e;
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
         }
-        .title {
-            font-size: 3em;
-            margin: 0;
+
+        /* Навигация */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background-color: rgba(15, 16, 21, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
         }
-        .subtitle {
-            font-size: 1.5em;
-            margin-top: 10px;
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .main-site {
-            font-size: 1.2em;
-            margin-top: 20px;
-            color: #bbbbbb;
+
+        .logo span {
+            color: var(--primary-color);
         }
-        .button {
-            display: inline-block;
-            background-color: #6a1b9a;
-            color: #ffffff;
-            padding: 10px 20px;
+
+        .nav-links a {
+            color: var(--text-muted);
             text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
+            margin-left: 20px;
+            font-weight: 600;
+            transition: color 0.3s;
         }
-        section {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 20px;
+
+        .nav-links a:hover {
+            color: var(--text-main);
         }
-        .category {
-            background-color: #1e1e1e;
-            border-radius: 10px;
-            padding: 20px;
+
+        .btn-main {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-main:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Главный экран (Hero) */
+        .hero {
+            padding: 80px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: radial-gradient(circle at right, #1a1b23 0%, var(--bg-color) 50%);
+        }
+
+        .hero-text {
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
             margin-bottom: 30px;
         }
-        .category h2 {
-            font-size: 2em;
-            margin-bottom: 20px;
-            text-align: center;
+
+        .main-site-banner {
+            background: rgba(108, 92, 231, 0.1);
+            border: 1px solid var(--primary-color);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: inline-block;
         }
-        .item-list {
-            list-style-type: none;
-            padding: 0;
+
+        .main-site-banner a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
         }
-        .item-list li {
-            font-size: 1.1em;
-            margin-bottom: 10px;
+
+        /* Магазин и категории */
+        .shop-section {
+            padding: 50px 5%;
         }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .categories {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            background-color: var(--card-bg);
+            color: var(--text-muted);
+            border: 1px solid #2a2b36;
+            padding: 12px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Карточки товаров */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .item-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #2a2b36;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            border-color: var(--primary-color);
+        }
+
+        .item-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .item-price {
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Подвал */
         footer {
             text-align: center;
-            padding: 20px;
-            background-color: #1e1e1e;
-            font-size: 0.9em;
-            color: #bbbbbb;
+            padding: 40px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--card-bg);
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .hero { flex-direction: column; text-align: center; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1 class="title">Торговая Федерация Sun Federation</h1>
-        <p class="subtitle">SunShield</p>
-        <p class="main-site">Основной сайт: <a href="https://chanland4.vercel.app" style="color: #ffffff;">chanland4.vercel.app</a></p>
-        <a href="#" class="button">Начать торговлю</a>
+
+    <nav>
+        <div class="logo">
+            🛡️ <span>Sun</span>Shield
+        </div>
+        <div class="nav-links">
+            <a href="#shop">Ассортимент</a>
+            <a href="https://chanland4.vercel.app" target="_blank">Основной сайт</a>
+        </div>
+        <a href="https://chanland4.vercel.app" class="btn-main" target="_blank">Перейти на Chanland4</a>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-text">
+            <h1>Торговая Федерация<br>Sun Federation</h1>
+            <p>Лучшие цены на снаряжение, зачарования и ресурсы. Надёжный поставщик для твоих побед на сервере.</p>
+            
+            <div class="main-site-banner">
+                Внимание! Наш основной сайт находится по адресу: <br>
+                <a href="https://chanland4.vercel.app" target="_blank">chanland4.vercel.app</a>
+            </div>
+            
+            <br>
+            <a href="#shop" class="btn-main" style="padding: 15px 30px; font-size: 1.1rem;">Смотреть каталог</a>
+        </div>
     </header>
 
-    <section>
-        <div class="category">
-            <h2>⚙️ СНАРЯЖЕНИЕ</h2>
-            <ul class="item-list">
-                <li>Алмазная кирка (фулл зачар без починки) — 24 вон</li>
-                <li>Незеритовая кирка — 25 вон</li>
-                <li>Незеритовая кирка (топ зачар без починки) — 40 вон</li>
-                <li>Незеритовый меч — 24 вон</li>
-                <li>Незеритовый меч (фулл зачар без починки) — 80 вон</li>
-                <li>Незеритовый топор — 21 вон</li>
-                <li>Незеритовая лопата — 21 вон</li>
-                <li>Незеритовая мотыга — 20 вон</li>
-                <li>Незеритовые ботинки — 23 вон</li>
-                <li>Незеритовые ботинки (топ зачар) — 75 вон</li>
-                <li>Незеритовые поножи — 26 вон</li>
-                <li>Незеритовые поножи (топ зачар) — 42 вон</li>
-                <li>Незеритовый нагрудник — 26 вон</li>
-                <li>Незеритовый нагрудник (топ зачар) — 21 вон</li>
-                <li>Незеритовый шлем — 24 вон</li>
-                <li>Незеритовый шлем (топ зачар) — 54 вон</li>
-                <li>Алмазные ботинки — 2 вон</li>
-                <li>Алмазные поножи — 2 вон</li>
-                <li>Алмазный нагрудник — 3 вон</li>
-                <li>Алмазный шлем — 2 вон</li>
-                <li>Лук (фулл зачар) — 8 вон</li>
-                <li>Трезубец - 30 вон</li>
-                <li>Булава — 60 вон</li>
-                <li>Тотем бессмертия — 2 вон</li>
-                <li>Любая Отделка ( Шаблон ) - 10-15 вон</li>
-                <li>Незеритовое улучшение — 7 вон</li>
-                <li>Эндер-жемчуг (16 шт.) - 4 вон</li>
-            </ul>
-        </div>
+    <section id="shop" class="shop-section">
+        <h2 class="section-title">Наши товары</h2>
+        
+        <div class="categories" id="category-container">
+            </div>
 
-        <div class="category">
-            <h2>🔮 ЗАЧАРОВАНИЯ</h2>
-            <ul class="item-list">
-                <li>Починка — 260 вон</li>
-                <li>Проворство III — 450 вон</li>
-                <li>Скорость души III — 15 вон</li>
-                <li>Защита IV — 16 вон</li>
-                <li>Шёлковое касание — 14 вон</li>
-                <li>Прочность III — 16 вон</li>
-                <li>Добыча III — 21 вон</li>
-                <li>Острота V — 22 вон</li>
-                <li>Удача III — 10 вон</li>
-                <li>Шипы III — 23 вон</li>
-                <li>Эффективность V — 15 вон</li>
-                <li>Бесконечность — 10 вон</li>
-                <li>Быстрая перезарядка III — 6 вон</li>
-                <li>Везучий рыбак III — 8 вон</li>
-                <li>Верность III — 8 вон</li>
-                <li>Взрывоустойчивость IV — 10 вон</li>
-                <li>Воспламенение — 6 вон</li>
-                <li>Громовержец — 10 вон</li>
-                <li>Заговор огня II — 10 вон</li>
-                <li>Защита от снарядов IV — 8 вон</li>
-                <li>Ледоход II — 10 вон</li>
-                <li>Небесная кара V — 5 вон</li>
-                <li>Невесомость IV — 25 вон</li>
-                <li>Бич членистоногих V — 4 вон</li>
-            </ul>
-        </div>
-
-        <div class="category">
-            <h2>💎 РЕСУРСЫ</h2>
-            <ul class="item-list">
-                <li>Незеритовый слиток — 23 вон</li>
-                <li>Древние обломки — 5 вон</li>
-                <li>Алмаз (3 шт.) — 1 вон</li>
-                <li>Алмазный блок (16 шт.) — 48 вон</li>
-                <li>Железо (64 шт.) — 1 вон</li>
-                <li>Железный блок (64 шт.) — 7 вон</li>
-                <li>Золото (64 шт.) — 3 вон</li>
-                <li>Золотой блок (64 шт.) — 24 вон</li>
-                <li>Изумруд (64 шт.) — 1 вон</li>
-                <li>Изумрудная руда — 10 вон</li>
-                <li>Изумрудный блок (64 шт.) — 8 вон</li>
-                <li>Медь (64 шт.) — 1 вон</li>
-                <li>Медный блок (64 шт.) — 4 вон</li>
-                <li>Кварцевый блок (64 шт.) — 2 вон</li>
-                <li>Костяной блок (64 шт.) — 8 вон</li>
-                <li>Обсидиан (64 шт.) — 10 вон</li>
-                <li>Морской фонарь (64 шт.) — 5 вон</li>
-                <li>Малахитовая квампа (64 шт.) — 4 вон</li>
-                <li>Кристалл Края (16 шт.) — 12 вон</li>
-                <li>Зачарованное золотое яблоко - 9 вон</li>
-                <li>3олотое яблоко (16 шт.) - 8 вон</li>
-                <li>Золотая морковь (64 шт.) - 5 вон</li>
-                <li>Маяк — 60 вон</li>
-                <li>Зелье опыта (1шт.) - 1 вон</li>
-            </ul>
-        </div>
-
-        <div class="category">
-            <h2>🧪 ЗЕЛЬЯ И ЭФФЕКТЫ</h2>
-            <ul class="item-list">
-                <li>Зелье невидимости (1 шт) — 3 вон</li>
-                <li>Зелье ночного зрения (1 шт) — 1 вон</li>
-                <li>Зелье огнестойкости (1 шт) — 1 вон</li>
-                <li>Зелье опыта (2 шт) — 2 вон</li>
-                <li>Зелье прыгучести (1 шт) — 2 вон</li>
-                <li>Зелье регенерации (1 шт) — 2 вон</li>
-                <li>Зелье силы — 3 вон</li>
-                <li>Зелье стремительности — 2 вон</li>
-                <li>Зелье черепашьей мощи IV — 7 вон</li>
-                <li>Зловещая бутылочка I (2 шт) — 2 вон</li>
-                <li>Зловещая бутылочка II — 2 вон</li>
-                <li>Зловещая бутылочка III — 4 вон</li>
-                <li>Зловещая бутылочка IV — 6 вон</li>
-                <li>Зловещая бутылочка V — 8 вон</li>
-                <li>Зловещий ключ испытаний — 5 вон</li>
-                <li>Ключ испытаний — 2 вон</li>
-            </ul>
-        </div>
-
-        <div class="category">
-            <h2>🌈 КРАСИТЕЛИ И ПРОЧЕЕ</h2>
-            <ul class="item-list">
-                <li>Белый краситель (128 шт.) — 2 вон</li>
-                <li>Жёлтый краситель (128 шт.) — 2 вон</li>
-                <li>Красный краситель (128 шт.) — 2 вон</li>
-                <li>Зелёный краситель (128 шт.) — 2 вон</li>
-                <li>Бирюзовый краситель (128шт.) — 4 вон</li>
-                <li>Голубой краситель (64 шт.) — 2 вон</li>
-                <li>Лаймовый краситель (64 шт.) — 2 вон</li>
-                <li>Коричневый краситель (128 шт.) — 2 вон</li>
-                <li>Кактус (128 шт.) — 1 вон</li>
-                <li>Жареная рыба (64 шт.) — 2 вон</li>
-                <li>Жареное мясо (64 шт.) — 2 вон</li>
-                <li>Золотая морковь (64 шт.) — 5 вон</li>
-                <li>морковь (64 шт.) — 2 вон</li>
-                <li>Хлеб (64 шт.) - 2 вон</li>
-                <li>Золотой слиток (64 шт.) — 3 вон</li>
-                <li>Золотое яблоко (16 шт.) — 5 вон</li>
-                <li>Зачарованное золотое яблоко — 6 вон</li>
-                <li>Блок мёда (16 шт.) — 4 вон</li>
-                <li>Блок слизи (64 шт.) — 8 вон</li>
-                <li>Блок света (32 шт.) — 6 вон</li>
-                <li>Динамит (64 шт.) — 16 вон</li>
-                <li>Драконье дыхание (16 шт.) — 8 вон</li>
-                <li>Книга (64 шт.) — 4 вон</li>
-                <li>Кожа (64 шт.) — 2 вон</li>
-                <li>Незерский нарост (64 шт.) — 4 вон</li>
-                <li>Лазурит (128 шт.) — 2 вон</li>
-                <li>Пластинка PigStep - 150 вон</li>
-                <li>Пластинка Relic - 150 вон</li>
-                <li>Пластинка Aaron Cherof - 175 вон</li>
-                <li>Лазуритовый блок (64 шт.) — 9 вон</li>
-            </ul>
-        </div>
+        <div class="items-grid" id="items-container">
+            </div>
     </section>
 
     <footer>
-        <p>Copyright © Sun Federation 2026. Все права защищены.</p>
+        <p>© 2026 Торговая Федерация Sun Federation. Все права защищены.</p>
+        <p>Основной ресурс: <a href="https://chanland4.vercel.app" style="color: var(--primary-color); text-decoration: none;">chanland4.vercel.app</a></p>
     </footer>
+
+    <script>
+        // База данных твоих товаров
+        const inventory = {
+            "⚙️ СНАРЯЖЕНИЕ": [
+                {name: "Алмазная кирка (фулл зачар без починки)", price: 24},
+                {name: "Незеритовая кирка", price: 25},
+                {name: "Незеритовая кирка (топ зачар без починки)", price: 40},
+                {name: "Незеритовый меч", price: 24},
+                {name: "Незеритовый меч (фулл зачар без починки)", price: 80},
+                {name: "Незеритовый топор", price: 21},
+                {name: "Незеритовая лопата", price: 21},
+                {name: "Незеритовая мотыга", price: 20},
+                {name: "Незеритовые ботинки", price: 23},
+                {name: "Незеритовые ботинки (топ зачар)", price: 75},
+                {name: "Незеритовые поножи", price: 26},
+                {name: "Незеритовые поножи (топ зачар)", price: 42},
+                {name: "Незеритовый нагрудник", price: 26},
+                {name: "Незеритовый нагрудник (топ зачар)", price: 21},
+                {name: "Незеритовый шлем", price: 24},
+                {name: "Незеритовый шлем (топ зачар)", price: 54},
+                {name: "Алмазные ботинки", price: 2},
+                {name: "Алмазные поножи", price: 2},
+                {name: "Алмазный нагрудник", price: 3},
+                {name: "Алмазный шлем", price: 2},
+                {name: "Лук (фулл зачар)", price: 8},
+                {name: "Трезубец", price: 30},
+                {name: "Булава", price: 60},
+                {name: "Тотем бессмертия", price: 2},
+                {name: "Любая Отделка (Шаблон)", price: "10-15"},
+                {name: "Незеритовое улучшение", price: 7},
+                {name: "Эндер-жемчуг (16 шт.)", price: 4}
+            ],
+            "🔮 ЗАЧАРОВАНИЯ": [
+                {name: "Починка", price: 260},
+                {name: "Проворство III", price: 450},
+                {name: "Скорость души III", price: 15},
+                {name: "Защита IV", price: 16},
+                {name: "Шёлковое касание", price: 14},
+                {name: "Прочность III", price: 16},
+                {name: "Добыча III", price: 21},
+                {name: "Острота V", price: 22},
+                {name: "Удача III", price: 10},
+                {name: "Шипы III", price: 23},
+                {name: "Эффективность V", price: 15},
+                {name: "Бесконечность", price: 10},
+                {name: "Быстрая перезарядка III", price: 6},
+                {name: "Везучий рыбак III", price: 8},
+                {name: "Верность III", price: 8},
+                {name: "Взрывоустойчивость IV", price: 10},
+                {name: "Воспламенение", price: 6},
+                {name: "Громовержец", price: 10},
+                {name: "Заговор огня II", price: 10},
+                {name: "Защита от снарядов IV", price: 8},
+                {name: "Ледоход II", price: 10},
+                {name: "Небесная кара V", price: 5},
+                {name: "Невесомость IV", price: 25},
+                {name: "Бич членистоногих V", price: 4}
+            ],
+            "💎 РЕСУРСЫ": [
+                {name: "Незеритовый слиток", price: 23},
+                {name: "Древние обломки", price: 5},
+                {name: "Алмаз (3 шт.)", price: 1},
+                {name: "Алмазный блок (16 шт.)", price: 48},
+                {name: "Железо (64 шт.)", price: 1},
+                {name: "Железный блок (64 шт.)", price: 7},
+                {name: "Золото (64 шт.)", price: 3},
+                {name: "Золотой блок (64 шт.)", price: 24},
+                {name: "Изумруд (64 шт.)", price: 1},
+                {name: "Изумрудная руда", price: 10},
+                {name: "Изумрудный блок (64 шт.)", price: 8},
+                {name: "Медь (64 шт.)", price: 1},
+                {name: "Медный блок (64 шт.)", price: 4},
+                {name: "Кварцевый блок (64 шт.)", price: 2},
+                {name: "Костяной блок (64 шт.)", price: 8},
+                {name: "Обсидиан (64 шт.)", price: 10},
+                {name: "Морской фонарь (64 шт.)", price: 5},
+                {name: "Малахитовая квампа (64 шт.)", price: 4},
+                {name: "Кристалл Края (16 шт.)", price: 12},
+                {name: "Зачарованное золотое яблоко", price: 9},
+                {name: "3олотое яблоко (16 шт.)", price: 8},
+                {name: "Золотая морковь (64 шт.)", price: 5},
+                {name: "Маяк", price: 60},
+                {name: "Зелье опыта (1шт.)", price: 1}
+            ],
+            "🧪 ЗЕЛЬЯ И ЭФФЕКТЫ": [
+                {name: "Зелье невидимости (1 шт)", price: 3},
+                {name: "Зелье ночного зрения (1 шт)", price: 1},
+                {name: "Зелье огнестойкости (1 шт)", price: 1},
+                {name: "Зелье опыта (2 шт)", price: 2},
+                {name: "Зелье прыгучести (1 шт)", price: 2},
+                {name: "Зелье регенерации (1 шт)", price: 2},
+                {name: "Зелье силы", price: 3},
+                {name: "Зелье стремительности", price: 2},
+                {name: "Зелье черепашьей мощи IV", price: 7},
+                {name: "Зловещая бутылочка I (2 шт)", price: 2},
+                {name: "Зловещая бутылочка II", price: 2},
+                {name: "Зловещая бутылочка III", price: 4},
+                {name: "Зловещая бутылочка IV", price: 6},
+                {name: "Зловещая бутылочка V", price: 8},
+                {name: "Зловещий ключ испытаний", price: 5},
+                {name: "Ключ испытаний", price: 2}
+            ],
+            "🌈 КРАСИТЕЛИ И ПРОЧЕЕ": [
+                {name: "Белый краситель (128 шт.)", price: 2},
+                {name: "Жёлтый краситель (128 шт.)", price: 2},
+                {name: "Красный краситель (128 шт.)", price: 2},
+                {name: "Зелёный краситель (128 шт.)", price: 2},
+                {name: "Бирюзовый краситель (128шт.)", price: 4},
+                {name: "Голубой краситель (64 шт.)", price: 2},
+                {name: "Лаймовый краситель (64 шт.)", price: 2},
+                {name: "Коричневый краситель (128 шт.)", price: 2},
+                {name: "Кактус (128 шт.)", price: 1},
+                {name: "Жареная рыба (64 шт.)", price: 2},
+                {name: "Жареное мясо (64 шт.)", price: 2},
+                {name: "Золотая морковь (64 шт.)", price: 5},
+                {name: "Морковь (64 шт.)", price: 2},
+                {name: "Хлеб (64 шт.)", price: 2},
+                {name: "Золотой слиток (64 шт.)", price: 3},
+                {name: "Золотое яблоко (16 шт.)", price: 5},
+                {name: "Зачарованное золотое яблоко", price: 6},
+                {name: "Блок мёда (16 шт.)", price: 4},
+                {name: "Блок слизи (64 шт.)", price: 8},
+                {name: "Блок света (32 шт.)", price: 6},
+                {name: "Динамит (64 шт.)", price: 16},
+                {name: "Драконье дыхание (16 шт.)", price: 8},
+                {name: "Книга (64 шт.)", price: 4},
+                {name: "Кожа (64 шт.)", price: 2},
+                {name: "Незерский нарост (64 шт.)", price: 4},
+                {name: "Лазурит (128 шт.)", price: 2},
+                {name: "Пластинка PigStep", price: 150},
+                {name: "Пластинка Relic", price: 150},
+                {name: "Пластинка Aaron Cherof", price: 175},
+                {name: "Лазуритовый блок (64 шт.)", price: 9}
+            ]
+        };
+
+        const categoryContainer = document.getElementById('category-container');
+        const itemsContainer = document.getElementById('items-container');
+
+        // Инициализация
+        function init() {
+            const categories = Object.keys(inventory);
+            
+            // Создаем кнопки категорий
+            categories.forEach((cat, index) => {
+                const btn = document.createElement('button');
+                btn.className = `category-btn ${index === 0 ? 'active' : ''}`;
+                btn.textContent = cat;
+                btn.onclick = () => renderCategory(cat, btn);
+                categoryContainer.appendChild(btn);
+            });
+
+            // Рендерим первую категорию
+            renderCategory(categories[0], categoryContainer.firstChild);
+        }
+
+        // Рендер товаров выбранной категории
+        function renderCategory(categoryName, activeBtn) {
+            // Обновляем активную кнопку
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            activeBtn.classList.add('active');
+
+            // Очищаем контейнер товаров
+            itemsContainer.innerHTML = '';
+
+            // Добавляем карточки
+            inventory[categoryName].forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'item-card';
+                card.innerHTML = `
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-price">${item.price} вон</div>
+                `;
+                itemsContainer.appendChild(card);
+            });
+        }
+
+        // Запуск
+        init();
+    </script>
 </body>
 </html>
