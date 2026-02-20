@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Торговая Федерация Sun Federation | SunShield</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Прайс-лист | Sun Federation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0f1015;
-            --card-bg: #1a1b23;
-            --primary-color: #6c5ce7;
-            --primary-hover: #5a4bcf;
+            --bg-dark: #121214;
+            --card-bg: rgba(30, 30, 34, 0.6);
+            --card-border: rgba(255, 255, 255, 0.05);
             --text-main: #ffffff;
-            --text-muted: #a0a5b5;
-            --accent: #ff9f43;
+            --text-muted: #9aa0a6;
+            --blue-btn: #007aff;
+            --blue-btn-hover: #0066d6;
+            --radius-lg: 16px;
+            --radius-sm: 12px;
         }
 
         * {
@@ -23,241 +25,374 @@
             font-family: 'Inter', sans-serif;
         }
 
+        /* Фоновое изображение (заглушка, можно вставить скриншот майна) */
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at 50% 0%, #2a2a35 0%, var(--bg-dark) 60%);
             color: var(--text-main);
-            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Навигация */
+        /* Навигация как на скрине */
         nav {
+            width: 100%;
+            max-width: 1200px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 5%;
-            background-color: rgba(15, 16, 21, 0.9);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
+            padding: 25px 20px;
+            margin-bottom: 20px;
         }
 
-        .logo {
-            font-size: 1.2rem;
-            font-weight: 800;
+        .nav-logo {
             display: flex;
             align-items: center;
             gap: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
         }
 
-        .logo span {
-            color: var(--primary-color);
+        .nav-logo img {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: #ff9f43; /* Цвет лого */
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
         }
 
         .nav-links a {
             color: var(--text-muted);
             text-decoration: none;
-            margin-left: 20px;
-            font-weight: 600;
-            transition: color 0.3s;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
         }
 
         .nav-links a:hover {
             color: var(--text-main);
         }
 
-        .btn-main {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background 0.3s;
-            border: none;
+        .nav-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             cursor: pointer;
         }
 
-        .btn-main:hover {
-            background-color: var(--primary-hover);
+        .nav-profile img {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
         }
 
-        /* Главный экран (Hero) */
-        .hero {
-            padding: 80px 5%;
+        /* БЕНТО-СЕТКА (Главный экран) */
+        .bento-container {
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            padding: 0 20px;
+            margin-bottom: 60px;
+        }
+
+        .bento-left {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: radial-gradient(circle at right, #1a1b23 0%, var(--bg-color) 50%);
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .hero-text {
-            max-width: 600px;
+        .bento-right {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
         }
 
-        .hero p {
+        /* Главная большая карточка */
+        .hero-card {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 320px;
+            background: linear-gradient(135deg, rgba(40,40,50,0.8) 0%, rgba(20,20,25,0.8) 100%);
+        }
+
+        .hero-card h3 {
+            font-size: 1rem;
             color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 30px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .main-site-banner {
-            background: rgba(108, 92, 231, 0.1);
-            border: 1px solid var(--primary-color);
-            padding: 15px;
+        .hero-card h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .hero-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 25px;
+            max-width: 400px;
+        }
+
+        .btn-blue {
+            background-color: var(--blue-btn);
+            color: white;
+            border: none;
+            padding: 14px 28px;
             border-radius: 8px;
-            margin-bottom: 30px;
-            display: inline-block;
-        }
-
-        .main-site-banner a {
-            color: var(--primary-color);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: fit-content;
             text-decoration: none;
-            font-weight: bold;
+            transition: background 0.2s;
         }
 
-        /* Магазин и категории */
-        .shop-section {
-            padding: 50px 5%;
+        .btn-blue:hover {
+            background-color: var(--blue-btn-hover);
         }
 
-        .section-title {
+        .hero-footer {
+            margin-top: auto;
+            padding-top: 30px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .hero-footer span {
+            display: block;
+            color: var(--text-main);
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        /* Две нижние карточки слева */
+        .small-cards-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .small-card {
+            padding: 20px;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .small-card h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .small-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* Карточки справа */
+        .right-card {
+            flex: 1;
+            min-height: 210px;
+        }
+        
+        .right-card h4 {
+            font-size: 1.1rem;
+            max-width: 70%;
+        }
+
+        /* СЕКЦИЯ ПРАЙС-ЛИСТА */
+        .pricelist-section {
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 20px;
+            margin-bottom: 100px;
+        }
+
+        .section-header {
             font-size: 2rem;
+            font-weight: 700;
             margin-bottom: 30px;
+            text-align: left;
         }
 
         .categories {
             display: flex;
-            gap: 15px;
-            margin-bottom: 40px;
+            gap: 10px;
+            margin-bottom: 30px;
             flex-wrap: wrap;
         }
 
         .category-btn {
-            background-color: var(--card-bg);
+            background: transparent;
             color: var(--text-muted);
-            border: 1px solid #2a2b36;
-            padding: 12px 24px;
-            border-radius: 30px;
+            border: 1px solid var(--card-border);
+            padding: 10px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
         }
 
-        .category-btn:hover, .category-btn.active {
-            background-color: var(--primary-color);
+        .category-btn:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-main);
+        }
+
+        .category-btn.active {
+            background: var(--blue-btn);
             color: white;
-            border-color: var(--primary-color);
+            border-color: var(--blue-btn);
         }
 
-        /* Карточки товаров */
-        .items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
+        /* Таблица цен (список) */
+        .price-list {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
         }
 
-        .item-card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid #2a2b36;
-            transition: transform 0.2s, box-shadow 0.2s;
+        .price-item {
             display: flex;
-            flex-direction: column;
             justify-content: space-between;
+            align-items: center;
+            padding: 16px 25px;
+            border-bottom: 1px solid var(--card-border);
+            transition: background 0.2s;
         }
 
-        .item-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            border-color: var(--primary-color);
+        .price-item:last-child {
+            border-bottom: none;
+        }
+
+        .price-item:hover {
+            background: rgba(255,255,255,0.03);
         }
 
         .item-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 15px;
+            font-weight: 500;
+            font-size: 1.05rem;
         }
 
         .item-price {
-            color: var(--accent);
-            font-weight: 800;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            font-weight: 700;
+            color: #ff9f43; /* Цвет валюты (вон) */
+            background: rgba(255, 159, 67, 0.1);
+            padding: 6px 12px;
+            border-radius: 6px;
         }
 
-        /* Подвал */
-        footer {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-muted);
-            border-top: 1px solid var(--card-bg);
-            margin-top: 50px;
-        }
-
-        @media (max-width: 768px) {
-            .hero { flex-direction: column; text-align: center; }
-            .nav-links { display: none; }
+        @media (max-width: 900px) {
+            .bento-container {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+            .hero-card h1 {
+                font-size: 2.5rem;
+            }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo">
-            🛡️ <span>Sun</span>Shield
+        <div class="nav-logo">
+            <div style="width: 24px; height: 24px; background: #ff9f43; border-radius: 4px;"></div>
+            SunShield
         </div>
         <div class="nav-links">
-            <a href="#shop">Ассортимент</a>
-            <a href="https://chanland4.vercel.app" target="_blank">Основной сайт</a>
+            <a href="#">Главная</a>
+            <a href="#pricelist">Прайс-лист</a>
+            <a href="https://chanland4.vercel.app" target="_blank" style="color: var(--blue-btn);">Основной сайт</a>
         </div>
-        <a href="https://chanland4.vercel.app" class="btn-main" target="_blank">Перейти на Chanland4</a>
+        <div class="nav-profile">
+            <img src="https://minotar.net/helm/Steve/32.png" alt="Profile">
+            <span style="font-size: 0.8rem; color: var(--text-muted);">▼</span>
+        </div>
     </nav>
 
-    <header class="hero">
-        <div class="hero-text">
-            <h1>Торговая Федерация<br>Sun Federation</h1>
-            <p>Лучшие цены на снаряжение, зачарования и ресурсы. Надёжный поставщик для твоих побед на сервере.</p>
-            
-            <div class="main-site-banner">
-                Внимание! Наш основной сайт находится по адресу: <br>
-                <a href="https://chanland4.vercel.app" target="_blank">chanland4.vercel.app</a>
+    <div class="bento-container">
+        <div class="bento-left">
+            <div class="card hero-card">
+                <h3>Торговая Федерация</h3>
+                <h1>SUN FEDERATION</h1>
+                <p>Единый прайс-лист на все товары. Изучай цены, выбирай лучшее снаряжение и побеждай!</p>
+                
+                <a href="https://chanland4.vercel.app" target="_blank" class="btn-blue">Перейти на основной сайт</a>
+                
+                <div class="hero-footer">
+                    Наш официальный портал:
+                    <span>chanland4.vercel.app</span>
+                </div>
             </div>
             
-            <br>
-            <a href="#shop" class="btn-main" style="padding: 15px 30px; font-size: 1.1rem;">Смотреть каталог</a>
+            <div class="small-cards-row">
+                <div class="card small-card">
+                    <h4>Выгодные цены</h4>
+                    <p>Точный прайс-лист без наценок</p>
+                </div>
+                <div class="card small-card">
+                    <h4>Широкий выбор</h4>
+                    <p>От ресурсов до топ-зачарований</p>
+                </div>
+            </div>
         </div>
-    </header>
 
-    <section id="shop" class="shop-section">
-        <h2 class="section-title">Наши товары</h2>
+        <div class="bento-right">
+            <div class="card right-card" style="background: linear-gradient(180deg, rgba(30,30,34,0.6) 0%, rgba(20,20,30,0.8) 100%);">
+                <h4>Снаряжение для любых задач</h4>
+                </div>
+            <div class="card right-card" style="background: linear-gradient(180deg, rgba(30,30,34,0.6) 0%, rgba(30,20,20,0.8) 100%);">
+                <h4>Редкие ресурсы и артефакты</h4>
+                </div>
+        </div>
+    </div>
+
+    <div id="pricelist" class="pricelist-section">
+        <h2 class="section-header">Тир-лист цен</h2>
         
         <div class="categories" id="category-container">
             </div>
 
-        <div class="items-grid" id="items-container">
+        <div class="price-list" id="price-container">
             </div>
-    </section>
-
-    <footer>
-        <p>© 2026 Торговая Федерация Sun Federation. Все права защищены.</p>
-        <p>Основной ресурс: <a href="https://chanland4.vercel.app" style="color: var(--primary-color); text-decoration: none;">chanland4.vercel.app</a></p>
-    </footer>
+    </div>
 
     <script>
-        // База данных твоих товаров
+        // База данных товаров
         const inventory = {
-            "⚙️ СНАРЯЖЕНИЕ": [
+            "Снаряжение": [
                 {name: "Алмазная кирка (фулл зачар без починки)", price: 24},
                 {name: "Незеритовая кирка", price: 25},
                 {name: "Незеритовая кирка (топ зачар без починки)", price: 40},
@@ -286,7 +421,7 @@
                 {name: "Незеритовое улучшение", price: 7},
                 {name: "Эндер-жемчуг (16 шт.)", price: 4}
             ],
-            "🔮 ЗАЧАРОВАНИЯ": [
+            "Зачарования": [
                 {name: "Починка", price: 260},
                 {name: "Проворство III", price: 450},
                 {name: "Скорость души III", price: 15},
@@ -312,7 +447,7 @@
                 {name: "Невесомость IV", price: 25},
                 {name: "Бич членистоногих V", price: 4}
             ],
-            "💎 РЕСУРСЫ": [
+            "Ресурсы": [
                 {name: "Незеритовый слиток", price: 23},
                 {name: "Древние обломки", price: 5},
                 {name: "Алмаз (3 шт.)", price: 1},
@@ -338,7 +473,7 @@
                 {name: "Маяк", price: 60},
                 {name: "Зелье опыта (1шт.)", price: 1}
             ],
-            "🧪 ЗЕЛЬЯ И ЭФФЕКТЫ": [
+            "Зелья и эффекты": [
                 {name: "Зелье невидимости (1 шт)", price: 3},
                 {name: "Зелье ночного зрения (1 шт)", price: 1},
                 {name: "Зелье огнестойкости (1 шт)", price: 1},
@@ -356,48 +491,31 @@
                 {name: "Зловещий ключ испытаний", price: 5},
                 {name: "Ключ испытаний", price: 2}
             ],
-            "🌈 КРАСИТЕЛИ И ПРОЧЕЕ": [
+            "Разное": [
                 {name: "Белый краситель (128 шт.)", price: 2},
-                {name: "Жёлтый краситель (128 шт.)", price: 2},
-                {name: "Красный краситель (128 шт.)", price: 2},
-                {name: "Зелёный краситель (128 шт.)", price: 2},
                 {name: "Бирюзовый краситель (128шт.)", price: 4},
-                {name: "Голубой краситель (64 шт.)", price: 2},
-                {name: "Лаймовый краситель (64 шт.)", price: 2},
-                {name: "Коричневый краситель (128 шт.)", price: 2},
                 {name: "Кактус (128 шт.)", price: 1},
-                {name: "Жареная рыба (64 шт.)", price: 2},
-                {name: "Жареное мясо (64 шт.)", price: 2},
+                {name: "Жареная рыба/мясо (64 шт.)", price: 2},
                 {name: "Золотая морковь (64 шт.)", price: 5},
-                {name: "Морковь (64 шт.)", price: 2},
-                {name: "Хлеб (64 шт.)", price: 2},
-                {name: "Золотой слиток (64 шт.)", price: 3},
-                {name: "Золотое яблоко (16 шт.)", price: 5},
-                {name: "Зачарованное золотое яблоко", price: 6},
+                {name: "Хлеб/Морковь (64 шт.)", price: 2},
                 {name: "Блок мёда (16 шт.)", price: 4},
                 {name: "Блок слизи (64 шт.)", price: 8},
                 {name: "Блок света (32 шт.)", price: 6},
                 {name: "Динамит (64 шт.)", price: 16},
                 {name: "Драконье дыхание (16 шт.)", price: 8},
                 {name: "Книга (64 шт.)", price: 4},
-                {name: "Кожа (64 шт.)", price: 2},
-                {name: "Незерский нарост (64 шт.)", price: 4},
-                {name: "Лазурит (128 шт.)", price: 2},
-                {name: "Пластинка PigStep", price: 150},
-                {name: "Пластинка Relic", price: 150},
-                {name: "Пластинка Aaron Cherof", price: 175},
-                {name: "Лазуритовый блок (64 шт.)", price: 9}
+                {name: "Пластинка PigStep / Relic", price: 150},
+                {name: "Пластинка Aaron Cherof", price: 175}
             ]
         };
 
         const categoryContainer = document.getElementById('category-container');
-        const itemsContainer = document.getElementById('items-container');
+        const priceContainer = document.getElementById('price-container');
 
         // Инициализация
         function init() {
             const categories = Object.keys(inventory);
             
-            // Создаем кнопки категорий
             categories.forEach((cat, index) => {
                 const btn = document.createElement('button');
                 btn.className = `category-btn ${index === 0 ? 'active' : ''}`;
@@ -410,28 +528,24 @@
             renderCategory(categories[0], categoryContainer.firstChild);
         }
 
-        // Рендер товаров выбранной категории
+        // Рендер товаров
         function renderCategory(categoryName, activeBtn) {
-            // Обновляем активную кнопку
             document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
             activeBtn.classList.add('active');
 
-            // Очищаем контейнер товаров
-            itemsContainer.innerHTML = '';
+            priceContainer.innerHTML = '';
 
-            // Добавляем карточки
             inventory[categoryName].forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'item-card';
-                card.innerHTML = `
+                const row = document.createElement('div');
+                row.className = 'price-item';
+                row.innerHTML = `
                     <div class="item-name">${item.name}</div>
                     <div class="item-price">${item.price} вон</div>
                 `;
-                itemsContainer.appendChild(card);
+                priceContainer.appendChild(row);
             });
         }
 
-        // Запуск
         init();
     </script>
 </body>
