@@ -1,110 +1,1127 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SunShield | Цены</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0a0a0c;
-            --accent: #6c5ce7;
-            --text: #ffffff;
-            --text-dim: #a0a0a5;
-            --card: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.1);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sun Federation — Торговая Федерация SunShield</title>
 
-        body {
-            margin: 0;
-            padding: 0;
-            background: radial-gradient(circle at top, #1a1a2e 0%, #0a0a0c 100%);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-        }
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
-        /* Шапка */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 10%;
-            background: rgba(0,0,0,0.2);
-            backdrop-filter: blur(10px);
-        }
+  <style>
+    :root{
+      --bg0:#070a12;
+      --bg1:#060914;
+      --panel: rgba(255,255,255,.04);
+      --panel2: rgba(255,255,255,.06);
+      --line: rgba(255,255,255,.08);
 
-        .logo { font-weight: 800; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; }
-        .logo span { color: var(--accent); }
+      --text:#eaf0ff;
+      --muted:#9aaccc;
 
-        nav a { color: var(--text-dim); text-decoration: none; margin-left: 20px; font-size: 0.9rem; transition: 0.3s; }
-        nav a:hover { color: #fff; }
+      --sun:#f5c842;
+      --vio:#7c3aed;
+      --cyan:#00d4ff;
 
-        .main-link { background: var(--accent); color: #fff; padding: 8px 16px; border-radius: 6px; font-weight: 600; }
+      --r16:16px;
+      --r22:22px;
+      --r28:28px;
 
-        /* Контент */
-        .container { max-width: 900px; margin: 60px auto; padding: 0 20px; text-align: center; }
+      --shadow: 0 22px 80px rgba(0,0,0,.55);
+      --shadow2: 0 10px 40px rgba(0,0,0,.45);
 
-        h1 { font-size: 2.5rem; margin-bottom: 10px; font-weight: 800; }
-        .subtitle { color: var(--text-dim); margin-bottom: 40px; font-size: 1.1rem; }
+      --glowC: 0 0 18px rgba(0,212,255,.20);
+      --glowV: 0 0 18px rgba(124,58,237,.18);
+      --glowS: 0 0 18px rgba(245,200,66,.14);
+    }
 
-        /* Сетка цен */
-        .price-section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 30px; text-align: left; }
-        .category-title { background: var(--border); padding: 12px 20px; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 600px at 20% 10%, rgba(124,58,237,.20), transparent 60%),
+        radial-gradient(900px 600px at 85% 20%, rgba(0,212,255,.18), transparent 55%),
+        radial-gradient(700px 500px at 60% 95%, rgba(245,200,66,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
+    }
 
-        .price-row { display: flex; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid var(--border); transition: 0.2s; }
-        .price-row:last-child { border-bottom: none; }
-        .price-row:hover { background: rgba(255,255,255,0.02); }
+    /* subtle noise */
+    body:before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");
+      opacity:.55;
+      mix-blend-mode:overlay;
+    }
 
-        .name { color: var(--text); }
-        .price { color: #ff9f43; font-weight: 700; }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:1120px; margin:0 auto; padding:0 18px; }
 
-        footer { padding: 40px; color: var(--text-dim); font-size: 0.8rem; }
-        footer a { color: var(--accent); text-decoration: none; }
-    </style>
+    /* Header */
+    header{
+      position:sticky; top:0;
+      z-index:50;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(6,9,20,.78), rgba(6,9,20,.40));
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px;
+      padding:14px 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    .logo{
+      width:26px; height:26px; border-radius:9px;
+      background: radial-gradient(circle at 30% 30%, rgba(0,212,255,.95), rgba(124,58,237,.75));
+      box-shadow: var(--glowC), var(--glowV);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .brand small{
+      display:block;
+      font-weight:600;
+      color:var(--muted);
+      letter-spacing:0;
+      margin-top:1px;
+      font-size:11px;
+    }
+
+    .navlinks{
+      display:flex; gap:18px; align-items:center;
+      color:rgba(234,240,255,.82);
+      font-weight:600;
+      font-size:13px;
+    }
+    .navlinks a{
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid transparent;
+    }
+    .navlinks a:hover{
+      border-color: rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+    }
+
+    .navright{ display:flex; gap:10px; align-items:center; }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      height:40px;
+      padding:0 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color:var(--text);
+      font-weight:700;
+      font-size:13px;
+      cursor:pointer;
+      transition:.18s transform, .18s background, .18s border-color, .18s box-shadow;
+      user-select:none;
+    }
+    .btn:hover{
+      background: rgba(255,255,255,.05);
+      border-color: rgba(255,255,255,.16);
+      transform: translateY(-1px);
+    }
+    .btn.primary{
+      border-color: rgba(124,58,237,.55);
+      background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(95,61,255,.65));
+      box-shadow: var(--glowV);
+    }
+    .btn.primary:hover{ box-shadow: var(--glowV), 0 14px 40px rgba(124,58,237,.25); }
+
+    /* Hero */
+    .hero{
+      padding:38px 0 26px;
+    }
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:22px;
+      align-items:stretch;
+    }
+    .heroLeft{
+      padding:18px 0;
+    }
+    .kicker{
+      display:inline-flex; gap:10px; align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+      color:rgba(234,240,255,.86);
+      font-weight:700;
+      font-size:12px;
+    }
+    .dot{
+      width:8px; height:8px; border-radius:50%;
+      background: var(--sun);
+      box-shadow: var(--glowS);
+    }
+
+    h1{
+      margin:14px 0 10px;
+      font-size:44px;
+      line-height:1.05;
+      letter-spacing:-.8px;
+    }
+    .grad{
+      background: linear-gradient(90deg, #ffffff, rgba(255,255,255,.88), rgba(0,212,255,.92));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow: 0 0 0 rgba(0,0,0,0);
+    }
+    .sub{
+      margin:0 0 18px;
+      color:rgba(154,172,204,.95);
+      max-width:560px;
+      font-size:14.5px;
+      line-height:1.6;
+    }
+
+    .ctaRow{
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin:14px 0 14px;
+    }
+    .copyBox{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      width:min(380px, 100%);
+      height:44px;
+      padding:0 12px;
+      border-radius:14px;
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .copyBox .label{
+      display:flex; flex-direction:column; gap:2px;
+      min-width:0;
+    }
+    .copyBox .label span{
+      font-size:11px; color:rgba(154,172,204,.95); font-weight:700;
+    }
+    .copyBox .label b{
+      font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .iconBtn{
+      width:34px; height:34px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      cursor:pointer;
+      transition:.18s transform, .18s background, .18s border-color;
+      display:grid; place-items:center;
+    }
+    .iconBtn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.05);
+      border-color: rgba(255,255,255,.18);
+    }
+
+    .miniPill{
+      display:flex; align-items:center; gap:10px;
+      margin-top:12px;
+      width:min(420px, 100%);
+      padding:10px 12px;
+      border-radius:14px;
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .coin{
+      width:28px; height:28px;
+      border-radius:10px;
+      background: radial-gradient(circle at 30% 30%, rgba(245,200,66,.95), rgba(245,200,66,.25));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: var(--glowS);
+      display:grid; place-items:center;
+      font-weight:900;
+      color: rgba(10,12,20,.92);
+    }
+    .miniPill b{ font-size:13px; }
+    .miniPill small{ color:var(--muted); font-weight:700; }
+
+    .heroRight{
+      border-radius: 28px;
+      background:
+        radial-gradient(800px 420px at 20% 20%, rgba(124,58,237,.20), transparent 55%),
+        radial-gradient(700px 360px at 70% 30%, rgba(0,212,255,.18), transparent 55%),
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+      min-height:260px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+    .heroArt{
+      width:min(420px, 92%);
+      aspect-ratio: 16 / 10;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at 25% 30%, rgba(0,212,255,.38), transparent 60%),
+        radial-gradient(circle at 75% 35%, rgba(124,58,237,.38), transparent 60%),
+        radial-gradient(circle at 55% 75%, rgba(245,200,66,.18), transparent 55%),
+        linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow: var(--shadow2);
+      position:relative;
+      overflow:hidden;
+    }
+    .heroArt:before{
+      content:"";
+      position:absolute; inset:-30%;
+      background: conic-gradient(from 180deg, rgba(0,212,255,.0), rgba(0,212,255,.22), rgba(124,58,237,.18), rgba(245,200,66,.12), rgba(0,212,255,.0));
+      filter: blur(18px);
+      animation: spin 9s linear infinite;
+      opacity:.65;
+    }
+    .heroArt:after{
+      content:"SUN FEDERATION";
+      position:absolute; left:16px; bottom:14px;
+      font-weight:900;
+      letter-spacing:.22em;
+      font-size:11px;
+      color: rgba(234,240,255,.78);
+      text-transform:uppercase;
+    }
+    @keyframes spin{ to{ transform: rotate(360deg); } }
+
+    /* Section */
+    .section{
+      padding:18px 0 44px;
+    }
+    .sectionTop{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:14px;
+      margin:10px 0 16px;
+    }
+    .sectionTop h2{
+      margin:0;
+      font-size:18px;
+      letter-spacing:-.2px;
+    }
+    .hint{
+      color:rgba(154,172,204,.95);
+      font-weight:700;
+      font-size:12px;
+      line-height:1.4;
+      text-align:right;
+    }
+    .hint a{
+      color: rgba(0,212,255,.92);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* Controls */
+    .controls{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin: 10px 0 14px;
+    }
+    .search{
+      flex:1;
+      min-width: 220px;
+      display:flex; align-items:center; gap:10px;
+      height:42px;
+      padding:0 12px;
+      border-radius:14px;
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .search input{
+      width:100%;
+      background:transparent;
+      border:none;
+      outline:none;
+      color:var(--text);
+      font-weight:700;
+      font-size:13px;
+    }
+    .chipRow{
+      display:flex; gap:8px; flex-wrap:wrap;
+      align-items:center;
+    }
+    .chip{
+      height:36px;
+      padding:0 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color:rgba(234,240,255,.86);
+      font-weight:800;
+      font-size:12px;
+      cursor:pointer;
+      transition:.18s transform, .18s background, .18s border-color, .18s box-shadow;
+      user-select:none;
+    }
+    .chip:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.05);
+      border-color: rgba(255,255,255,.18);
+    }
+    .chip.active{
+      border-color: rgba(0,212,255,.35);
+      box-shadow: var(--glowC);
+      background: rgba(0,212,255,.08);
+    }
+
+    /* Catalog */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+    }
+    .cat{
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      overflow:hidden;
+    }
+    .catHead{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 14px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .catTitle{
+      display:flex; align-items:center; gap:10px;
+      min-width:0;
+    }
+    .badge{
+      width:34px; height:34px;
+      border-radius:14px;
+      display:grid; place-items:center;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      box-shadow: 0 0 0 rgba(0,0,0,0);
+      font-size:16px;
+    }
+    .catTitle b{
+      font-size:14px;
+      letter-spacing:-.2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .catTitle small{
+      display:block;
+      margin-top:2px;
+      color: rgba(154,172,204,.92);
+      font-weight:700;
+      font-size:12px;
+    }
+    .catRight{
+      display:flex; align-items:center; gap:10px;
+      flex-shrink:0;
+      color: rgba(154,172,204,.92);
+      font-weight:800;
+      font-size:12px;
+    }
+    .chev{
+      width:34px; height:34px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      display:grid; place-items:center;
+      transition:.2s transform;
+    }
+
+    .catBody{
+      border-top:1px solid rgba(255,255,255,.07);
+      padding: 10px 12px 12px;
+      display:none;
+    }
+    .cat.open .catBody{ display:block; }
+    .cat.open .chev{ transform: rotate(180deg); }
+
+    .items{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:10px;
+    }
+    .item{
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      padding:10px 10px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+      min-height:52px;
+    }
+    .itemLeft{
+      min-width:0;
+    }
+    .itemLeft b{
+      display:block;
+      font-size:13px;
+      letter-spacing:-.15px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .itemLeft small{
+      display:block;
+      color: rgba(154,172,204,.92);
+      font-weight:800;
+      margin-top:4px;
+      font-size:12px;
+    }
+    .price{
+      display:flex; align-items:center; gap:8px;
+      flex-shrink:0;
+      font-weight:900;
+      font-size:13px;
+    }
+    .price .sun{
+      width:28px; height:28px;
+      border-radius:12px;
+      background: rgba(245,200,66,.12);
+      border:1px solid rgba(245,200,66,.28);
+      box-shadow: var(--glowS);
+      display:grid; place-items:center;
+      font-size:14px;
+    }
+
+    .footer{
+      margin-top:26px;
+      padding:24px 0 30px;
+      border-top:1px solid rgba(255,255,255,.07);
+      color:rgba(154,172,204,.9);
+      font-size:12px;
+    }
+    .footerGrid{
+      display:grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap:18px;
+      align-items:start;
+    }
+    .footer b{ color:rgba(234,240,255,.88); }
+    .footer a{ text-decoration:underline; text-underline-offset:3px; color:rgba(0,212,255,.9); }
+
+    /* Toast */
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform: translateX(-50%);
+      background: rgba(10,12,20,.75);
+      border:1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+      border-radius: 14px;
+      padding:10px 12px;
+      box-shadow: var(--shadow2);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      opacity:0;
+      pointer-events:none;
+      transition: .22s opacity, .22s transform;
+      z-index:999;
+    }
+    .toast.show{
+      opacity:1;
+      transform: translateX(-50%) translateY(-4px);
+    }
+    .toast .ok{
+      width:26px; height:26px;
+      border-radius:11px;
+      background: rgba(0,212,255,.12);
+      border:1px solid rgba(0,212,255,.28);
+      box-shadow: var(--glowC);
+      display:grid; place-items:center;
+      font-weight:900;
+    }
+    .toast span{ font-weight:800; font-size:12px; color:rgba(234,240,255,.9); }
+
+    /* Responsive */
+    @media (max-width: 920px){
+      .heroGrid{ grid-template-columns:1fr; }
+      h1{ font-size:40px; }
+    }
+    @media (max-width: 620px){
+      .navlinks{ display:none; }
+      h1{ font-size:34px; }
+      .items{ grid-template-columns:1fr; }
+      .footerGrid{ grid-template-columns:1fr; }
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">🛡️ sun<span>Shield</span></div>
-        <nav>
-            <a href="#">Главная</a>
-            <a href="https://chanland4.vercel.app" class="main-link">Основной сайт</a>
-        </nav>
-    </header>
-
-    <div class="container">
-        <h1>Торговая Федерация Sun Federation</h1>
-        <p class="subtitle">Актуальный тир-лист цен без починки для серверов</p>
-
-        <div class="price-section">
-            <div class="category-title">⚙️ Снаряжение</div>
-            <div class="price-row"><span class="name">Алмазная кирка (фулл зачар)</span><span class="price">24 вон</span></div>
-            <div class="price-row"><span class="name">Незеритовая кирка (топ зачар)</span><span class="price">40 вон</span></div>
-            <div class="price-row"><span class="name">Незеритовый меч (фулл зачар)</span><span class="price">80 вон</span></div>
-            <div class="price-row"><span class="name">Булава</span><span class="price">60 вон</span></div>
-            <div class="price-row"><span class="name">Тотем бессмертия</span><span class="price">2 вон</span></div>
+<header>
+  <div class="wrap">
+    <div class="nav">
+      <a class="brand" href="#home">
+        <div class="logo"></div>
+        <div>
+          Sun Federation
+          <small>Торговая Федерация • SunShield</small>
         </div>
+      </a>
 
-        <div class="price-section">
-            <div class="category-title">🔮 Топ Зачарования</div>
-            <div class="price-row"><span class="name">Починка</span><span class="price">260 вон</span></div>
-            <div class="price-row"><span class="name">Проворство III</span><span class="price">450 вон</span></div>
-            <div class="price-row"><span class="name">Эффективность V</span><span class="price">15 вон</span></div>
-            <div class="price-row"><span class="name">Острота V</span><span class="price">22 вон</span></div>
-        </div>
+      <nav class="navlinks">
+        <a href="#catalog">Каталог</a>
+        <a href="#how">Как купить</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
 
-        <div class="price-section">
-            <div class="category-title">💎 Ресурсы</div>
-            <div class="price-row"><span class="name">Незеритовый слиток</span><span class="price">23 вон</span></div>
-            <div class="price-row"><span class="name">Алмаз (3 шт.)</span><span class="price">1 вон</span></div>
-            <div class="price-row"><span class="name">Маяк</span><span class="price">60 вон</span></div>
-        </div>
-
-        <footer>
-            Основной сайт: <a href="https://chanland4.vercel.app">chanland4.vercel.app</a>
-        </footer>
+      <div class="navright">
+        <a class="btn" href="https://chanland4.vercel.app" target="_blank" rel="noopener">Основной сайт</a>
+        <button class="btn primary" id="btnCopyMain">Скопировать ссылку</button>
+      </div>
     </div>
+  </div>
+</header>
 
+<main id="home">
+  <section class="hero">
+    <div class="wrap">
+      <div class="heroGrid">
+        <div class="heroLeft">
+          <div class="kicker"><span class="dot"></span> Официальная торговая витрина SunShield</div>
+
+          <h1 class="grad">Торговая Федерация<br>Sun Federation</h1>
+          <p class="sub">
+            Тут ты покупаешь **снаряжение, ресурсы, зелья и зачарования** за воны.
+            Всё разложено по категориям — как в нормальном магазине, а не в сундуке “где-то там” 😄
+          </p>
+
+          <div class="ctaRow">
+            <a class="btn primary" href="#catalog">Открыть каталог</a>
+
+            <div class="copyBox" title="Основной сайт">
+              <div class="label">
+                <span>Основной сайт</span>
+                <b id="mainSiteText">chanland4.vercel.app</b>
+              </div>
+              <button class="iconBtn" id="copyMainIcon" aria-label="Copy main site">
+                ⧉
+              </button>
+            </div>
+
+            <div class="copyBox" title="Название сервера">
+              <div class="label">
+                <span>Сервер</span>
+                <b>SunShield</b>
+              </div>
+              <button class="iconBtn" id="copyServerName" aria-label="Copy server name">⧉</button>
+            </div>
+          </div>
+
+          <div class="miniPill">
+            <div class="coin">₩</div>
+            <div style="min-width:0">
+              <b>Валюта: воны</b><br/>
+              <small>Быстрый поиск по товарам ниже — попробуй “починка” или “незерит”.</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="heroRight">
+          <div class="heroArt" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="catalog">
+    <div class="wrap">
+      <div class="sectionTop">
+        <div>
+          <h2>Каталог товаров</h2>
+          <div style="color:rgba(154,172,204,.92); font-weight:700; font-size:12px; margin-top:6px;">
+            Нажми на категорию — откроется список. Есть поиск и фильтр.
+          </div>
+        </div>
+        <div class="hint">
+          Основной сайт: <a href="https://chanland4.vercel.app" target="_blank" rel="noopener">chanland4.vercel.app</a><br/>
+          Торговая Федерация • SunShield
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="search">
+          🔎
+          <input id="q" type="text" placeholder="Поиск: починка, незерит, зелье, тотем..." autocomplete="off" />
+        </div>
+        <div class="chipRow" id="chips"></div>
+        <button class="btn" id="btnExpand">Раскрыть всё</button>
+        <button class="btn" id="btnCollapse">Свернуть всё</button>
+      </div>
+
+      <div class="grid" id="catalogGrid"></div>
+    </div>
+  </section>
+
+  <section class="section" id="how">
+    <div class="wrap">
+      <div class="sectionTop">
+        <h2>Как купить</h2>
+        <div class="hint">Быстро, без лишних танцев с бубном 🥁</div>
+      </div>
+
+      <div class="cat open">
+        <div class="catHead" style="cursor:default">
+          <div class="catTitle">
+            <div class="badge">🛒</div>
+            <div>
+              <b>Порядок покупки</b>
+              <small>3 шага — и ты уже с булавой</small>
+            </div>
+          </div>
+          <div class="catRight">
+            <span></span>
+            <div class="chev">✓</div>
+          </div>
+        </div>
+        <div class="catBody" style="display:block">
+          <div style="color:rgba(234,240,255,.86); font-weight:700; font-size:13px; line-height:1.7; padding:2px 4px;">
+            1) Выбираешь товар в каталоге и копируешь название (кнопка ⧉ рядом).<br/>
+            2) Пишешь администрации/торговцу: <b>что покупаешь</b> + <b>кол-во</b>.<br/>
+            3) Оплата в вонах → получаешь товар. Всё ✨
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contacts">
+    <div class="wrap">
+      <div class="sectionTop">
+        <h2>Контакты</h2>
+        <div class="hint">Если надо — добавим Discord/телегу</div>
+      </div>
+
+      <div class="cat open">
+        <div class="catHead" style="cursor:default">
+          <div class="catTitle">
+            <div class="badge">☀️</div>
+            <div>
+              <b>Sun Federation</b>
+              <small>Торговая Федерация сервера SunShield</small>
+            </div>
+          </div>
+          <div class="catRight">
+            <span></span>
+            <div class="chev">✓</div>
+          </div>
+        </div>
+        <div class="catBody" style="display:block">
+          <div style="display:flex; gap:10px; flex-wrap:wrap; padding:6px 2px;">
+            <a class="btn primary" href="https://chanland4.vercel.app" target="_blank" rel="noopener">Открыть основной сайт</a>
+            <button class="btn" id="btnCopyCatalog">Скопировать “Sun Federation”</button>
+          </div>
+          <div style="color:rgba(154,172,204,.92); font-weight:700; font-size:12px; line-height:1.6; padding:6px 2px;">
+            Хочешь — добавлю сюда блок “Связаться с нами” как на примере (почта/документы/кнопки оплаты).
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footerGrid">
+        <div>
+          <b>Sun Federation</b><br/>
+          Торговая Федерация сервера <b>SunShield</b>.<br/>
+          Основной сайт: <a href="https://chanland4.vercel.app" target="_blank" rel="noopener">chanland4.vercel.app</a>
+        </div>
+        <div>
+          <b>Разделы</b><br/>
+          <a href="#catalog">Каталог</a><br/>
+          <a href="#how">Как купить</a><br/>
+          <a href="#contacts">Контакты</a>
+        </div>
+        <div>
+          <b>Примечание</b><br/>
+          Цены указаны в вонах. Админ может обновлять прайс.<br/>
+          © <span id="year"></span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<div class="toast" id="toast">
+  <div class="ok">✓</div>
+  <span id="toastText">Скопировано</span>
+</div>
+
+<script>
+  // =========================
+  // DATA (твои категории и цены)
+  // =========================
+  const DATA = [
+    {
+      id: "gear",
+      icon: "⚙️",
+      name: "Снаряжение",
+      items: [
+        ["Алмазная кирка (фулл зачар без починки)", 24],
+        ["Незеритовая кирка", 25],
+        ["Незеритовая кирка (топ зачар без починки)", 40],
+        ["Незеритовый меч", 24],
+        ["Незеритовый меч (фулл зачар без починки)", 80],
+        ["Незеритовый топор", 21],
+        ["Незеритовая лопата", 21],
+        ["Незеритовая мотыга", 20],
+        ["Незеритовые ботинки", 23],
+        ["Незеритовые ботинки (топ зачар)", 75],
+        ["Незеритовые поножи", 26],
+        ["Незеритовые поножи (топ зачар)", 42],
+        ["Незеритовый нагрудник", 26],
+        ["Незеритовый нагрудник (топ зачар)", 21],
+        ["Незеритовый шлем", 24],
+        ["Незеритовый шлем (топ зачар)", 54],
+        ["Алмазные ботинки", 2],
+        ["Алмазные поножи", 2],
+        ["Алмазный нагрудник", 3],
+        ["Алмазный шлем", 2],
+        ["Лук (фулл зачар)", 8],
+        ["Трезубец", 30],
+        ["Булава", 60],
+        ["Тотем бессмертия", 2],
+        ["Любая Отделка (Шаблон)", "10–15"],
+        ["Незеритовое улучшение", 7],
+        ["Эндер-жемчуг (16 шт.)", 4],
+      ]
+    },
+    {
+      id: "ench",
+      icon: "🔮",
+      name: "Зачарования",
+      items: [
+        ["Починка", 260],
+        ["Проворство III", 450],
+        ["Скорость души III", 15],
+        ["Защита IV", 16],
+        ["Шёлковое касание", 14],
+        ["Прочность III", 16],
+        ["Добыча III", 21],
+        ["Острота V", 22],
+        ["Удача III", 10],
+        ["Шипы III", 23],
+        ["Эффективность V", 15],
+        ["Бесконечность", 10],
+        ["Быстрая перезарядка III", 6],
+        ["Везучий рыбак III", 8],
+        ["Верность III", 8],
+        ["Взрывоустойчивость IV", 10],
+        ["Воспламенение", 6],
+        ["Громовержец", 10],
+        ["Заговор огня II", 10],
+        ["Защита от снарядов IV", 8],
+        ["Ледоход II", 10],
+        ["Небесная кара V", 5],
+        ["Невесомость IV", 25],
+        ["Бич членистоногих V", 4],
+      ]
+    },
+    {
+      id: "res",
+      icon: "💎",
+      name: "Ресурсы",
+      items: [
+        ["Незеритовый слиток", 23],
+        ["Древние обломки", 5],
+        ["Алмаз (3 шт.)", 1],
+        ["Алмазный блок (16 шт.)", 48],
+        ["Железо (64 шт.)", 1],
+        ["Железный блок (64 шт.)", 7],
+        ["Золото (64 шт.)", 3],
+        ["Золотой блок (64 шт.)", 24],
+        ["Изумруд (64 шт.)", 1],
+        ["Изумрудная руда", 10],
+        ["Изумрудный блок (64 шт.)", 8],
+        ["Медь (64 шт.)", 1],
+        ["Медный блок (64 шт.)", 4],
+        ["Кварцевый блок (64 шт.)", 2],
+        ["Костяной блок (64 шт.)", 8],
+        ["Обсидиан (64 шт.)", 10],
+        ["Морской фонарь (64 шт.)", 5],
+        ["Малахитовая квампа (64 шт.)", 4],
+        ["Кристалл Края (16 шт.)", 12],
+        ["Зачарованное золотое яблоко", 9],
+        ["Золотое яблоко (16 шт.)", 8],
+        ["Золотая морковь (64 шт.)", 5],
+        ["Маяк", 60],
+        ["Зелье опыта (1 шт.)", 1],
+      ]
+    },
+    {
+      id: "pots",
+      icon: "🧪",
+      name: "Зелья и эффекты",
+      items: [
+        ["Зелье невидимости (1 шт.)", 3],
+        ["Зелье ночного зрения (1 шт.)", 1],
+        ["Зелье огнестойкости (1 шт.)", 1],
+        ["Зелье опыта (2 шт.)", 2],
+        ["Зелье прыгучести (1 шт.)", 2],
+        ["Зелье регенерации (1 шт.)", 2],
+        ["Зелье силы", 3],
+        ["Зелье стремительности", 2],
+        ["Зелье черепашьей мощи IV", 7],
+        ["Зловещая бутылочка I (2 шт.)", 2],
+        ["Зловещая бутылочка II", 2],
+        ["Зловещая бутылочка III", 4],
+        ["Зловещая бутылочка IV", 6],
+        ["Зловещая бутылочка V", 8],
+        ["Зловещий ключ испытаний", 5],
+        ["Ключ испытаний", 2],
+      ]
+    },
+    {
+      id: "other",
+      icon: "🌈",
+      name: "Красители и прочее",
+      items: [
+        ["Белый краситель (128 шт.)", 2],
+        ["Жёлтый краситель (128 шт.)", 2],
+        ["Красный краситель (128 шт.)", 2],
+        ["Зелёный краситель (128 шт.)", 2],
+        ["Бирюзовый краситель (128 шт.)", 4],
+        ["Голубой краситель (64 шт.)", 2],
+        ["Лаймовый краситель (64 шт.)", 2],
+        ["Коричневый краситель (128 шт.)", 2],
+        ["Кактус (128 шт.)", 1],
+        ["Жареная рыба (64 шт.)", 2],
+        ["Жареное мясо (64 шт.)", 2],
+        ["Золотая морковь (64 шт.)", 5],
+        ["Морковь (64 шт.)", 2],
+        ["Хлеб (64 шт.)", 2],
+        ["Золотой слиток (64 шт.)", 3],
+        ["Золотое яблоко (16 шт.)", 5],
+        ["Зачарованное золотое яблоко", 6],
+        ["Блок мёда (16 шт.)", 4],
+        ["Блок слизи (64 шт.)", 8],
+        ["Блок света (32 шт.)", 6],
+        ["Динамит (64 шт.)", 16],
+        ["Драконье дыхание (16 шт.)", 8],
+        ["Книга (64 шт.)", 4],
+        ["Кожа (64 шт.)", 2],
+        ["Незерский нарост (64 шт.)", 4],
+        ["Лазурит (128 шт.)", 2],
+        ["Пластинка PigStep", 150],
+        ["Пластинка Relic", 150],
+        ["Пластинка Aaron Cherof", 175],
+        ["Лазуритовый блок (64 шт.)", 9],
+      ]
+    },
+  ];
+
+  // =========================
+  // Helpers
+  // =========================
+  const $ = (q)=>document.querySelector(q);
+  const el = (tag, cls)=>{ const n=document.createElement(tag); if(cls) n.className=cls; return n; };
+
+  function showToast(text="Скопировано"){
+    const t = $("#toast");
+    $("#toastText").textContent = text;
+    t.classList.add("show");
+    clearTimeout(showToast._tm);
+    showToast._tm = setTimeout(()=>t.classList.remove("show"), 1400);
+  }
+
+  async function copyText(text, okMsg="Скопировано"){
+    try{
+      await navigator.clipboard.writeText(text);
+      showToast(okMsg);
+    }catch(e){
+      // fallback
+      const ta = el("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      showToast(okMsg);
+    }
+  }
+
+  function priceToStr(p){
+    if (typeof p === "number") return `${p} вон`;
+    return `${p} вон`;
+  }
+
+  // =========================
+  // Render chips
+  // =========================
+  const chipsRoot = $("#chips");
+  const chipAll = el("button", "chip active");
+  chipAll.textContent = "Все";
+  chipAll.dataset.cat = "all";
+  chipsRoot.appendChild(chipAll);
+
+  DATA.forEach(c=>{
+    const b = el("button","chip");
+    b.textContent = `${c.icon} ${c.name}`;
+    b.dataset.cat = c.id;
+    chipsRoot.appendChild(b);
+  });
+
+  // =========================
+  // Render catalog
+  // =========================
+  const grid = $("#catalogGrid");
+
+  function render(){
+    grid.innerHTML = "";
+    const q = $("#q").value.trim().toLowerCase();
+    const activeChip = document.querySelector(".chip.active")?.dataset.cat || "all";
+
+    const cats = DATA
+      .filter(c => activeChip === "all" ? true : c.id === activeChip)
+      .map(c=>{
+        const filteredItems = c.items.filter(([name, price])=>{
+          if(!q) return true;
+          const s = `${name} ${priceToStr(price)}`.toLowerCase();
+          return s.includes(q);
+        });
+        return { ...c, itemsFiltered: filteredItems };
+      })
+      .filter(c => c.itemsFiltered.length > 0);
+
+    if(cats.length === 0){
+      const empty = el("div","cat");
+      empty.innerHTML = `
+        <div class="catHead" style="cursor:default">
+          <div class="catTitle">
+            <div class="badge">😅</div>
+            <div>
+              <b>Ничего не найдено</b>
+              <small>Попробуй другой запрос (например: “незерит”, “зелье”, “починка”).</small>
+            </div>
+          </div>
+          <div class="catRight"><div class="chev">…</div></div>
+        </div>
+      `;
+      grid.appendChild(empty);
+      return;
+    }
+
+    cats.forEach((c, idx)=>{
+      const cat = el("div","cat" + (idx===0 && !q ? " open" : ""));
+      const count = c.itemsFiltered.length;
+
+      const head = el("div","catHead");
+      head.innerHTML = `
+        <div class="catTitle">
+          <div class="badge">${c.icon}</div>
+          <div>
+            <b>${c.name}</b>
+            <small>${count} поз.</small>
+          </div>
+        </div>
+        <div class="catRight">
+          <span>${activeChip==="all" ? "" : "Фильтр"}</span>
+          <div class="chev">⌄</div>
+        </div>
+      `;
+      const body = el("div","catBody");
+
+      const items = el("div","items");
+      c.itemsFiltered.forEach(([name, price])=>{
+        const it = el("div","item");
+
+        const left = el("div","itemLeft");
+        const bn = el("b"); bn.textContent = name;
+        const sm = el("small"); sm.textContent = "Нажми ⧉ чтобы скопировать";
+        left.appendChild(bn);
+        left.appendChild(sm);
+
+        const right = el("div","price");
+        const sun = el("div","sun"); sun.textContent = "₩";
+        const val = el("div"); val.textContent = priceToStr(price);
+
+        const copy = el("button","iconBtn");
+        copy.title = "Скопировать название";
+        copy.textContent = "⧉";
+        copy.addEventListener("click",(e)=>{
+          e.stopPropagation();
+          copyText(name, "Название скопировано");
+        });
+
+        right.appendChild(sun);
+        right.appendChild(val);
+
+        it.appendChild(left);
+
+        const rr = el("div");
+        rr.style.display="flex";
+        rr.style.alignItems="center";
+        rr.style.gap="10px";
+        rr.appendChild(right);
+        rr.appendChild(copy);
+
+        it.appendChild(rr);
+        items.appendChild(it);
+      });
+
+      body.appendChild(items);
+
+      head.addEventListener("click", ()=>{
+        cat.classList.toggle("open");
+      });
+
+      cat.appendChild(head);
+      cat.appendChild(body);
+      grid.appendChild(cat);
+    });
+  }
+
+  // =========================
+  // Events
+  // =========================
+  $("#q").addEventListener("input", render);
+
+  chipsRoot.addEventListener("click", (e)=>{
+    const btn = e.target.closest(".chip");
+    if(!btn) return;
+    document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));
+    btn.classList.add("active");
+    render();
+  });
+
+  $("#btnExpand").addEventListener("click", ()=>{
+    document.querySelectorAll(".cat").forEach(c=>c.classList.add("open"));
+  });
+  $("#btnCollapse").addEventListener("click", ()=>{
+    document.querySelectorAll(".cat").forEach(c=>c.classList.remove("open"));
+  });
+
+  // Copy buttons
+  $("#btnCopyMain").addEventListener("click", ()=>copyText("https://chanland4.vercel.app", "Ссылка скопирована"));
+  $("#copyMainIcon").addEventListener("click", ()=>copyText("https://chanland4.vercel.app", "Ссылка скопирована"));
+  $("#copyServerName").addEventListener("click", ()=>copyText("SunShield", "Сервер скопирован"));
+  $("#btnCopyCatalog").addEventListener("click", ()=>copyText("Sun Federation", "Скопировано"));
+
+  // Year
+  $("#year").textContent = new Date().getFullYear();
+
+  // Initial render
+  render();
+</script>
 </body>
 </html>
