@@ -1,183 +1,284 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Sun Federation — SunShield</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 
-body {
-  background: #1a2235;
-  color: #e0e8f0;
+:root{
+  --bg:#1a2235;
+  --panel:#1e2d45;
+  --panel2:#243450;
+  --stroke:rgba(255,255,255,0.08);
+  --text:#e0e8f0;
+  --muted:rgba(255,255,255,0.55);
+  --muted2:rgba(255,255,255,0.28);
+  --brand:#2563eb;
+}
+
+body{
+  background: var(--bg);
+  color: var(--text);
   font-family: 'Nunito', sans-serif;
   min-height: 100vh;
 }
 
-body::before {
-  content: '';
+body::before{
+  content:'';
   position: fixed; inset: 0;
   background: radial-gradient(ellipse 120% 60% at 50% -10%, rgba(30,60,120,0.5) 0%, transparent 60%);
-  pointer-events: none; z-index: 0;
+  pointer-events:none; z-index:0;
 }
 
 /* NAV */
-nav {
+nav{
   position: relative; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 32px; height: 56px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 32px; height:56px;
   background: rgba(12,17,32,0.98);
   border-bottom: 1px solid rgba(255,255,255,0.07);
 }
-.nav-brand { font-size: 16px; font-weight: 800; color: #fff; }
-.nav-links { display: flex; gap: 4px; }
-.nav-links a {
-  color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 600;
-  padding: 6px 14px; border-radius: 8px; transition: all .15s; text-decoration: none;
+.nav-brand{ font-size:16px; font-weight:900; color:#fff; letter-spacing:0.2px; }
+.nav-links{ display:flex; gap:4px; }
+.nav-links a{
+  color: rgba(255,255,255,0.5);
+  font-size:13px; font-weight:800;
+  padding:6px 14px; border-radius:8px;
+  transition: all .15s; text-decoration:none;
 }
-.nav-links a:hover { color: #fff; background: rgba(255,255,255,0.07); }
-.btn-site {
-  background: #2563eb; color: #fff; border: none;
-  padding: 7px 18px; border-radius: 9px; font-size: 13px;
-  font-weight: 700; cursor: pointer; font-family: inherit;
-  text-decoration: none; transition: background .15s;
+.nav-links a:hover{ color:#fff; background: rgba(255,255,255,0.07); }
+.btn-site{
+  background: var(--brand); color:#fff; border:none;
+  padding:7px 18px; border-radius:9px; font-size:13px;
+  font-weight:900; cursor:pointer; font-family:inherit;
+  text-decoration:none; transition: filter .15s;
 }
-.btn-site:hover { background: #1d4ed8; }
+.btn-site:hover{ filter: brightness(1.08); }
 
 /* TOP BUTTONS */
-.top-buttons {
+.top-buttons{
   position: relative; z-index: 10;
-  padding: 20px 32px 0; display: flex; gap: 8px;
+  padding: 20px 32px 0;
+  display:flex; gap:8px; flex-wrap:wrap;
 }
-.top-btn {
-  padding: 8px 20px; border-radius: 10px; font-size: 13px;
-  font-weight: 800; cursor: pointer; font-family: inherit; border: none; transition: all .15s;
+.top-btn{
+  padding: 8px 20px; border-radius: 10px;
+  font-size: 13px; font-weight: 900;
+  cursor: pointer; font-family: inherit; border: none;
+  transition: all .15s;
 }
-.top-btn.active { background: #2563eb; color: #fff; }
-.top-btn:not(.active) { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.5); }
-.top-btn:not(.active):hover { background: rgba(255,255,255,0.12); color: #fff; }
+.top-btn.active{ background: var(--brand); color:#fff; }
+.top-btn:not(.active){ background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.55); }
+.top-btn:not(.active):hover{ background: rgba(255,255,255,0.12); color:#fff; }
 
 /* LAYOUT */
-.layout {
+.layout{
   position: relative; z-index: 10;
-  display: flex; gap: 0; padding: 20px 32px 40px;
-  max-width: 1400px; margin: 0 auto; align-items: flex-start;
+  display:flex; gap: 24px;
+  padding: 20px 32px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items:flex-start;
 }
 
 /* SIDEBAR */
-.sidebar { width: 220px; flex-shrink: 0; margin-right: 24px; }
-.sidebar-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 14px; padding-left: 4px; }
-.cat-list { display: flex; flex-direction: column; gap: 4px; }
-.cat-btn {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 12px; border-radius: 12px; border: none;
-  color: rgba(255,255,255,0.65); font-size: 14px; font-weight: 700;
-  cursor: pointer; font-family: inherit; width: 100%; text-align: left;
-  transition: all .15s; background: transparent;
+.sidebar{ width: 240px; flex-shrink:0; }
+.sidebar-title{
+  font-size: 22px; font-weight: 1000;
+  color:#fff; margin-bottom: 14px; padding-left: 4px;
 }
-.cat-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
-.cat-btn.active { background: #2563eb; color: #fff; }
-.cat-icon-wrap {
-  width: 30px; height: 30px; border-radius: 8px;
+.cat-list{ display:flex; flex-direction:column; gap:4px; }
+.cat-btn{
+  display:flex; align-items:center; gap:10px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  color: rgba(255,255,255,0.70);
+  font-size: 14px; font-weight: 900;
+  cursor:pointer; font-family:inherit;
+  width:100%; text-align:left;
+  transition: all .15s;
+  background: transparent;
+}
+.cat-btn:hover{
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.06);
+  color:#fff;
+}
+.cat-btn.active{
+  background: var(--brand);
+  color:#fff;
+}
+.cat-icon-wrap{
+  width: 30px; height: 30px; border-radius: 9px;
   background: rgba(255,255,255,0.08);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; overflow: hidden;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; overflow:hidden;
 }
-.cat-btn.active .cat-icon-wrap { background: rgba(255,255,255,0.2); }
-.cat-icon-wrap img {
-  width: 22px; height: 22px; image-rendering: pixelated; object-fit: contain;
+.cat-btn.active .cat-icon-wrap{ background: rgba(255,255,255,0.18); }
+.cat-icon-wrap img{
+  width: 22px; height: 22px;
+  image-rendering: pixelated;
+  object-fit: contain;
 }
-
-/* SEARCH */
-.search-wrap { margin-bottom: 16px; }
-.search-box { position: relative; }
-.search-box input {
-  width: 100%; background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
-  color: #fff; font-size: 14px; font-family: inherit; font-weight: 700;
-  padding: 11px 16px 11px 44px; outline: none; transition: border-color .2s;
-}
-.search-box input::placeholder { color: rgba(255,255,255,0.25); font-weight: 600; }
-.search-box input:focus { border-color: #2563eb; background: rgba(255,255,255,0.09); }
-.s-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); opacity: 0.35; }
-.search-clear {
-  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-  background: none; border: none; color: rgba(255,255,255,0.4); cursor: pointer;
-  font-size: 16px; display: none; padding: 4px 6px;
-}
-.search-clear:hover { color: #fff; }
 
 /* MAIN */
-.shop-main { flex: 1; min-width: 0; }
+.shop-main{ flex:1; min-width:0; }
+
+/* SEARCH */
+.search-wrap{ margin-bottom: 14px; }
+.search-box{ position: relative; }
+.search-box input{
+  width:100%;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 12px;
+  color:#fff;
+  font-size: 14px; font-family:inherit; font-weight: 800;
+  padding: 11px 16px 11px 44px;
+  outline:none;
+  transition: border-color .2s, background .2s;
+}
+.search-box input::placeholder{ color: rgba(255,255,255,0.25); font-weight: 700; }
+.search-box input:focus{
+  border-color: var(--brand);
+  background: rgba(255,255,255,0.09);
+}
+.s-icon{
+  position:absolute; left:14px; top:50%;
+  transform: translateY(-50%);
+  opacity: 0.35;
+}
+.search-clear{
+  position:absolute; right:12px; top:50%;
+  transform: translateY(-50%);
+  background:none; border:none;
+  color: rgba(255,255,255,0.45);
+  cursor:pointer;
+  font-size: 16px;
+  display:none;
+  padding: 4px 6px;
+}
+.search-clear:hover{ color:#fff; }
 
 /* GRID */
-.items-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
-  gap: 10px;
+.items-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
 }
 
 /* CARD */
-.item-card {
-  background: #1e2d45;
-  border-radius: 14px; overflow: hidden;
-  display: flex; flex-direction: column;
-  transition: transform .15s, box-shadow .15s; cursor: default;
+.item-card{
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
 }
-.item-card:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(0,0,0,0.6); }
-
-.item-name-top {
-  padding: 10px 10px 4px;
-  font-size: 11.5px; font-weight: 800; color: #c8d8f0;
-  text-align: center; line-height: 1.3;
-  min-height: 38px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-}
-.item-name-top .item-qty-label {
-  font-size: 10px; font-weight: 600; color: rgba(200,216,240,0.4); margin-top: 1px;
+.item-card:hover{
+  transform: translateY(-3px);
+  border-color: rgba(255,255,255,0.10);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.55);
 }
 
-.item-img-area {
-  flex: 1; display: flex; align-items: center; justify-content: center;
-  padding: 10px; min-height: 96px; background: #1e2d45;
+.item-name-top{
+  padding: 10px 10px 6px;
+  text-align:center;
+  min-height: 48px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap: 3px;
 }
-.item-img-area img {
-  width: 72px; height: 72px;
-  image-rendering: pixelated; image-rendering: crisp-edges;
+.item-name-top .title{
+  font-size: 12px;
+  font-weight: 1000;
+  color: #d6e3ff;
+  line-height: 1.25;
+}
+.item-name-top .item-qty-label{
+  font-size: 10px;
+  font-weight: 800;
+  color: rgba(200,216,240,0.45);
+}
+
+.item-img-area{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 12px;
+  min-height: 102px;
+}
+.item-img-area img{
+  width: 76px; height: 76px;
+  image-rendering: pixelated;
   object-fit: contain;
-  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.6));
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.55));
 }
-.item-img-area .img-placeholder {
-  width: 72px; height: 72px;
-  background: rgba(255,255,255,0.04); border-radius: 10px;
+.img-placeholder{
+  width: 76px; height: 76px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  border: 1px dashed rgba(255,255,255,0.10);
 }
 
-.item-price-bar {
-  background: #243450;
-  padding: 10px 12px; text-align: center;
-  font-size: 18px; font-weight: 900; color: #fff; letter-spacing: 0.01em;
+.item-price-bar{
+  background: var(--panel2);
+  padding: 10px 12px;
+  text-align:center;
+  font-size: 18px;
+  font-weight: 1000;
+  color:#fff;
+  letter-spacing: 0.01em;
 }
-.item-price-bar .cur { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.45); margin-left: 3px; }
+.item-price-bar .cur{
+  font-size: 12px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.45);
+  margin-left: 3px;
+}
 
 /* NO RESULTS */
-.no-results { grid-column:1/-1; text-align:center; padding:60px 20px; color:rgba(255,255,255,0.25); font-size:15px; font-weight:700; }
+.no-results{
+  grid-column:1/-1;
+  text-align:center;
+  padding: 60px 20px;
+  color: rgba(255,255,255,0.28);
+  font-size: 15px;
+  font-weight: 900;
+}
 
 /* FOOTER */
-footer {
+footer{
   position: relative; z-index: 10;
-  background: rgba(10,14,25,0.85); border-top: 1px solid rgba(255,255,255,0.06);
-  padding: 26px 32px; display: flex; align-items: center; justify-content: space-between;
+  background: rgba(10,14,25,0.85);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 26px 32px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  flex-wrap:wrap;
 }
-.footer-brand { font-size: 14px; font-weight: 800; color: rgba(255,255,255,0.5); }
-.footer-copy { font-size: 12px; color: rgba(255,255,255,0.2); }
+.footer-brand{ font-size: 14px; font-weight: 1000; color: rgba(255,255,255,0.55); }
+.footer-copy{ font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.22); }
 
-@media(max-width:800px){
-  .layout { flex-direction:column; padding:16px; }
-  .sidebar { width:100%; margin-right:0; margin-bottom:16px; }
-  .cat-list { flex-direction:row; flex-wrap:wrap; }
-  nav { padding:0 16px; } .nav-links { display:none; }
-  .top-buttons { padding:14px 16px 0; }
+@media(max-width:900px){
+  .layout{ flex-direction:column; padding:16px; gap: 14px; }
+  .sidebar{ width:100%; }
+  .cat-list{ flex-direction:row; flex-wrap:wrap; }
+  .cat-btn{ width:auto; }
+  nav{ padding:0 16px; }
+  .nav-links{ display:none; }
+  .top-buttons{ padding:14px 16px 0; }
 }
 </style>
 </head>
@@ -194,24 +295,31 @@ footer {
   <a href="https://chanland4.vercel.app" target="_blank" class="btn-site">Основной сайт</a>
 </nav>
 
-<div class="top-buttons">
-  <button class="top-btn active">Рекомендуемые</button>
-  <button class="top-btn">Минимальные</button>
+<div class="top-buttons" id="topButtons">
+  <button class="top-btn active" data-mode="recommended">Рекомендуемые</button>
+  <button class="top-btn" data-mode="minimal">Минимальные</button>
+  <button class="top-btn" data-mode="all">Все</button>
 </div>
 
 <div class="layout">
   <aside class="sidebar">
     <div class="sidebar-title">Категории</div>
-    <div class="cat-list" id="catList"></div>
-  </aside>
-  <main class="shop-main">
+
     <div class="search-wrap">
       <div class="search-box">
-        <svg class="s-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <svg class="s-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
         <input type="text" id="searchInput" placeholder="Поиск товаров...">
-        <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+        <button class="search-clear" id="searchClear" type="button" title="Очистить">✕</button>
       </div>
     </div>
+
+    <div class="cat-list" id="catList"></div>
+  </aside>
+
+  <main class="shop-main">
     <div class="items-grid" id="itemsGrid"></div>
   </main>
 </div>
@@ -222,97 +330,128 @@ footer {
 </footer>
 
 <script>
-const W = 'https://minecraft.wiki/images/';
+/**
+ * 1) Нормальные текстуры: mcasset.cloud (версия ассетов)
+ * 2) Категории без inline onclick (делегирование событий)
+ */
 
+const MC_VER = '1.21.1';
+const BASE = `https://mcasset.cloud/${MC_VER}/assets/minecraft/textures/`;
+const texItem  = (name) => `${BASE}item/${name}.png`;
+const texBlock = (name) => `${BASE}block/${name}.png`;
+
+/* Универсальная карта изображений */
 const IMG = {
-  sword_netherite:      W+'Netherite_Sword_JE2_BE2.png',
-  axe_netherite:        W+'Netherite_Axe_JE2_BE1.png',
-  trident:              W+'Trident_JE2_BE2.png',
-  mace:                 W+'Mace_JE1_BE1.png',
-  bow:                  W+'Bow_%28pulling_0%29_JE1_BE1.png',
-  helmet_netherite:     W+'Netherite_Helmet_JE3_BE3.png',
-  chestplate_netherite: W+'Netherite_Chestplate_JE3_BE3.png',
-  leggings_netherite:   W+'Netherite_Leggings_JE3_BE3.png',
-  boots_netherite:      W+'Netherite_Boots_JE3_BE3.png',
-  helmet_diamond:       W+'Diamond_Helmet_JE3_BE2.png',
-  chestplate_diamond:   W+'Diamond_Chestplate_JE3_BE2.png',
-  leggings_diamond:     W+'Diamond_Leggings_JE3_BE2.png',
-  boots_diamond:        W+'Diamond_Boots_JE3_BE2.png',
-  pickaxe_netherite:    W+'Netherite_Pickaxe_JE3_BE3.png',
-  shovel_netherite:     W+'Netherite_Shovel_JE2_BE1.png',
-  hoe_netherite:        W+'Netherite_Hoe_JE2_BE1.png',
-  pickaxe_diamond:      W+'Diamond_Pickaxe_JE3_BE3.png',
-  fishing_rod:          W+'Fishing_Rod_JE2_BE2.png',
-  enchanted_book:       W+'Enchanted_Book_JE1_BE1.png',
-  netherite_ingot:      W+'Netherite_Ingot_JE3_BE1.png',
-  ancient_debris:       W+'Ancient_Debris_JE2_BE1.png',
-  diamond:              W+'Diamond_JE3_BE3.png',
-  diamond_block:        W+'Block_of_Diamond_JE4_BE3.png',
-  iron_ingot:           W+'Iron_Ingot_JE3_BE2.png',
-  iron_block:           W+'Block_of_Iron_JE4_BE3.png',
-  gold_ingot:           W+'Gold_Ingot_JE4_BE2.png',
-  gold_block:           W+'Block_of_Gold_JE6_BE3.png',
-  emerald:              W+'Emerald_JE3_BE3.png',
-  emerald_block:        W+'Block_of_Emerald_JE4_BE3.png',
-  emerald_ore:          W+'Emerald_Ore_JE3_BE3.png',
-  copper_ingot:         W+'Copper_Ingot_JE2_BE1.png',
-  copper_block:         W+'Block_of_Copper_JE4.png',
-  quartz_block:         W+'Block_of_Quartz_JE4.png',
-  bone_block:           W+'Bone_Block_JE1_BE1.png',
-  obsidian:             W+'Obsidian_JE3_BE2.png',
-  sea_lantern:          W+'Sea_Lantern_JE2_BE2.png',
-  end_crystal:          W+'End_Crystal_JE3_BE2.png',
-  totem:                W+'Totem_of_Undying_JE2_BE2.png',
-  ender_pearl:          W+'Ender_Pearl_JE3_BE2.png',
-  netherite_upgrade:    W+'Netherite_Upgrade_Smithing_Template_JE1_BE1.png',
-  golden_apple:         W+'Golden_Apple_JE2_BE2.png',
-  enchanted_apple:      W+'Enchanted_Golden_Apple_JE3.png',
-  golden_carrot:        W+'Golden_Carrot_JE2_BE2.png',
-  beacon:               W+'Beacon_JE3_BE2.png',
-  exp_bottle:           W+'Bottle_o%27_Enchanting_JE2_BE2.png',
-  lapis:                W+'Lapis_Lazuli_JE2_BE2.png',
-  lapis_block:          W+'Lapis_Lazuli_Block_JE4_BE3.png',
-  tnt:                  W+'TNT_JE2_BE2.png',
-  gunpowder:            W+'Gunpowder_JE2_BE2.png',
-  arrow:                W+'Arrow_JE1_BE1.png',
-  firework:             W+'Firework_Rocket_JE3_BE3.png',
-  elytra:               W+'Elytra_JE3_BE2.png',
-  ghast_tear:           W+'Ghast_Tear_JE2_BE2.png',
-  breeze_rod:           W+'Breeze_Rod_JE1_BE1.png',
-  slime_block:          W+'Slime_Block_JE5_BE1.png',
-  honey_block:          W+'Honey_Block_JE1_BE1.png',
-  bread:                W+'Bread_JE2_BE2.png',
-  carrot:               W+'Carrot_JE2_BE2.png',
-  shulker_shell:        W+'Shulker_Shell_JE2_BE2.png',
-  heart_of_sea:         W+'Heart_of_the_Sea_JE2_BE2.png',
-  redstone_block:       W+'Block_of_Redstone_JE2_BE2.png',
-  amethyst:             W+'Amethyst_Shard_JE3_BE1.png',
-  nether_wart:          W+'Nether_Wart_JE3_BE2.png',
-  blaze_powder:         W+'Blaze_Powder_JE1_BE1.png',
-  blaze_rod:            W+'Blaze_Rod_JE2_BE1.png',
-  slimeball:            W+'Slimeball_JE2_BE2.png',
-  light_block:          W+'Light_Block_JE2_BE1.png',
-  book:                 W+'Book_JE2_BE2.png',
-  leather:              W+'Leather_JE3_BE2.png',
-  music_disc:           W+'Music_Disc_Pigstep_JE1_BE1.png',
-  ominous_bottle:       W+'Ominous_Bottle_JE1_BE1.png',
-  trial_key:            W+'Trial_Key_JE1_BE1.png',
-  ominous_key:          W+'Ominous_Trial_Key_JE1_BE1.png',
-  wither_skull:         W+'Wither_Skeleton_Skull_JE2_BE2.png',
-  apple:                W+'Apple_JE2_BE2.png',
-  cooked_cod:           W+'Cooked_Cod_JE3_BE2.png',
-  cooked_beef:          W+'Cooked_Beef_JE2_BE1.png',
-  dragons_breath:       W+'Dragon%27s_Breath_JE2_BE2.png',
-  smithing_template:    W+'Smithing_Template_JE1_BE1.png',
-  sugar_cane:           W+'Sugar_Cane_JE3_BE2.png',
-  potion_invis:         W+'Potion_of_Invisibility_%28old%29.png',
-  potion_nightvis:      W+'Potion_of_Night_Vision_%28old%29.png',
-  potion_fire:          W+'Potion_of_Fire_Resistance_%28old%29.png',
-  potion_jump:          W+'Potion_of_Leaping_%28old%29.png',
-  potion_regen:         W+'Potion_of_Regeneration_%28old%29.png',
-  potion_strength:      W+'Potion_of_Strength_%28old%29.png',
-  potion_speed:         W+'Potion_of_Swiftness_%28old%29.png',
-  potion_turtle:        W+'Potion_of_the_Turtle_Master_%28old%29.png',
+  // weapons
+  sword_netherite: texItem('netherite_sword'),
+  axe_netherite: texItem('netherite_axe'),
+  trident: texItem('trident'),
+  mace: texItem('mace'),
+  bow: texItem('bow'),
+  arrow: texItem('arrow'),
+
+  // armor
+  helmet_netherite: texItem('netherite_helmet'),
+  chestplate_netherite: texItem('netherite_chestplate'),
+  leggings_netherite: texItem('netherite_leggings'),
+  boots_netherite: texItem('netherite_boots'),
+  helmet_diamond: texItem('diamond_helmet'),
+  chestplate_diamond: texItem('diamond_chestplate'),
+  leggings_diamond: texItem('diamond_leggings'),
+  boots_diamond: texItem('diamond_boots'),
+
+  // tools
+  pickaxe_netherite: texItem('netherite_pickaxe'),
+  shovel_netherite: texItem('netherite_shovel'),
+  hoe_netherite: texItem('netherite_hoe'),
+  pickaxe_diamond: texItem('diamond_pickaxe'),
+  fishing_rod: texItem('fishing_rod'),
+
+  // enchants
+  enchanted_book: texItem('enchanted_book'),
+
+  // resources & misc items
+  netherite_ingot: texItem('netherite_ingot'),
+  ancient_debris: texBlock('ancient_debris'),
+  diamond: texItem('diamond'),
+  diamond_block: texBlock('diamond_block'),
+  iron_ingot: texItem('iron_ingot'),
+  iron_block: texBlock('iron_block'),
+  gold_ingot: texItem('gold_ingot'),
+  gold_block: texBlock('gold_block'),
+  emerald: texItem('emerald'),
+  emerald_block: texBlock('emerald_block'),
+  emerald_ore: texBlock('emerald_ore'),
+  copper_ingot: texItem('copper_ingot'),
+  copper_block: texBlock('copper_block'),
+  quartz_block: texBlock('quartz_block'),
+  bone_block: texBlock('bone_block'),
+  obsidian: texBlock('obsidian'),
+  sea_lantern: texBlock('sea_lantern'),
+  end_crystal: texItem('end_crystal'),
+  totem: texItem('totem_of_undying'),
+  ender_pearl: texItem('ender_pearl'),
+  netherite_upgrade: texItem('netherite_upgrade_smithing_template'),
+  beacon: texItem('beacon'),
+  exp_bottle: texItem('experience_bottle'),
+  lapis: texItem('lapis_lazuli'),
+  lapis_block: texBlock('lapis_block'),
+  tnt: texBlock('tnt'),
+  gunpowder: texItem('gunpowder'),
+  firework: texItem('firework_rocket'),
+  elytra: texItem('elytra'),
+  ghast_tear: texItem('ghast_tear'),
+  breeze_rod: texItem('breeze_rod'),
+  slime_block: texBlock('slime_block'),
+  honey_block: texBlock('honey_block'),
+  bread: texItem('bread'),
+  carrot: texItem('carrot'),
+  cooked_cod: texItem('cooked_cod'),
+  cooked_beef: texItem('cooked_beef'),
+  shulker_shell: texItem('shulker_shell'),
+  heart_of_sea: texItem('heart_of_the_sea'),
+  redstone_block: texBlock('redstone_block'),
+  amethyst: texItem('amethyst_shard'),
+  nether_wart: texItem('nether_wart'),
+  blaze_powder: texItem('blaze_powder'),
+  blaze_rod: texItem('blaze_rod'),
+  slimeball: texItem('slime_ball'),
+  light_block: texBlock('light'),
+  book: texItem('book'),
+  leather: texItem('leather'),
+  apple: texItem('apple'),
+  dragons_breath: texItem('dragon_breath'),
+  smithing_template: texItem('smithing_template'),
+  sugar_cane: texItem('sugar_cane'),
+  trial_key: texItem('trial_key'),
+  ominous_key: texItem('ominous_trial_key'),
+  wither_skull: texItem('wither_skeleton_skull'),
+
+  // potions (в Minecraft одна текстура + tint, поэтому честный вариант — potion.png)
+  potion_invis: texItem('potion'),
+  potion_nightvis: texItem('potion'),
+  potion_fire: texItem('potion'),
+  potion_jump: texItem('potion'),
+  potion_regen: texItem('potion'),
+  potion_strength: texItem('potion'),
+  potion_speed: texItem('potion'),
+  potion_turtle: texItem('potion'),
+  ominous_bottle: texItem('ominous_bottle'),
+
+  // food
+  golden_apple: texItem('golden_apple'),
+  enchanted_apple: texItem('enchanted_golden_apple'),
+  golden_carrot: texItem('golden_carrot'),
+
+  // music discs
+  music_disc_pigstep: texItem('music_disc_pigstep'),
+  music_disc_relic: texItem('music_disc_relic'),
+  music_disc_creator: texItem('music_disc_creator'),
+  music_disc_creator_music_box: texItem('music_disc_creator_music_box'),
+  music_disc_generic: texItem('music_disc_13'),
+
+  // fallback
+  fallback: texItem('barrier'),
 };
 
 const CAT_IMG = {
@@ -353,6 +492,7 @@ const ITEMS = [
   {name:'Трезубец',qty:'1 шт.',price:16,cat:'weapon',img:'trident'},
   {name:'Булава',qty:'1 шт.',price:16,cat:'weapon',img:'mace'},
   {name:'Лук (фулл зачар)',qty:'1 шт.',price:10,cat:'weapon',img:'bow'},
+
   // ARMOR
   {name:'Незеритовый шлем (топ зачар)',qty:'1 шт.',price:65,cat:'armor',img:'helmet_netherite'},
   {name:'Незеритовый шлем',qty:'1 шт.',price:26,cat:'armor',img:'helmet_netherite'},
@@ -366,6 +506,7 @@ const ITEMS = [
   {name:'Алмазный нагрудник',qty:'1 шт.',price:3,cat:'armor',img:'chestplate_diamond'},
   {name:'Алмазные поножи',qty:'1 шт.',price:3,cat:'armor',img:'leggings_diamond'},
   {name:'Алмазные ботинки',qty:'1 шт.',price:2,cat:'armor',img:'boots_diamond'},
+
   // TOOLS
   {name:'Незеритовая кирка (топ зачар)',qty:'без починки',price:46,cat:'tool',img:'pickaxe_netherite'},
   {name:'Незеритовая кирка',qty:'1 шт.',price:25,cat:'tool',img:'pickaxe_netherite'},
@@ -373,6 +514,7 @@ const ITEMS = [
   {name:'Незеритовая лопата',qty:'1 шт.',price:22,cat:'tool',img:'shovel_netherite'},
   {name:'Незеритовая мотыга',qty:'1 шт.',price:22,cat:'tool',img:'hoe_netherite'},
   {name:'Удочка (фулл зачар)',qty:'1 шт.',price:10,cat:'tool',img:'fishing_rod'},
+
   // ENCHANTS
   {name:'Починка',qty:'книга',price:200,cat:'enchant',img:'enchanted_book'},
   {name:'Проворство III',qty:'книга',price:500,cat:'enchant',img:'enchanted_book'},
@@ -414,6 +556,7 @@ const ITEMS = [
   {name:'Сила V',qty:'книга',price:12,cat:'enchant',img:'enchanted_book'},
   {name:'Тройной выстрел',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
   {name:'Тягун III',qty:'книга',price:23,cat:'enchant',img:'enchanted_book'},
+
   // RESOURCES
   {name:'Незеритовый слиток',qty:'1 шт.',price:23,cat:'resource',img:'netherite_ingot'},
   {name:'Древние обломки',qty:'1 шт.',price:5,cat:'resource',img:'ancient_debris'},
@@ -431,8 +574,10 @@ const ITEMS = [
   {name:'Осколок аметиста',qty:'64 шт.',price:1,cat:'resource',img:'amethyst'},
   {name:'Кристалл Края',qty:'16 шт.',price:16,cat:'resource',img:'end_crystal'},
   {name:'Сердце моря',qty:'1 шт.',price:64,cat:'resource',img:'heart_of_sea'},
+
   // ORE
   {name:'Изумрудная руда',qty:'1 шт.',price:10,cat:'ore',img:'emerald_ore'},
+
   // BUILD
   {name:'Медный блок',qty:'64 шт.',price:4,cat:'build',img:'copper_block'},
   {name:'Кварцевый блок',qty:'64 шт.',price:2,cat:'build',img:'quartz_block'},
@@ -441,15 +586,16 @@ const ITEMS = [
   {name:'Редстоуновый блок',qty:'32 шт.',price:4,cat:'build',img:'redstone_block'},
   {name:'Малахитовая кварца',qty:'64 шт.',price:4,cat:'build',img:'quartz_block'},
   {name:'Блок слизи',qty:'64 шт.',price:9,cat:'build',img:'slime_block'},
+
   // DECOR
   {name:'Морской фонарь',qty:'64 шт.',price:5,cat:'decor',img:'sea_lantern'},
   {name:'Блок мёда',qty:'16 шт.',price:4,cat:'decor',img:'honey_block'},
   {name:'Блок света',qty:'32 шт.',price:6,cat:'decor',img:'light_block'},
-  {name:'Пластинка PigStep',qty:'1 шт.',price:150,cat:'decor',img:'music_disc'},
-  {name:'Пластинка Relic',qty:'1 шт.',price:150,cat:'decor',img:'music_disc'},
-  {name:'Пластинка Aaron Cherof',qty:'1 шт.',price:175,cat:'decor',img:'music_disc'},
-  {name:'Пластинка Creator',qty:'1 шт.',price:100,cat:'decor',img:'music_disc'},
-  {name:'Пластинки (прочие)',qty:'1 шт.',price:20,cat:'decor',img:'music_disc'},
+  {name:'Пластинка PigStep',qty:'1 шт.',price:150,cat:'decor',img:'music_disc_pigstep'},
+  {name:'Пластинка Relic',qty:'1 шт.',price:150,cat:'decor',img:'music_disc_relic'},
+  {name:'Пластинка Aaron Cherof',qty:'1 шт.',price:175,cat:'decor',img:'music_disc_creator_music_box'},
+  {name:'Пластинка Creator',qty:'1 шт.',price:100,cat:'decor',img:'music_disc_creator'},
+  {name:'Пластинки (прочие)',qty:'1 шт.',price:20,cat:'decor',img:'music_disc_generic'},
   {name:'Отделка «Берег»',qty:'1 шт.',price:8,cat:'decor',img:'smithing_template'},
   {name:'Отделка «Вождь»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
   {name:'Отделка «Вредина»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
@@ -467,6 +613,7 @@ const ITEMS = [
   {name:'Отделка «Страж»',qty:'1 шт.',price:8,cat:'decor',img:'smithing_template'},
   {name:'Отделка «Тишина»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
   {name:'Отделка «Хранитель»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
+
   // POTIONS
   {name:'Зелье невидимости',qty:'1 шт.',price:3,cat:'potion',img:'potion_invis'},
   {name:'Зелье ночного зрения',qty:'1 шт.',price:1,cat:'potion',img:'potion_nightvis'},
@@ -481,6 +628,7 @@ const ITEMS = [
   {name:'Зловещая бутылочка III',qty:'1 шт.',price:2,cat:'potion',img:'ominous_bottle'},
   {name:'Зловещая бутылочка IV',qty:'1 шт.',price:3,cat:'potion',img:'ominous_bottle'},
   {name:'Зловещая бутылочка V',qty:'1 шт.',price:3,cat:'potion',img:'ominous_bottle'},
+
   // FOOD
   {name:'Зачарованное золотое яблоко',qty:'1 шт.',price:9,cat:'food',img:'enchanted_apple'},
   {name:'Золотое яблоко',qty:'16 шт.',price:8,cat:'food',img:'golden_apple'},
@@ -490,6 +638,7 @@ const ITEMS = [
   {name:'Жареное мясо',qty:'64 шт.',price:2,cat:'food',img:'cooked_beef'},
   {name:'Морковь',qty:'64 шт.',price:2,cat:'food',img:'carrot'},
   {name:'Яблоко',qty:'64 шт.',price:8,cat:'food',img:'apple'},
+
   // MISC
   {name:'Тотем бессмертия',qty:'1 шт.',price:2,cat:'misc',img:'totem'},
   {name:'Эндер-жемчуг',qty:'16 шт.',price:4,cat:'misc',img:'ender_pearl'},
@@ -521,66 +670,104 @@ const ITEMS = [
 
 let activeCategory = 'all';
 let searchQuery = '';
+let topMode = 'recommended'; // recommended | minimal | all
 
-function renderCategories() {
-  document.getElementById('catList').innerHTML = CATEGORIES.map(c => `
-    <button class="cat-btn ${c.id===activeCategory?'active':''}" onclick="setCategory('${c.id}')">
-      <div class="cat-icon-wrap">
-        <img src="${CAT_IMG[c.id]||''}" alt="" onerror="this.style.display='none'">
-      </div>
-      ${c.label}
-    </button>
-  `).join('');
-}
+const catListEl = document.getElementById('catList');
+const itemsGridEl = document.getElementById('itemsGrid');
+const searchInputEl = document.getElementById('searchInput');
+const searchClearEl = document.getElementById('searchClear');
+const topButtonsEl = document.getElementById('topButtons');
 
-function setCategory(id) {
-  activeCategory = id;
-  renderCategories();
-  renderItems();
-}
-
-function clearSearch() {
-  document.getElementById('searchInput').value = '';
-  searchQuery = '';
-  document.getElementById('searchClear').style.display = 'none';
-  renderItems();
-}
-
-function renderItems() {
-  const q = searchQuery.toLowerCase();
-  const filtered = ITEMS.filter(item => {
-    return (activeCategory==='all'||item.cat===activeCategory) &&
-           (!q||item.name.toLowerCase().includes(q));
-  });
-
-  if (!filtered.length) {
-    document.getElementById('itemsGrid').innerHTML = '<div class="no-results">Ничего не найдено</div>';
-    return;
-  }
-
-  document.getElementById('itemsGrid').innerHTML = filtered.map(item => {
-    const qtyLabel = (item.qty && item.qty !== '1 шт.') ? `<span class="item-qty-label">${item.qty}</span>` : '';
-    return `<div class="item-card">
-      <div class="item-name-top">${item.name}${qtyLabel}</div>
-      <div class="item-img-area">
-        <img src="${IMG[item.img]||''}" alt="${item.name}" onerror="this.outerHTML='<div class=img-placeholder></div>'">
-      </div>
-      <div class="item-price-bar">${item.price}<span class="cur"> вон</span></div>
-    </div>`;
+function renderCategories(){
+  catListEl.innerHTML = CATEGORIES.map(c => {
+    const isActive = c.id === activeCategory;
+    const icon = CAT_IMG[c.id] || IMG.fallback;
+    return `
+      <button class="cat-btn ${isActive ? 'active' : ''}" type="button" data-cat="${c.id}">
+        <div class="cat-icon-wrap">
+          <img src="${icon}" alt="">
+        </div>
+        ${c.label}
+      </button>
+    `;
   }).join('');
 }
 
-document.getElementById('searchInput').addEventListener('input', function() {
-  searchQuery = this.value;
-  document.getElementById('searchClear').style.display = this.value?'block':'none';
+function passTopMode(item){
+  if (topMode === 'all') return true;
+  if (topMode === 'recommended') return item.price >= 10; // можно поменять правило
+  if (topMode === 'minimal') return item.price <= 5;      // можно поменять правило
+  return true;
+}
+
+function renderItems(){
+  const q = searchQuery.trim().toLowerCase();
+
+  const filtered = ITEMS.filter(item => {
+    const okCat = (activeCategory === 'all' || item.cat === activeCategory);
+    const okSearch = (!q || item.name.toLowerCase().includes(q));
+    const okMode = passTopMode(item);
+    return okCat && okSearch && okMode;
+  });
+
+  if (!filtered.length){
+    itemsGridEl.innerHTML = `<div class="no-results">Ничего не найдено</div>`;
+    return;
+  }
+
+  itemsGridEl.innerHTML = filtered.map(item => {
+    const qtyLabel = (item.qty && item.qty !== '1 шт.') ? `<div class="item-qty-label">${item.qty}</div>` : '';
+    const src = IMG[item.img] || IMG.fallback;
+
+    return `
+      <div class="item-card">
+        <div class="item-name-top">
+          <div class="title">${item.name}</div>
+          ${qtyLabel}
+        </div>
+        <div class="item-img-area">
+          <img src="${src}" alt="${item.name}"
+               onerror="this.outerHTML='<div class=&quot;img-placeholder&quot;></div>'">
+        </div>
+        <div class="item-price-bar">${item.price}<span class="cur"> вон</span></div>
+      </div>
+    `;
+  }).join('');
+}
+
+/* Категории: делегирование событий */
+catListEl.addEventListener('click', (e) => {
+  const btn = e.target.closest('.cat-btn');
+  if (!btn) return;
+  activeCategory = btn.dataset.cat;
+  renderCategories();
   renderItems();
 });
 
-document.querySelectorAll('.top-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.top-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  });
+/* Поиск */
+searchInputEl.addEventListener('input', () => {
+  searchQuery = searchInputEl.value;
+  searchClearEl.style.display = searchQuery ? 'block' : 'none';
+  renderItems();
+});
+searchClearEl.addEventListener('click', () => {
+  searchInputEl.value = '';
+  searchQuery = '';
+  searchClearEl.style.display = 'none';
+  renderItems();
+});
+
+/* Верхние кнопки */
+topButtonsEl.addEventListener('click', (e) => {
+  const btn = e.target.closest('.top-btn');
+  if (!btn) return;
+
+  topMode = btn.dataset.mode;
+
+  document.querySelectorAll('.top-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  renderItems();
 });
 
 renderCategories();
