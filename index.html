@@ -6,198 +6,76 @@
 <title>Sun Federation — SunShield</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-
-body {
-  background: #151f30;
-  color: #e0e8f0;
-  font-family: 'Nunito', sans-serif;
-  min-height: 100vh;
-}
-
-/* NAV */
-nav {
-  position: sticky; top:0; z-index: 200;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 28px; height: 54px;
-  background: #0d1420;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-}
-.nav-brand { font-size: 15px; font-weight: 900; color: #fff; letter-spacing:.02em; }
-.nav-links { display: flex; gap: 2px; }
-.nav-links a {
-  color: rgba(255,255,255,0.45); font-size: 13px; font-weight: 700;
-  padding: 6px 12px; border-radius: 8px; transition: all .15s; text-decoration: none;
-}
-.nav-links a:hover { color: #fff; background: rgba(255,255,255,0.06); }
-.btn-site {
-  background: #2563eb; color: #fff; border: none;
-  padding: 7px 16px; border-radius: 8px; font-size: 13px;
-  font-weight: 700; cursor: pointer; font-family: inherit;
-  text-decoration: none;
-}
-.btn-site:hover { background: #1d4ed8; }
-
-/* TOP TABS */
-.top-tabs {
-  padding: 16px 28px 0; display: flex; gap: 8px;
-}
-.tab-btn {
-  padding: 7px 18px; border-radius: 9px; font-size: 13px;
-  font-weight: 800; cursor: pointer; font-family: inherit; border: none; transition: all .15s;
-}
-.tab-btn.active { background: #2563eb; color: #fff; }
-.tab-btn:not(.active) { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.45); }
-.tab-btn:not(.active):hover { background: rgba(255,255,255,0.11); color: #ccc; }
-
-/* LAYOUT */
-.layout {
-  display: flex; gap: 0; padding: 18px 28px 40px;
-  max-width: 1400px; margin: 0 auto; align-items: flex-start;
-}
-
-/* SIDEBAR */
-.sidebar { width: 210px; flex-shrink: 0; margin-right: 20px; }
-.sidebar-title { font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 12px; padding-left: 2px; }
-.cat-list { display: flex; flex-direction: column; gap: 3px; }
-.cat-btn {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 12px; border-radius: 11px; border: none;
-  color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 700;
-  cursor: pointer; font-family: inherit; width: 100%; text-align: left;
-  transition: all .15s; background: transparent;
-}
-.cat-btn:hover { background: rgba(255,255,255,0.06); color: #ddd; }
-.cat-btn.active { background: #2563eb; color: #fff; }
-.cat-icon {
-  width: 28px; height: 28px; border-radius: 7px;
-  background: rgba(255,255,255,0.08);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.cat-btn.active .cat-icon { background: rgba(255,255,255,0.18); }
-.cat-icon img {
-  width: 20px; height: 20px;
-  image-rendering: pixelated; object-fit: contain;
-}
-
-/* SEARCH */
-.search-row { display:flex; align-items:center; gap:10px; margin-bottom: 14px; }
-.search-box { position: relative; flex:1; }
-.search-box input {
-  width: 100%; background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.09); border-radius: 11px;
-  color: #fff; font-size: 13px; font-family: inherit; font-weight: 700;
-  padding: 10px 36px 10px 38px; outline: none; transition: border-color .2s;
-}
-.search-box input::placeholder { color: rgba(255,255,255,0.22); }
-.search-box input:focus { border-color: #2563eb; }
-.s-ico { position:absolute; left:12px; top:50%; transform:translateY(-50%); opacity:.3; pointer-events:none; }
-.s-clear {
-  position:absolute; right:10px; top:50%; transform:translateY(-50%);
-  background:none; border:none; color:rgba(255,255,255,.35); cursor:pointer;
-  font-size:15px; display:none; padding:2px 5px; font-family:inherit; line-height:1;
-}
-.s-clear:hover { color:#fff; }
-.items-count { font-size:12px; font-weight:700; color:rgba(255,255,255,.25); white-space:nowrap; }
-
-/* MAIN */
-.shop-main { flex:1; min-width:0; }
-
-/* GRID */
-.items-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 9px;
-}
-
-/* CARD — like screenshot: name top, image center, price bottom bar */
-.item-card {
-  background: #1e2d45;
-  border-radius: 13px; overflow: hidden;
-  display: flex; flex-direction: column;
-  transition: transform .15s, box-shadow .15s;
-}
-.item-card:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,.55); }
-
-.card-name {
-  padding: 9px 8px 5px;
-  font-size: 11.5px; font-weight: 800; color: #c5d8ef;
-  text-align: center; line-height: 1.3;
-  min-height: 34px;
-  display: flex; flex-direction:column; align-items: center; justify-content: center;
-}
-.card-qty {
-  font-size: 10px; font-weight: 600;
-  color: rgba(180,210,240,0.38); margin-top: 1px;
-  display:block;
-}
-
-.card-img {
-  display: flex; align-items: center; justify-content: center;
-  padding: 10px 8px; min-height: 90px;
-  background: #1e2d45;
-}
-.card-img img {
-  width: 68px; height: 68px;
-  image-rendering: pixelated; object-fit: contain;
-  filter: drop-shadow(0 3px 6px rgba(0,0,0,.6));
-}
-
-.card-price {
-  background: #243450;
-  padding: 9px 10px; text-align: center;
-  font-size: 17px; font-weight: 900; color: #fff; letter-spacing:.01em;
-}
-.card-price .cur { font-size:11px; font-weight:700; color:rgba(255,255,255,.4); margin-left:2px; }
-
-/* NO RESULTS */
-.no-results {
-  grid-column:1/-1; text-align:center; padding:50px 20px;
-  color:rgba(255,255,255,.2); font-size:14px; font-weight:700;
-}
-
-/* FOOTER */
-footer {
-  background:#0d1420; border-top:1px solid rgba(255,255,255,.05);
-  padding:22px 28px; display:flex; align-items:center; justify-content:space-between;
-}
-.footer-brand { font-size:13px; font-weight:800; color:rgba(255,255,255,.4); }
-.footer-copy { font-size:11px; color:rgba(255,255,255,.18); }
-
-@media(max-width:780px){
-  .layout{flex-direction:column;padding:12px;}
-  .sidebar{width:100%;margin-right:0;margin-bottom:14px;}
-  .cat-list{flex-direction:row;flex-wrap:wrap;}
-  nav{padding:0 14px;} .nav-links{display:none;}
-  .top-tabs{padding:12px 14px 0;}
-}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#151f30;color:#e0e8f0;font-family:'Nunito',sans-serif;min-height:100vh}
+nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:54px;background:#0d1420;border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-brand{font-size:15px;font-weight:900;color:#fff}
+.nav-links{display:flex;gap:2px}
+.nav-links a{color:rgba(255,255,255,.45);font-size:13px;font-weight:700;padding:6px 12px;border-radius:8px;transition:all .15s;text-decoration:none}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,.06)}
+.btn-site{background:#2563eb;color:#fff;border:none;padding:7px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none}
+.btn-site:hover{background:#1d4ed8}
+.top-tabs{padding:16px 28px 0;display:flex;gap:8px}
+.tab-btn{padding:7px 18px;border-radius:9px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;border:none;transition:all .15s}
+.tab-btn.active{background:#2563eb;color:#fff}
+.tab-btn:not(.active){background:rgba(255,255,255,.07);color:rgba(255,255,255,.45)}
+.tab-btn:not(.active):hover{background:rgba(255,255,255,.11);color:#ccc}
+.layout{display:flex;gap:0;padding:18px 28px 40px;max-width:1400px;margin:0 auto;align-items:flex-start}
+.sidebar{width:210px;flex-shrink:0;margin-right:20px}
+.sidebar-title{font-size:20px;font-weight:900;color:#fff;margin-bottom:12px}
+.cat-list{display:flex;flex-direction:column;gap:3px}
+.cat-btn{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:11px;border:none;color:rgba(255,255,255,.6);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;width:100%;text-align:left;transition:all .15s;background:transparent}
+.cat-btn:hover{background:rgba(255,255,255,.06);color:#ddd}
+.cat-btn.active{background:#2563eb;color:#fff}
+.cat-icon{width:28px;height:28px;border-radius:7px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cat-btn.active .cat-icon{background:rgba(255,255,255,.18)}
+.cat-icon img{width:20px;height:20px;image-rendering:pixelated;object-fit:contain}
+.search-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.search-box{position:relative;flex:1}
+.search-box input{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.09);border-radius:11px;color:#fff;font-size:13px;font-family:inherit;font-weight:700;padding:10px 36px 10px 38px;outline:none;transition:border-color .2s}
+.search-box input::placeholder{color:rgba(255,255,255,.22)}
+.search-box input:focus{border-color:#2563eb}
+.s-ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.3;pointer-events:none}
+.s-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.35);cursor:pointer;font-size:15px;display:none;padding:2px 5px;font-family:inherit;line-height:1}
+.s-clear:hover{color:#fff}
+.items-count{font-size:12px;font-weight:700;color:rgba(255,255,255,.25);white-space:nowrap}
+.shop-main{flex:1;min-width:0}
+.items-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px}
+.item-card{background:#1e2d45;border-radius:13px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
+.item-card:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.55)}
+.card-name{padding:9px 8px 5px;font-size:11.5px;font-weight:800;color:#c5d8ef;text-align:center;line-height:1.3;min-height:34px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.card-qty{font-size:10px;font-weight:600;color:rgba(180,210,240,.38);margin-top:1px;display:block}
+.card-img{display:flex;align-items:center;justify-content:center;padding:10px 8px;min-height:90px;background:#1e2d45}
+.card-img img{width:68px;height:68px;image-rendering:pixelated;object-fit:contain;filter:drop-shadow(0 3px 6px rgba(0,0,0,.6))}
+.card-price{background:#243450;padding:9px 10px;text-align:center;font-size:17px;font-weight:900;color:#fff;letter-spacing:.01em}
+.card-price .cur{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);margin-left:2px}
+.no-results{grid-column:1/-1;text-align:center;padding:50px 20px;color:rgba(255,255,255,.2);font-size:14px;font-weight:700}
+footer{background:#0d1420;border-top:1px solid rgba(255,255,255,.05);padding:22px 28px;display:flex;align-items:center;justify-content:space-between}
+.footer-brand{font-size:13px;font-weight:800;color:rgba(255,255,255,.4)}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.18)}
+@media(max-width:780px){.layout{flex-direction:column;padding:12px}.sidebar{width:100%;margin-right:0;margin-bottom:14px}.cat-list{flex-direction:row;flex-wrap:wrap}nav{padding:0 14px}.nav-links{display:none}.top-tabs{padding:12px 14px 0}}
 </style>
 </head>
 <body>
-
 <nav>
   <div class="nav-brand">Sun Federation</div>
   <div class="nav-links">
-    <a href="#" onclick="setCategory('weapon');return false">Оружие</a>
-    <a href="#" onclick="setCategory('enchant');return false">Зачарования</a>
-    <a href="#" onclick="setCategory('resource');return false">Ресурсы</a>
-    <a href="#" onclick="setCategory('potion');return false">Зелья</a>
+    <a href="#" onclick="setCat('weapon');return false">Оружие</a>
+    <a href="#" onclick="setCat('enchant');return false">Зачарования</a>
+    <a href="#" onclick="setCat('resource');return false">Ресурсы</a>
+    <a href="#" onclick="setCat('potion');return false">Зелья</a>
   </div>
   <a href="https://chanland4.vercel.app" target="_blank" class="btn-site">Основной сайт</a>
 </nav>
-
 <div class="top-tabs">
-  <button class="tab-btn active">Рекомендуемые</button>
-  <button class="tab-btn" onclick="this.parentElement.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Минимальные</button>
+  <button class="tab-btn active" onclick="document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Рекомендуемые</button>
+  <button class="tab-btn" onclick="document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Минимальные</button>
 </div>
-
 <div class="layout">
   <aside class="sidebar">
     <div class="sidebar-title">Категории</div>
     <div class="cat-list" id="catList"></div>
   </aside>
-
   <main class="shop-main">
     <div class="search-row">
       <div class="search-box">
@@ -210,381 +88,307 @@ footer {
     <div class="items-grid" id="grid"></div>
   </main>
 </div>
-
 <footer>
   <div class="footer-brand">Sun Federation · SunShield</div>
   <div class="footer-copy">© 2025 · Все цены в вонах · chanland4.vercel.app</div>
 </footer>
-
 <script>
-// Using mcasset.cloud - official Minecraft texture hosting, no hotlink protection
-const A = 'https://mcasset.cloud/1.21.4/assets/minecraft/textures/item/';
-const B = 'https://mcasset.cloud/1.21.4/assets/minecraft/textures/block/';
-const E = 'https://mcasset.cloud/1.21.4/assets/minecraft/textures/entity/';
-
-const T = {
-  // Weapons
-  sword_netherite:      A+'netherite_sword.png',
-  axe_netherite:        A+'netherite_axe.png',
-  trident:              A+'trident.png',
-  mace:                 A+'mace.png',
-  bow:                  A+'bow.png',
-  crossbow:             A+'crossbow_standby.png',
-  // Armor
-  helmet_netherite:     A+'netherite_helmet.png',
-  chestplate_netherite: A+'netherite_chestplate.png',
-  leggings_netherite:   A+'netherite_leggings.png',
-  boots_netherite:      A+'netherite_boots.png',
-  helmet_diamond:       A+'diamond_helmet.png',
-  chestplate_diamond:   A+'diamond_chestplate.png',
-  leggings_diamond:     A+'diamond_leggings.png',
-  boots_diamond:        A+'diamond_boots.png',
-  // Tools
-  pickaxe_netherite:    A+'netherite_pickaxe.png',
-  shovel_netherite:     A+'netherite_shovel.png',
-  hoe_netherite:        A+'netherite_hoe.png',
-  pickaxe_diamond:      A+'diamond_pickaxe.png',
-  fishing_rod:          A+'fishing_rod.png',
-  // Enchanting
-  enchanted_book:       A+'enchanted_book.png',
-  // Resources
-  netherite_ingot:      A+'netherite_ingot.png',
-  ancient_debris:       B+'ancient_debris_top.png',
-  diamond:              A+'diamond.png',
-  diamond_block:        B+'diamond_block.png',
-  iron_ingot:           A+'iron_ingot.png',
-  iron_block:           B+'iron_block.png',
-  gold_ingot:           A+'gold_ingot.png',
-  gold_block:           B+'gold_block.png',
-  emerald:              A+'emerald.png',
-  emerald_block:        B+'emerald_block.png',
-  emerald_ore:          B+'emerald_ore.png',
-  copper_ingot:         A+'copper_ingot.png',
-  copper_block:         B+'copper_block.png',
-  quartz_block:         B+'quartz_block_side.png',
-  bone_block:           B+'bone_block_top.png',
-  obsidian:             B+'obsidian.png',
-  sea_lantern:          B+'sea_lantern.png',
-  end_crystal:          A+'end_crystal.png',
-  totem:                A+'totem_of_undying.png',
-  ender_pearl:          A+'ender_pearl.png',
-  netherite_upgrade:    A+'netherite_upgrade_smithing_template.png',
-  golden_apple:         A+'golden_apple.png',
-  enchanted_apple:      A+'enchanted_golden_apple.png',
-  golden_carrot:        A+'golden_carrot.png',
-  beacon:               B+'beacon.png',
-  exp_bottle:           A+'experience_bottle.png',
-  lapis:                A+'lapis_lazuli.png',
-  lapis_block:          B+'lapis_block.png',
-  tnt:                  B+'tnt_side.png',
-  gunpowder:            A+'gunpowder.png',
-  arrow:                A+'arrow.png',
-  firework:             A+'firework_rocket.png',
-  elytra:               A+'elytra.png',
-  ghast_tear:           A+'ghast_tear.png',
-  breeze_rod:           A+'breeze_rod.png',
-  slime_block:          B+'slime_block.png',
-  honey_block:          B+'honey_block_side.png',
-  bread:                A+'bread.png',
-  carrot:               A+'carrot.png',
-  shulker_shell:        A+'shulker_shell.png',
-  heart_of_sea:         A+'heart_of_the_sea.png',
-  redstone_block:       B+'redstone_block.png',
-  amethyst:             A+'amethyst_shard.png',
-  nether_wart:          A+'nether_wart.png',
-  blaze_powder:         A+'blaze_powder.png',
-  blaze_rod:            A+'blaze_rod.png',
-  slimeball:            A+'slimeball.png',
-  light_block:          B+'light_block_15.png',
-  book:                 A+'book.png',
-  leather:              A+'leather.png',
-  music_disc:           A+'music_disc_pigstep.png',
-  ominous_bottle:       A+'ominous_bottle.png',
-  trial_key:            A+'trial_key.png',
-  ominous_key:          A+'ominous_trial_key.png',
-  wither_skull:         A+'wither_skeleton_skull.png',
-  apple:                A+'apple.png',
-  cooked_cod:           A+'cooked_cod.png',
-  cooked_beef:          A+'cooked_beef.png',
-  dragons_breath:       A+'dragon_breath.png',
-  smithing_template:    A+'netherite_upgrade_smithing_template.png',
-  sugar_cane:           B+'sugar_cane.png',
-  potion_invis:         A+'potion.png',
-  potion_nightvis:      A+'potion.png',
-  potion_fire:          A+'potion.png',
-  potion_jump:          A+'potion.png',
-  potion_regen:         A+'potion.png',
-  potion_strength:      A+'potion.png',
-  potion_speed:         A+'potion.png',
-  potion_turtle:        A+'potion.png',
-  // potions with tint via CSS filter
-  music_disc_relic:     A+'music_disc_relic.png',
-  music_disc_creator:   A+'music_disc_creator.png',
-  netherite_scrap:      A+'netherite_scrap.png',
-  gold_nugget:          A+'gold_nugget.png',
-  chorus_fruit:         A+'chorus_fruit.png',
-  string:               A+'string.png',
+// Minecraft textures from GitHub — works in all browsers
+const G='https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21/assets/minecraft/textures/';
+const I=G+'item/';
+const BL=G+'block/';
+const T={
+sword_netherite:I+'netherite_sword.png',
+axe_netherite:I+'netherite_axe.png',
+trident:I+'trident.png',
+mace:I+'mace.png',
+bow:I+'bow.png',
+helmet_netherite:I+'netherite_helmet.png',
+chestplate_netherite:I+'netherite_chestplate.png',
+leggings_netherite:I+'netherite_leggings.png',
+boots_netherite:I+'netherite_boots.png',
+helmet_diamond:I+'diamond_helmet.png',
+chestplate_diamond:I+'diamond_chestplate.png',
+leggings_diamond:I+'diamond_leggings.png',
+boots_diamond:I+'diamond_boots.png',
+pickaxe_netherite:I+'netherite_pickaxe.png',
+shovel_netherite:I+'netherite_shovel.png',
+hoe_netherite:I+'netherite_hoe.png',
+pickaxe_diamond:I+'diamond_pickaxe.png',
+fishing_rod:I+'fishing_rod.png',
+enchanted_book:I+'enchanted_book.png',
+netherite_ingot:I+'netherite_ingot.png',
+diamond:I+'diamond.png',
+iron_ingot:I+'iron_ingot.png',
+gold_ingot:I+'gold_ingot.png',
+emerald:I+'emerald.png',
+copper_ingot:I+'copper_ingot.png',
+lapis:I+'lapis_lazuli.png',
+amethyst:I+'amethyst_shard.png',
+ender_pearl:I+'ender_pearl.png',
+netherite_upgrade:I+'netherite_upgrade_smithing_template.png',
+golden_apple:I+'golden_apple.png',
+enchanted_apple:I+'enchanted_golden_apple.png',
+golden_carrot:I+'golden_carrot.png',
+exp_bottle:I+'experience_bottle.png',
+totem:I+'totem_of_undying.png',
+ghast_tear:I+'ghast_tear.png',
+slimeball:I+'slimeball.png',
+blaze_powder:I+'blaze_powder.png',
+blaze_rod:I+'blaze_rod.png',
+gunpowder:I+'gunpowder.png',
+arrow:I+'arrow.png',
+firework:I+'firework_rocket.png',
+elytra:I+'elytra.png',
+shulker_shell:I+'shulker_shell.png',
+heart_of_sea:I+'heart_of_the_sea.png',
+book:I+'book.png',
+leather:I+'leather.png',
+nether_wart:I+'nether_wart.png',
+sugar_cane:I+'sugar_cane.png',
+dragons_breath:I+'dragon_breath.png',
+trial_key:I+'trial_key.png',
+ominous_key:I+'ominous_trial_key.png',
+ominous_bottle:I+'ominous_bottle.png',
+wither_skull:I+'wither_skeleton_skull.png',
+apple:I+'apple.png',
+cooked_cod:I+'cooked_cod.png',
+cooked_beef:I+'cooked_beef.png',
+carrot:I+'carrot.png',
+bread:I+'bread.png',
+end_crystal:I+'end_crystal.png',
+smithing_template:I+'netherite_upgrade_smithing_template.png',
+music_disc:I+'music_disc_pigstep.png',
+music_disc_relic:I+'music_disc_relic.png',
+music_disc_creator:I+'music_disc_creator.png',
+breeze_rod:I+'breeze_rod.png',
+ancient_debris:BL+'ancient_debris_top.png',
+diamond_block:BL+'diamond_block.png',
+iron_block:BL+'iron_block.png',
+gold_block:BL+'gold_block.png',
+emerald_block:BL+'emerald_block.png',
+emerald_ore:BL+'emerald_ore.png',
+copper_block:BL+'copper_block.png',
+quartz_block:BL+'quartz_block_side.png',
+bone_block:BL+'bone_block_top.png',
+obsidian:BL+'obsidian.png',
+sea_lantern:BL+'sea_lantern.png',
+lapis_block:BL+'lapis_block.png',
+redstone_block:BL+'redstone_block.png',
+slime_block:BL+'slime_block.png',
+honey_block:BL+'honey_block_side.png',
+light_block:BL+'light_block_15.png',
+tnt:BL+'tnt_side.png',
+beacon:BL+'beacon.png',
+potion_base:I+'potion.png',
 };
-
-// Potion colours (hue-rotate) to differentiate them
-const POTION_STYLE = {
-  potion_invis:    'filter:hue-rotate(220deg) saturate(0.3)',
-  potion_nightvis: 'filter:hue-rotate(45deg) saturate(1.5)',
-  potion_fire:     'filter:hue-rotate(340deg) saturate(2)',
-  potion_jump:     'filter:hue-rotate(90deg) saturate(1.8)',
-  potion_regen:    'filter:hue-rotate(300deg) saturate(2)',
-  potion_strength: 'filter:hue-rotate(0deg) saturate(2)',
-  potion_speed:    'filter:hue-rotate(150deg) saturate(2)',
-  potion_turtle:   'filter:hue-rotate(200deg) saturate(1.5)',
+const PH={
+potion_invis:'hue-rotate(220deg) saturate(0.2) brightness(1.2)',
+potion_nightvis:'hue-rotate(40deg) saturate(2)',
+potion_fire:'hue-rotate(340deg) saturate(2.5)',
+potion_jump:'hue-rotate(95deg) saturate(2)',
+potion_regen:'hue-rotate(290deg) saturate(2.5)',
+potion_strength:'hue-rotate(5deg) saturate(2.5)',
+potion_speed:'hue-rotate(160deg) saturate(2)',
+potion_turtle:'hue-rotate(195deg) saturate(1.8)',
 };
-
-const CATS = [
-  {id:'all',     label:'Все',          img:T.diamond},
-  {id:'weapon',  label:'Оружие',       img:T.sword_netherite},
-  {id:'armor',   label:'Броня',        img:T.chestplate_netherite},
-  {id:'tool',    label:'Инструменты',  img:T.pickaxe_netherite},
-  {id:'enchant', label:'Зачарование',  img:T.enchanted_book},
-  {id:'resource',label:'Ресурсы',      img:T.netherite_ingot},
-  {id:'build',   label:'Строительство',img:T.obsidian},
-  {id:'decor',   label:'Декорации',    img:T.sea_lantern},
-  {id:'ore',     label:'Руда',         img:T.emerald_ore},
-  {id:'potion',  label:'Зельеварение', img:T.ominous_bottle},
-  {id:'food',    label:'Еда',          img:T.golden_apple},
-  {id:'misc',    label:'Прочее',       img:T.totem},
+Object.keys(PH).forEach(k=>T[k]=T.potion_base);
+const CATS=[
+{id:'all',label:'Все',img:T.diamond},
+{id:'weapon',label:'Оружие',img:T.sword_netherite},
+{id:'armor',label:'Броня',img:T.chestplate_netherite},
+{id:'tool',label:'Инструменты',img:T.pickaxe_netherite},
+{id:'enchant',label:'Зачарование',img:T.enchanted_book},
+{id:'resource',label:'Ресурсы',img:T.netherite_ingot},
+{id:'build',label:'Строительство',img:T.obsidian},
+{id:'decor',label:'Декорации',img:T.sea_lantern},
+{id:'ore',label:'Руда',img:T.emerald_ore},
+{id:'potion',label:'Зельеварение',img:T.ominous_bottle},
+{id:'food',label:'Еда',img:T.golden_apple},
+{id:'misc',label:'Прочее',img:T.totem},
 ];
-
-const ITEMS = [
-  // WEAPON
-  {name:'Незеритовый меч (фулл зачар)',qty:'без починки',price:90,cat:'weapon',img:'sword_netherite'},
-  {name:'Незеритовый меч',qty:'1 шт.',price:24,cat:'weapon',img:'sword_netherite'},
-  {name:'Незеритовый топор',qty:'1 шт.',price:24,cat:'weapon',img:'axe_netherite'},
-  {name:'Трезубец',qty:'1 шт.',price:16,cat:'weapon',img:'trident'},
-  {name:'Булава',qty:'1 шт.',price:16,cat:'weapon',img:'mace'},
-  {name:'Лук (фулл зачар)',qty:'1 шт.',price:10,cat:'weapon',img:'bow'},
-  // ARMOR
-  {name:'Незеритовый шлем (топ зачар)',qty:'1 шт.',price:65,cat:'armor',img:'helmet_netherite'},
-  {name:'Незеритовый шлем',qty:'1 шт.',price:26,cat:'armor',img:'helmet_netherite'},
-  {name:'Незеритовый нагрудник (топ зачар)',qty:'1 шт.',price:86,cat:'armor',img:'chestplate_netherite'},
-  {name:'Незеритовый нагрудник',qty:'1 шт.',price:29,cat:'armor',img:'chestplate_netherite'},
-  {name:'Незеритовые поножи (топ зачар)',qty:'1 шт.',price:48,cat:'armor',img:'leggings_netherite'},
-  {name:'Незеритовые поножи',qty:'1 шт.',price:28,cat:'armor',img:'leggings_netherite'},
-  {name:'Незеритовые ботинки (топ зачар)',qty:'1 шт.',price:80,cat:'armor',img:'boots_netherite'},
-  {name:'Незеритовые ботинки',qty:'1 шт.',price:25,cat:'armor',img:'boots_netherite'},
-  {name:'Алмазный шлем',qty:'1 шт.',price:2,cat:'armor',img:'helmet_diamond'},
-  {name:'Алмазный нагрудник',qty:'1 шт.',price:3,cat:'armor',img:'chestplate_diamond'},
-  {name:'Алмазные поножи',qty:'1 шт.',price:3,cat:'armor',img:'leggings_diamond'},
-  {name:'Алмазные ботинки',qty:'1 шт.',price:2,cat:'armor',img:'boots_diamond'},
-  // TOOLS
-  {name:'Незеритовая кирка (топ зачар)',qty:'без починки',price:46,cat:'tool',img:'pickaxe_netherite'},
-  {name:'Незеритовая кирка',qty:'1 шт.',price:25,cat:'tool',img:'pickaxe_netherite'},
-  {name:'Алмазная кирка (фулл зачар)',qty:'без починки',price:15,cat:'tool',img:'pickaxe_diamond'},
-  {name:'Незеритовая лопата',qty:'1 шт.',price:22,cat:'tool',img:'shovel_netherite'},
-  {name:'Незеритовая мотыга',qty:'1 шт.',price:22,cat:'tool',img:'hoe_netherite'},
-  {name:'Удочка (фулл зачар)',qty:'1 шт.',price:10,cat:'tool',img:'fishing_rod'},
-  // ENCHANTS
-  {name:'Починка',qty:'книга',price:200,cat:'enchant',img:'enchanted_book'},
-  {name:'Проворство III',qty:'книга',price:500,cat:'enchant',img:'enchanted_book'},
-  {name:'Скорость души III',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
-  {name:'Защита IV',qty:'книга',price:16,cat:'enchant',img:'enchanted_book'},
-  {name:'Шёлковое касание',qty:'книга',price:14,cat:'enchant',img:'enchanted_book'},
-  {name:'Прочность III',qty:'книга',price:16,cat:'enchant',img:'enchanted_book'},
-  {name:'Добыча III',qty:'книга',price:21,cat:'enchant',img:'enchanted_book'},
-  {name:'Острота V',qty:'книга',price:22,cat:'enchant',img:'enchanted_book'},
-  {name:'Удача III',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
-  {name:'Шипы III',qty:'книга',price:25,cat:'enchant',img:'enchanted_book'},
-  {name:'Эффективность V',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
-  {name:'Бесконечность',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
-  {name:'Быстрая перезарядка III',qty:'книга',price:6,cat:'enchant',img:'enchanted_book'},
-  {name:'Везучий рыбак III',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
-  {name:'Верность III',qty:'книга',price:11,cat:'enchant',img:'enchanted_book'},
-  {name:'Взрывоустойчивость IV',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
-  {name:'Воспламенение',qty:'книга',price:6,cat:'enchant',img:'enchanted_book'},
-  {name:'Громовержец',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
-  {name:'Заговор огня II',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
-  {name:'Защита от снарядов IV',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
-  {name:'Ледоход II',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
-  {name:'Небесная кара V',qty:'книга',price:5,cat:'enchant',img:'enchanted_book'},
-  {name:'Невесомость IV',qty:'книга',price:25,cat:'enchant',img:'enchanted_book'},
-  {name:'Бич членистоногих V',qty:'книга',price:5,cat:'enchant',img:'enchanted_book'},
-  {name:'Огнеупорность IV',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
-  {name:'Отдача II',qty:'книга',price:9,cat:'enchant',img:'enchanted_book'},
-  {name:'Откидывание II',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
-  {name:'Плотность V',qty:'книга',price:20,cat:'enchant',img:'enchanted_book'},
-  {name:'Подводная ходьба III',qty:'книга',price:14,cat:'enchant',img:'enchanted_book'},
-  {name:'Подводник',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
-  {name:'Подводное дыхание III',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
-  {name:'Порыв ветра III',qty:'книга',price:100,cat:'enchant',img:'enchanted_book'},
-  {name:'Приманка III',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
-  {name:'Пробитие IV',qty:'книга',price:18,cat:'enchant',img:'enchanted_book'},
-  {name:'Пронзатель V',qty:'книга',price:7,cat:'enchant',img:'enchanted_book'},
-  {name:'Пронзающая стрела IV',qty:'книга',price:6,cat:'enchant',img:'enchanted_book'},
-  {name:'Разящий клинок III',qty:'книга',price:16,cat:'enchant',img:'enchanted_book'},
-  {name:'Сила V',qty:'книга',price:12,cat:'enchant',img:'enchanted_book'},
-  {name:'Тройной выстрел',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
-  {name:'Тягун III',qty:'книга',price:23,cat:'enchant',img:'enchanted_book'},
-  // RESOURCES
-  {name:'Незеритовый слиток',qty:'1 шт.',price:23,cat:'resource',img:'netherite_ingot'},
-  {name:'Древние обломки',qty:'1 шт.',price:5,cat:'resource',img:'ancient_debris'},
-  {name:'Алмаз',qty:'3 шт.',price:1,cat:'resource',img:'diamond'},
-  {name:'Алмазный блок',qty:'16 шт.',price:48,cat:'resource',img:'diamond_block'},
-  {name:'Железо',qty:'64 шт.',price:1,cat:'resource',img:'iron_ingot'},
-  {name:'Железный блок',qty:'64 шт.',price:8,cat:'resource',img:'iron_block'},
-  {name:'Золото',qty:'64 шт.',price:3,cat:'resource',img:'gold_ingot'},
-  {name:'Золотой блок',qty:'64 шт.',price:24,cat:'resource',img:'gold_block'},
-  {name:'Изумруд',qty:'64 шт.',price:1,cat:'resource',img:'emerald'},
-  {name:'Изумрудный блок',qty:'64 шт.',price:8,cat:'resource',img:'emerald_block'},
-  {name:'Медь',qty:'64 шт.',price:1,cat:'resource',img:'copper_ingot'},
-  {name:'Лазурит',qty:'64 шт.',price:1,cat:'resource',img:'lapis'},
-  {name:'Лазуритовый блок',qty:'64 шт.',price:9,cat:'resource',img:'lapis_block'},
-  {name:'Осколок аметиста',qty:'64 шт.',price:1,cat:'resource',img:'amethyst'},
-  {name:'Кристалл Края',qty:'16 шт.',price:16,cat:'resource',img:'end_crystal'},
-  {name:'Сердце моря',qty:'1 шт.',price:64,cat:'resource',img:'heart_of_sea'},
-  // ORE
-  {name:'Изумрудная руда',qty:'1 шт.',price:10,cat:'ore',img:'emerald_ore'},
-  // BUILD
-  {name:'Медный блок',qty:'64 шт.',price:4,cat:'build',img:'copper_block'},
-  {name:'Кварцевый блок',qty:'64 шт.',price:2,cat:'build',img:'quartz_block'},
-  {name:'Костяной блок',qty:'64 шт.',price:8,cat:'build',img:'bone_block'},
-  {name:'Обсидиан',qty:'64 шт.',price:10,cat:'build',img:'obsidian'},
-  {name:'Редстоуновый блок',qty:'32 шт.',price:4,cat:'build',img:'redstone_block'},
-  {name:'Малахитовая кварца',qty:'64 шт.',price:4,cat:'build',img:'quartz_block'},
-  {name:'Блок слизи',qty:'64 шт.',price:9,cat:'build',img:'slime_block'},
-  // DECOR
-  {name:'Морской фонарь',qty:'64 шт.',price:5,cat:'decor',img:'sea_lantern'},
-  {name:'Блок мёда',qty:'16 шт.',price:4,cat:'decor',img:'honey_block'},
-  {name:'Блок света',qty:'32 шт.',price:6,cat:'decor',img:'light_block'},
-  {name:'Пластинка PigStep',qty:'1 шт.',price:150,cat:'decor',img:'music_disc'},
-  {name:'Пластинка Relic',qty:'1 шт.',price:150,cat:'decor',img:'music_disc_relic'},
-  {name:'Пластинка Creator',qty:'1 шт.',price:100,cat:'decor',img:'music_disc_creator'},
-  {name:'Пластинка Aaron Cherof',qty:'1 шт.',price:175,cat:'decor',img:'music_disc'},
-  {name:'Пластинки (прочие)',qty:'1 шт.',price:20,cat:'decor',img:'music_disc'},
-  {name:'Отделка «Берег»',qty:'1 шт.',price:8,cat:'decor',img:'smithing_template'},
-  {name:'Отделка «Вождь»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
-  {name:'Отделка «Вредина»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
-  {name:'Отделка «Дебри»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
-  {name:'Отделка «Дюна»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
-  {name:'Отделка «Искатель»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
-  {name:'Отделка «Око»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
-  {name:'Отделка «Ось»',qty:'1 шт.',price:8,cat:'decor',img:'smithing_template'},
-  {name:'Отделка «Поток»',qty:'1 шт.',price:8,cat:'decor',img:'smithing_template'},
-  {name:'Отделка «Прилив»',qty:'1 шт.',price:15,cat:'decor',img:'smithing_template'},
-  {name:'Отделка «Ребро»',qty:'1 шт.',price:8,cat:'decor',img:'smithing_template'},
-  {name:'Отделка «Рыло»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
-  {name:'Отделка «Скульптор»',qty:'1 шт.',price:15,cat:'decor',img:'smithing_template'},
-  {name:'Отделка «Собиратель»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
-  {name:'Отделка «Страж»',qty:'1 шт.',price:8,cat:'decor',img:'smithing_template'},
-  {name:'Отделка «Тишина»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
-  {name:'Отделка «Хранитель»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
-  // POTIONS
-  {name:'Зелье невидимости',qty:'1 шт.',price:3,cat:'potion',img:'potion_invis'},
-  {name:'Зелье ночного зрения',qty:'1 шт.',price:1,cat:'potion',img:'potion_nightvis'},
-  {name:'Зелье огнестойкости',qty:'1 шт.',price:1,cat:'potion',img:'potion_fire'},
-  {name:'Зелье прыгучести',qty:'1 шт.',price:2,cat:'potion',img:'potion_jump'},
-  {name:'Зелье регенерации',qty:'1 шт.',price:2,cat:'potion',img:'potion_regen'},
-  {name:'Зелье силы',qty:'1 шт.',price:3,cat:'potion',img:'potion_strength'},
-  {name:'Зелье стремительности',qty:'1 шт.',price:2,cat:'potion',img:'potion_speed'},
-  {name:'Зелье черепашьей мощи IV',qty:'1 шт.',price:7,cat:'potion',img:'potion_turtle'},
-  {name:'Зловещая бутылочка I',qty:'2 шт.',price:2,cat:'potion',img:'ominous_bottle'},
-  {name:'Зловещая бутылочка II',qty:'1 шт.',price:2,cat:'potion',img:'ominous_bottle'},
-  {name:'Зловещая бутылочка III',qty:'1 шт.',price:2,cat:'potion',img:'ominous_bottle'},
-  {name:'Зловещая бутылочка IV',qty:'1 шт.',price:3,cat:'potion',img:'ominous_bottle'},
-  {name:'Зловещая бутылочка V',qty:'1 шт.',price:3,cat:'potion',img:'ominous_bottle'},
-  // FOOD
-  {name:'Зачарованное золотое яблоко',qty:'1 шт.',price:9,cat:'food',img:'enchanted_apple'},
-  {name:'Золотое яблоко',qty:'16 шт.',price:8,cat:'food',img:'golden_apple'},
-  {name:'Золотая морковь',qty:'64 шт.',price:5,cat:'food',img:'golden_carrot'},
-  {name:'Хлеб',qty:'64 шт.',price:2,cat:'food',img:'bread'},
-  {name:'Жареная рыба',qty:'64 шт.',price:2,cat:'food',img:'cooked_cod'},
-  {name:'Жареное мясо',qty:'64 шт.',price:2,cat:'food',img:'cooked_beef'},
-  {name:'Морковь',qty:'64 шт.',price:2,cat:'food',img:'carrot'},
-  {name:'Яблоко',qty:'64 шт.',price:8,cat:'food',img:'apple'},
-  // MISC
-  {name:'Тотем бессмертия',qty:'1 шт.',price:2,cat:'misc',img:'totem'},
-  {name:'Эндер-жемчуг',qty:'16 шт.',price:4,cat:'misc',img:'ender_pearl'},
-  {name:'Незеритовое улучшение',qty:'1 шт.',price:7,cat:'misc',img:'netherite_upgrade'},
-  {name:'Маяк',qty:'1 шт.',price:50,cat:'misc',img:'beacon'},
-  {name:'Зелье опыта',qty:'1 шт.',price:1,cat:'misc',img:'exp_bottle'},
-  {name:'Динамит',qty:'64 шт.',price:18,cat:'misc',img:'tnt'},
-  {name:'Драконье дыхание',qty:'16 шт.',price:8,cat:'misc',img:'dragons_breath'},
-  {name:'Книга',qty:'64 шт.',price:4,cat:'misc',img:'book'},
-  {name:'Кожа',qty:'64 шт.',price:3,cat:'misc',img:'leather'},
-  {name:'Незерский нарост',qty:'64 шт.',price:3,cat:'misc',img:'nether_wart'},
-  {name:'Огненный порошок',qty:'64 шт.',price:6,cat:'misc',img:'blaze_powder'},
-  {name:'Огненный стержень',qty:'32 шт.',price:6,cat:'misc',img:'blaze_rod'},
-  {name:'Панцирь шалкера',qty:'16 шт.',price:4,cat:'misc',img:'shulker_shell'},
-  {name:'Порох',qty:'64 шт.',price:3,cat:'misc',img:'gunpowder'},
-  {name:'Сахарный тростник',qty:'64 шт.',price:1,cat:'misc',img:'sugar_cane'},
-  {name:'Слеза гаста',qty:'32 шт.',price:12,cat:'misc',img:'ghast_tear'},
-  {name:'Слизь',qty:'64 шт.',price:1,cat:'misc',img:'slimeball'},
-  {name:'Стержень вихря',qty:'32 шт.',price:4,cat:'misc',img:'breeze_rod'},
-  {name:'Стрела',qty:'64 шт.',price:2,cat:'misc',img:'arrow'},
-  {name:'Череп скелета-иссушителя',qty:'1 шт.',price:20,cat:'misc',img:'wither_skull'},
-  {name:'Элитры',qty:'1 шт.',price:1500,cat:'misc',img:'elytra'},
-  {name:'Фейерверк 1 ур.',qty:'64 шт.',price:5,cat:'misc',img:'firework'},
-  {name:'Фейерверк 2 ур.',qty:'64 шт.',price:10,cat:'misc',img:'firework'},
-  {name:'Фейерверк 3 ур.',qty:'64 шт.',price:15,cat:'misc',img:'firework'},
-  {name:'Зловещий ключ испытаний',qty:'1 шт.',price:3,cat:'misc',img:'ominous_key'},
-  {name:'Ключ испытаний',qty:'1 шт.',price:2,cat:'misc',img:'trial_key'},
+const ITEMS=[
+{name:'Незеритовый меч (фулл зачар)',qty:'без починки',price:90,cat:'weapon',img:'sword_netherite'},
+{name:'Незеритовый меч',qty:'1 шт.',price:24,cat:'weapon',img:'sword_netherite'},
+{name:'Незеритовый топор',qty:'1 шт.',price:24,cat:'weapon',img:'axe_netherite'},
+{name:'Трезубец',qty:'1 шт.',price:16,cat:'weapon',img:'trident'},
+{name:'Булава',qty:'1 шт.',price:16,cat:'weapon',img:'mace'},
+{name:'Лук (фулл зачар)',qty:'1 шт.',price:10,cat:'weapon',img:'bow'},
+{name:'Незеритовый шлем (топ зачар)',qty:'1 шт.',price:65,cat:'armor',img:'helmet_netherite'},
+{name:'Незеритовый шлем',qty:'1 шт.',price:26,cat:'armor',img:'helmet_netherite'},
+{name:'Незеритовый нагрудник (топ зачар)',qty:'1 шт.',price:86,cat:'armor',img:'chestplate_netherite'},
+{name:'Незеритовый нагрудник',qty:'1 шт.',price:29,cat:'armor',img:'chestplate_netherite'},
+{name:'Незеритовые поножи (топ зачар)',qty:'1 шт.',price:48,cat:'armor',img:'leggings_netherite'},
+{name:'Незеритовые поножи',qty:'1 шт.',price:28,cat:'armor',img:'leggings_netherite'},
+{name:'Незеритовые ботинки (топ зачар)',qty:'1 шт.',price:80,cat:'armor',img:'boots_netherite'},
+{name:'Незеритовые ботинки',qty:'1 шт.',price:25,cat:'armor',img:'boots_netherite'},
+{name:'Алмазный шлем',qty:'1 шт.',price:2,cat:'armor',img:'helmet_diamond'},
+{name:'Алмазный нагрудник',qty:'1 шт.',price:3,cat:'armor',img:'chestplate_diamond'},
+{name:'Алмазные поножи',qty:'1 шт.',price:3,cat:'armor',img:'leggings_diamond'},
+{name:'Алмазные ботинки',qty:'1 шт.',price:2,cat:'armor',img:'boots_diamond'},
+{name:'Незеритовая кирка (топ зачар)',qty:'без починки',price:46,cat:'tool',img:'pickaxe_netherite'},
+{name:'Незеритовая кирка',qty:'1 шт.',price:25,cat:'tool',img:'pickaxe_netherite'},
+{name:'Алмазная кирка (фулл зачар)',qty:'без починки',price:15,cat:'tool',img:'pickaxe_diamond'},
+{name:'Незеритовая лопата',qty:'1 шт.',price:22,cat:'tool',img:'shovel_netherite'},
+{name:'Незеритовая мотыга',qty:'1 шт.',price:22,cat:'tool',img:'hoe_netherite'},
+{name:'Удочка (фулл зачар)',qty:'1 шт.',price:10,cat:'tool',img:'fishing_rod'},
+{name:'Починка',qty:'книга',price:200,cat:'enchant',img:'enchanted_book'},
+{name:'Проворство III',qty:'книга',price:500,cat:'enchant',img:'enchanted_book'},
+{name:'Скорость души III',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
+{name:'Защита IV',qty:'книга',price:16,cat:'enchant',img:'enchanted_book'},
+{name:'Шёлковое касание',qty:'книга',price:14,cat:'enchant',img:'enchanted_book'},
+{name:'Прочность III',qty:'книга',price:16,cat:'enchant',img:'enchanted_book'},
+{name:'Добыча III',qty:'книга',price:21,cat:'enchant',img:'enchanted_book'},
+{name:'Острота V',qty:'книга',price:22,cat:'enchant',img:'enchanted_book'},
+{name:'Удача III',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
+{name:'Шипы III',qty:'книга',price:25,cat:'enchant',img:'enchanted_book'},
+{name:'Эффективность V',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
+{name:'Бесконечность',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
+{name:'Быстрая перезарядка III',qty:'книга',price:6,cat:'enchant',img:'enchanted_book'},
+{name:'Везучий рыбак III',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
+{name:'Верность III',qty:'книга',price:11,cat:'enchant',img:'enchanted_book'},
+{name:'Взрывоустойчивость IV',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
+{name:'Воспламенение',qty:'книга',price:6,cat:'enchant',img:'enchanted_book'},
+{name:'Громовержец',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
+{name:'Заговор огня II',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
+{name:'Защита от снарядов IV',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
+{name:'Ледоход II',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
+{name:'Небесная кара V',qty:'книга',price:5,cat:'enchant',img:'enchanted_book'},
+{name:'Невесомость IV',qty:'книга',price:25,cat:'enchant',img:'enchanted_book'},
+{name:'Бич членистоногих V',qty:'книга',price:5,cat:'enchant',img:'enchanted_book'},
+{name:'Огнеупорность IV',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
+{name:'Отдача II',qty:'книга',price:9,cat:'enchant',img:'enchanted_book'},
+{name:'Откидывание II',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
+{name:'Плотность V',qty:'книга',price:20,cat:'enchant',img:'enchanted_book'},
+{name:'Подводная ходьба III',qty:'книга',price:14,cat:'enchant',img:'enchanted_book'},
+{name:'Подводник',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
+{name:'Подводное дыхание III',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
+{name:'Порыв ветра III',qty:'книга',price:100,cat:'enchant',img:'enchanted_book'},
+{name:'Приманка III',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
+{name:'Пробитие IV',qty:'книга',price:18,cat:'enchant',img:'enchanted_book'},
+{name:'Пронзатель V',qty:'книга',price:7,cat:'enchant',img:'enchanted_book'},
+{name:'Пронзающая стрела IV',qty:'книга',price:6,cat:'enchant',img:'enchanted_book'},
+{name:'Разящий клинок III',qty:'книга',price:16,cat:'enchant',img:'enchanted_book'},
+{name:'Сила V',qty:'книга',price:12,cat:'enchant',img:'enchanted_book'},
+{name:'Тройной выстрел',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
+{name:'Тягун III',qty:'книга',price:23,cat:'enchant',img:'enchanted_book'},
+{name:'Незеритовый слиток',qty:'1 шт.',price:23,cat:'resource',img:'netherite_ingot'},
+{name:'Древние обломки',qty:'1 шт.',price:5,cat:'resource',img:'ancient_debris'},
+{name:'Алмаз',qty:'3 шт.',price:1,cat:'resource',img:'diamond'},
+{name:'Алмазный блок',qty:'16 шт.',price:48,cat:'resource',img:'diamond_block'},
+{name:'Железо',qty:'64 шт.',price:1,cat:'resource',img:'iron_ingot'},
+{name:'Железный блок',qty:'64 шт.',price:8,cat:'resource',img:'iron_block'},
+{name:'Золото',qty:'64 шт.',price:3,cat:'resource',img:'gold_ingot'},
+{name:'Золотой блок',qty:'64 шт.',price:24,cat:'resource',img:'gold_block'},
+{name:'Изумруд',qty:'64 шт.',price:1,cat:'resource',img:'emerald'},
+{name:'Изумрудный блок',qty:'64 шт.',price:8,cat:'resource',img:'emerald_block'},
+{name:'Медь',qty:'64 шт.',price:1,cat:'resource',img:'copper_ingot'},
+{name:'Лазурит',qty:'64 шт.',price:1,cat:'resource',img:'lapis'},
+{name:'Лазуритовый блок',qty:'64 шт.',price:9,cat:'resource',img:'lapis_block'},
+{name:'Осколок аметиста',qty:'64 шт.',price:1,cat:'resource',img:'amethyst'},
+{name:'Кристалл Края',qty:'16 шт.',price:16,cat:'resource',img:'end_crystal'},
+{name:'Сердце моря',qty:'1 шт.',price:64,cat:'resource',img:'heart_of_sea'},
+{name:'Изумрудная руда',qty:'1 шт.',price:10,cat:'ore',img:'emerald_ore'},
+{name:'Медный блок',qty:'64 шт.',price:4,cat:'build',img:'copper_block'},
+{name:'Кварцевый блок',qty:'64 шт.',price:2,cat:'build',img:'quartz_block'},
+{name:'Костяной блок',qty:'64 шт.',price:8,cat:'build',img:'bone_block'},
+{name:'Обсидиан',qty:'64 шт.',price:10,cat:'build',img:'obsidian'},
+{name:'Редстоуновый блок',qty:'32 шт.',price:4,cat:'build',img:'redstone_block'},
+{name:'Малахитовая кварца',qty:'64 шт.',price:4,cat:'build',img:'quartz_block'},
+{name:'Блок слизи',qty:'64 шт.',price:9,cat:'build',img:'slime_block'},
+{name:'Морской фонарь',qty:'64 шт.',price:5,cat:'decor',img:'sea_lantern'},
+{name:'Блок мёда',qty:'16 шт.',price:4,cat:'decor',img:'honey_block'},
+{name:'Блок света',qty:'32 шт.',price:6,cat:'decor',img:'light_block'},
+{name:'Пластинка PigStep',qty:'1 шт.',price:150,cat:'decor',img:'music_disc'},
+{name:'Пластинка Relic',qty:'1 шт.',price:150,cat:'decor',img:'music_disc_relic'},
+{name:'Пластинка Creator',qty:'1 шт.',price:100,cat:'decor',img:'music_disc_creator'},
+{name:'Пластинка Aaron Cherof',qty:'1 шт.',price:175,cat:'decor',img:'music_disc'},
+{name:'Пластинки (прочие)',qty:'1 шт.',price:20,cat:'decor',img:'music_disc'},
+{name:'Отделка «Берег»',qty:'1 шт.',price:8,cat:'decor',img:'smithing_template'},
+{name:'Отделка «Вождь»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
+{name:'Отделка «Вредина»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
+{name:'Отделка «Дебри»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
+{name:'Отделка «Дюна»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
+{name:'Отделка «Искатель»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
+{name:'Отделка «Око»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
+{name:'Отделка «Ось»',qty:'1 шт.',price:8,cat:'decor',img:'smithing_template'},
+{name:'Отделка «Поток»',qty:'1 шт.',price:8,cat:'decor',img:'smithing_template'},
+{name:'Отделка «Прилив»',qty:'1 шт.',price:15,cat:'decor',img:'smithing_template'},
+{name:'Отделка «Ребро»',qty:'1 шт.',price:8,cat:'decor',img:'smithing_template'},
+{name:'Отделка «Рыло»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
+{name:'Отделка «Скульптор»',qty:'1 шт.',price:15,cat:'decor',img:'smithing_template'},
+{name:'Отделка «Собиратель»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
+{name:'Отделка «Страж»',qty:'1 шт.',price:8,cat:'decor',img:'smithing_template'},
+{name:'Отделка «Тишина»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
+{name:'Отделка «Хранитель»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
+{name:'Зелье невидимости',qty:'1 шт.',price:3,cat:'potion',img:'potion_invis'},
+{name:'Зелье ночного зрения',qty:'1 шт.',price:1,cat:'potion',img:'potion_nightvis'},
+{name:'Зелье огнестойкости',qty:'1 шт.',price:1,cat:'potion',img:'potion_fire'},
+{name:'Зелье прыгучести',qty:'1 шт.',price:2,cat:'potion',img:'potion_jump'},
+{name:'Зелье регенерации',qty:'1 шт.',price:2,cat:'potion',img:'potion_regen'},
+{name:'Зелье силы',qty:'1 шт.',price:3,cat:'potion',img:'potion_strength'},
+{name:'Зелье стремительности',qty:'1 шт.',price:2,cat:'potion',img:'potion_speed'},
+{name:'Зелье черепашьей мощи IV',qty:'1 шт.',price:7,cat:'potion',img:'potion_turtle'},
+{name:'Зловещая бутылочка I',qty:'2 шт.',price:2,cat:'potion',img:'ominous_bottle'},
+{name:'Зловещая бутылочка II',qty:'1 шт.',price:2,cat:'potion',img:'ominous_bottle'},
+{name:'Зловещая бутылочка III',qty:'1 шт.',price:2,cat:'potion',img:'ominous_bottle'},
+{name:'Зловещая бутылочка IV',qty:'1 шт.',price:3,cat:'potion',img:'ominous_bottle'},
+{name:'Зловещая бутылочка V',qty:'1 шт.',price:3,cat:'potion',img:'ominous_bottle'},
+{name:'Зачарованное золотое яблоко',qty:'1 шт.',price:9,cat:'food',img:'enchanted_apple'},
+{name:'Золотое яблоко',qty:'16 шт.',price:8,cat:'food',img:'golden_apple'},
+{name:'Золотая морковь',qty:'64 шт.',price:5,cat:'food',img:'golden_carrot'},
+{name:'Хлеб',qty:'64 шт.',price:2,cat:'food',img:'bread'},
+{name:'Жареная рыба',qty:'64 шт.',price:2,cat:'food',img:'cooked_cod'},
+{name:'Жареное мясо',qty:'64 шт.',price:2,cat:'food',img:'cooked_beef'},
+{name:'Морковь',qty:'64 шт.',price:2,cat:'food',img:'carrot'},
+{name:'Яблоко',qty:'64 шт.',price:8,cat:'food',img:'apple'},
+{name:'Тотем бессмертия',qty:'1 шт.',price:2,cat:'misc',img:'totem'},
+{name:'Эндер-жемчуг',qty:'16 шт.',price:4,cat:'misc',img:'ender_pearl'},
+{name:'Незеритовое улучшение',qty:'1 шт.',price:7,cat:'misc',img:'netherite_upgrade'},
+{name:'Маяк',qty:'1 шт.',price:50,cat:'misc',img:'beacon'},
+{name:'Зелье опыта',qty:'1 шт.',price:1,cat:'misc',img:'exp_bottle'},
+{name:'Динамит',qty:'64 шт.',price:18,cat:'misc',img:'tnt'},
+{name:'Драконье дыхание',qty:'16 шт.',price:8,cat:'misc',img:'dragons_breath'},
+{name:'Книга',qty:'64 шт.',price:4,cat:'misc',img:'book'},
+{name:'Кожа',qty:'64 шт.',price:3,cat:'misc',img:'leather'},
+{name:'Незерский нарост',qty:'64 шт.',price:3,cat:'misc',img:'nether_wart'},
+{name:'Огненный порошок',qty:'64 шт.',price:6,cat:'misc',img:'blaze_powder'},
+{name:'Огненный стержень',qty:'32 шт.',price:6,cat:'misc',img:'blaze_rod'},
+{name:'Панцирь шалкера',qty:'16 шт.',price:4,cat:'misc',img:'shulker_shell'},
+{name:'Порох',qty:'64 шт.',price:3,cat:'misc',img:'gunpowder'},
+{name:'Сахарный тростник',qty:'64 шт.',price:1,cat:'misc',img:'sugar_cane'},
+{name:'Слеза гаста',qty:'32 шт.',price:12,cat:'misc',img:'ghast_tear'},
+{name:'Слизь',qty:'64 шт.',price:1,cat:'misc',img:'slimeball'},
+{name:'Стержень вихря',qty:'32 шт.',price:4,cat:'misc',img:'breeze_rod'},
+{name:'Стрела',qty:'64 шт.',price:2,cat:'misc',img:'arrow'},
+{name:'Череп скелета-иссушителя',qty:'1 шт.',price:20,cat:'misc',img:'wither_skull'},
+{name:'Элитры',qty:'1 шт.',price:1500,cat:'misc',img:'elytra'},
+{name:'Фейерверк 1 ур.',qty:'64 шт.',price:5,cat:'misc',img:'firework'},
+{name:'Фейерверк 2 ур.',qty:'64 шт.',price:10,cat:'misc',img:'firework'},
+{name:'Фейерверк 3 ур.',qty:'64 шт.',price:15,cat:'misc',img:'firework'},
+{name:'Зловещий ключ испытаний',qty:'1 шт.',price:3,cat:'misc',img:'ominous_key'},
+{name:'Ключ испытаний',qty:'1 шт.',price:2,cat:'misc',img:'trial_key'},
 ];
-
-let activeCat = 'all', search = '';
-
-function renderCats() {
-  document.getElementById('catList').innerHTML = CATS.map(c => `
-    <button class="cat-btn${c.id===activeCat?' active':''}" onclick="setCat('${c.id}')">
-      <div class="cat-icon"><img src="${c.img}" alt="" onerror="this.style.opacity=0"></div>
-      ${c.label}
-    </button>`).join('');
+let activeCat='all',search='';
+function renderCats(){
+document.getElementById('catList').innerHTML=CATS.map(c=>`<button class="cat-btn${c.id===activeCat?' active':''}" onclick="setCat('${c.id}')"><div class="cat-icon"><img src="${c.img}" alt="" onerror="this.style.opacity=0"></div>${c.label}</button>`).join('');
 }
-
-function setCat(id) {
-  activeCat = id;
-  renderCats();
-  renderItems();
+function setCat(id){activeCat=id;renderCats();renderItems();}
+function clearSearch(){document.getElementById('searchInput').value='';search='';document.getElementById('sClear').style.display='none';renderItems();}
+function renderItems(){
+const q=search.toLowerCase();
+const list=ITEMS.filter(it=>(activeCat==='all'||it.cat===activeCat)&&(!q||it.name.toLowerCase().includes(q)));
+document.getElementById('iCount').textContent=list.length+' товаров';
+if(!list.length){document.getElementById('grid').innerHTML='<div class="no-results">Ничего не найдено</div>';return;}
+document.getElementById('grid').innerHTML=list.map(it=>{
+const url=T[it.img]||'';
+const st=PH[it.img]?` style="filter:${PH[it.img]}"`:' style=""';
+const qh=(it.qty&&it.qty!=='1 шт.')?`<span class="card-qty">${it.qty}</span>`:'';
+return`<div class="item-card"><div class="card-name">${it.name}${qh}</div><div class="card-img"><img src="${url}" alt="${it.name}"${st} loading="lazy"></div><div class="card-price">${it.price}<span class="cur"> вон</span></div></div>`;
+}).join('');
 }
-
-function clearSearch() {
-  document.getElementById('searchInput').value='';
-  search='';
-  document.getElementById('sClear').style.display='none';
-  renderItems();
-}
-
-function renderItems() {
-  const q = search.toLowerCase();
-  const list = ITEMS.filter(it =>
-    (activeCat==='all'||it.cat===activeCat) && (!q||it.name.toLowerCase().includes(q))
-  );
-  document.getElementById('iCount').textContent = list.length + ' товаров';
-
-  if (!list.length) {
-    document.getElementById('grid').innerHTML='<div class="no-results">Ничего не найдено</div>';
-    return;
-  }
-
-  const ps = POTION_STYLE;
-  document.getElementById('grid').innerHTML = list.map(it => {
-    const imgStyle = ps[it.img] ? ` style="${ps[it.img]}"` : '';
-    const qtyHtml = (it.qty && it.qty!=='1 шт.') ? `<span class="card-qty">${it.qty}</span>` : '';
-    return `<div class="item-card">
-      <div class="card-name">${it.name}${qtyHtml}</div>
-      <div class="card-img">
-        <img src="${T[it.img]||''}" alt="${it.name}"${imgStyle}
-          onerror="this.style.opacity='0.15'">
-      </div>
-      <div class="card-price">${it.price}<span class="cur">вон</span></div>
-    </div>`;
-  }).join('');
-}
-
-document.getElementById('searchInput').addEventListener('input', function(){
-  search = this.value;
-  document.getElementById('sClear').style.display = this.value?'block':'none';
-  renderItems();
-});
-
-renderCats();
-renderItems();
+document.getElementById('searchInput').addEventListener('input',function(){search=this.value;document.getElementById('sClear').style.display=this.value?'block':'none';renderItems();});
+renderCats();renderItems();
 </script>
 </body>
 </html>
