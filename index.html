@@ -1,284 +1,176 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sun Federation — SunShield</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 
-:root{
-  --bg:#1a2235;
-  --panel:#1e2d45;
-  --panel2:#243450;
-  --stroke:rgba(255,255,255,0.08);
-  --text:#e0e8f0;
-  --muted:rgba(255,255,255,0.55);
-  --muted2:rgba(255,255,255,0.28);
-  --brand:#2563eb;
-}
-
-body{
-  background: var(--bg);
-  color: var(--text);
+body {
+  background: #151f30;
+  color: #e0e8f0;
   font-family: 'Nunito', sans-serif;
   min-height: 100vh;
 }
 
-body::before{
-  content:'';
-  position: fixed; inset: 0;
-  background: radial-gradient(ellipse 120% 60% at 50% -10%, rgba(30,60,120,0.5) 0%, transparent 60%);
-  pointer-events:none; z-index:0;
-}
-
 /* NAV */
-nav{
-  position: relative; z-index: 100;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:0 32px; height:56px;
-  background: rgba(12,17,32,0.98);
-  border-bottom: 1px solid rgba(255,255,255,0.07);
+nav {
+  position: sticky; top:0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px; height: 54px;
+  background: #0d1420;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
-.nav-brand{ font-size:16px; font-weight:900; color:#fff; letter-spacing:0.2px; }
-.nav-links{ display:flex; gap:4px; }
-.nav-links a{
-  color: rgba(255,255,255,0.5);
-  font-size:13px; font-weight:800;
-  padding:6px 14px; border-radius:8px;
-  transition: all .15s; text-decoration:none;
+.nav-brand { font-size: 15px; font-weight: 900; color: #fff; letter-spacing:.02em; }
+.nav-links { display: flex; gap: 2px; }
+.nav-links a {
+  color: rgba(255,255,255,0.45); font-size: 13px; font-weight: 700;
+  padding: 6px 12px; border-radius: 8px; transition: all .15s; text-decoration: none;
 }
-.nav-links a:hover{ color:#fff; background: rgba(255,255,255,0.07); }
-.btn-site{
-  background: var(--brand); color:#fff; border:none;
-  padding:7px 18px; border-radius:9px; font-size:13px;
-  font-weight:900; cursor:pointer; font-family:inherit;
-  text-decoration:none; transition: filter .15s;
+.nav-links a:hover { color: #fff; background: rgba(255,255,255,0.06); }
+.btn-site {
+  background: #2563eb; color: #fff; border: none;
+  padding: 7px 16px; border-radius: 8px; font-size: 13px;
+  font-weight: 700; cursor: pointer; font-family: inherit;
+  text-decoration: none;
 }
-.btn-site:hover{ filter: brightness(1.08); }
+.btn-site:hover { background: #1d4ed8; }
 
-/* TOP BUTTONS */
-.top-buttons{
-  position: relative; z-index: 10;
-  padding: 20px 32px 0;
-  display:flex; gap:8px; flex-wrap:wrap;
+/* TOP TABS */
+.top-tabs {
+  padding: 16px 28px 0; display: flex; gap: 8px;
 }
-.top-btn{
-  padding: 8px 20px; border-radius: 10px;
-  font-size: 13px; font-weight: 900;
-  cursor: pointer; font-family: inherit; border: none;
-  transition: all .15s;
+.tab-btn {
+  padding: 7px 18px; border-radius: 9px; font-size: 13px;
+  font-weight: 800; cursor: pointer; font-family: inherit; border: none; transition: all .15s;
 }
-.top-btn.active{ background: var(--brand); color:#fff; }
-.top-btn:not(.active){ background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.55); }
-.top-btn:not(.active):hover{ background: rgba(255,255,255,0.12); color:#fff; }
+.tab-btn.active { background: #2563eb; color: #fff; }
+.tab-btn:not(.active) { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.45); }
+.tab-btn:not(.active):hover { background: rgba(255,255,255,0.11); color: #ccc; }
 
 /* LAYOUT */
-.layout{
-  position: relative; z-index: 10;
-  display:flex; gap: 24px;
-  padding: 20px 32px 40px;
-  max-width: 1400px;
-  margin: 0 auto;
-  align-items:flex-start;
+.layout {
+  display: flex; gap: 0; padding: 18px 28px 40px;
+  max-width: 1400px; margin: 0 auto; align-items: flex-start;
 }
 
 /* SIDEBAR */
-.sidebar{ width: 240px; flex-shrink:0; }
-.sidebar-title{
-  font-size: 22px; font-weight: 1000;
-  color:#fff; margin-bottom: 14px; padding-left: 4px;
+.sidebar { width: 210px; flex-shrink: 0; margin-right: 20px; }
+.sidebar-title { font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 12px; padding-left: 2px; }
+.cat-list { display: flex; flex-direction: column; gap: 3px; }
+.cat-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px; border-radius: 11px; border: none;
+  color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 700;
+  cursor: pointer; font-family: inherit; width: 100%; text-align: left;
+  transition: all .15s; background: transparent;
 }
-.cat-list{ display:flex; flex-direction:column; gap:4px; }
-.cat-btn{
-  display:flex; align-items:center; gap:10px;
-  padding: 9px 12px;
-  border-radius: 12px;
-  border: 1px solid transparent;
-  color: rgba(255,255,255,0.70);
-  font-size: 14px; font-weight: 900;
-  cursor:pointer; font-family:inherit;
-  width:100%; text-align:left;
-  transition: all .15s;
-  background: transparent;
-}
-.cat-btn:hover{
-  background: rgba(255,255,255,0.06);
-  border-color: rgba(255,255,255,0.06);
-  color:#fff;
-}
-.cat-btn.active{
-  background: var(--brand);
-  color:#fff;
-}
-.cat-icon-wrap{
-  width: 30px; height: 30px; border-radius: 9px;
+.cat-btn:hover { background: rgba(255,255,255,0.06); color: #ddd; }
+.cat-btn.active { background: #2563eb; color: #fff; }
+.cat-icon {
+  width: 28px; height: 28px; border-radius: 7px;
   background: rgba(255,255,255,0.08);
-  display:flex; align-items:center; justify-content:center;
-  flex-shrink:0; overflow:hidden;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
 }
-.cat-btn.active .cat-icon-wrap{ background: rgba(255,255,255,0.18); }
-.cat-icon-wrap img{
-  width: 22px; height: 22px;
-  image-rendering: pixelated;
-  object-fit: contain;
+.cat-btn.active .cat-icon { background: rgba(255,255,255,0.18); }
+.cat-icon img {
+  width: 20px; height: 20px;
+  image-rendering: pixelated; object-fit: contain;
 }
-
-/* MAIN */
-.shop-main{ flex:1; min-width:0; }
 
 /* SEARCH */
-.search-wrap{ margin-bottom: 14px; }
-.search-box{ position: relative; }
-.search-box input{
-  width:100%;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 12px;
-  color:#fff;
-  font-size: 14px; font-family:inherit; font-weight: 800;
-  padding: 11px 16px 11px 44px;
-  outline:none;
-  transition: border-color .2s, background .2s;
+.search-row { display:flex; align-items:center; gap:10px; margin-bottom: 14px; }
+.search-box { position: relative; flex:1; }
+.search-box input {
+  width: 100%; background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.09); border-radius: 11px;
+  color: #fff; font-size: 13px; font-family: inherit; font-weight: 700;
+  padding: 10px 36px 10px 38px; outline: none; transition: border-color .2s;
 }
-.search-box input::placeholder{ color: rgba(255,255,255,0.25); font-weight: 700; }
-.search-box input:focus{
-  border-color: var(--brand);
-  background: rgba(255,255,255,0.09);
+.search-box input::placeholder { color: rgba(255,255,255,0.22); }
+.search-box input:focus { border-color: #2563eb; }
+.s-ico { position:absolute; left:12px; top:50%; transform:translateY(-50%); opacity:.3; pointer-events:none; }
+.s-clear {
+  position:absolute; right:10px; top:50%; transform:translateY(-50%);
+  background:none; border:none; color:rgba(255,255,255,.35); cursor:pointer;
+  font-size:15px; display:none; padding:2px 5px; font-family:inherit; line-height:1;
 }
-.s-icon{
-  position:absolute; left:14px; top:50%;
-  transform: translateY(-50%);
-  opacity: 0.35;
-}
-.search-clear{
-  position:absolute; right:12px; top:50%;
-  transform: translateY(-50%);
-  background:none; border:none;
-  color: rgba(255,255,255,0.45);
-  cursor:pointer;
-  font-size: 16px;
-  display:none;
-  padding: 4px 6px;
-}
-.search-clear:hover{ color:#fff; }
+.s-clear:hover { color:#fff; }
+.items-count { font-size:12px; font-weight:700; color:rgba(255,255,255,.25); white-space:nowrap; }
+
+/* MAIN */
+.shop-main { flex:1; min-width:0; }
 
 /* GRID */
-.items-grid{
-  display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 12px;
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 9px;
 }
 
-/* CARD */
-.item-card{
-  background: var(--panel);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 16px;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  transition: transform .15s, box-shadow .15s, border-color .15s;
+/* CARD — like screenshot: name top, image center, price bottom bar */
+.item-card {
+  background: #1e2d45;
+  border-radius: 13px; overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform .15s, box-shadow .15s;
 }
-.item-card:hover{
-  transform: translateY(-3px);
-  border-color: rgba(255,255,255,0.10);
-  box-shadow: 0 14px 36px rgba(0,0,0,0.55);
+.item-card:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,.55); }
+
+.card-name {
+  padding: 9px 8px 5px;
+  font-size: 11.5px; font-weight: 800; color: #c5d8ef;
+  text-align: center; line-height: 1.3;
+  min-height: 34px;
+  display: flex; flex-direction:column; align-items: center; justify-content: center;
+}
+.card-qty {
+  font-size: 10px; font-weight: 600;
+  color: rgba(180,210,240,0.38); margin-top: 1px;
+  display:block;
 }
 
-.item-name-top{
-  padding: 10px 10px 6px;
-  text-align:center;
-  min-height: 48px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap: 3px;
+.card-img {
+  display: flex; align-items: center; justify-content: center;
+  padding: 10px 8px; min-height: 90px;
+  background: #1e2d45;
 }
-.item-name-top .title{
-  font-size: 12px;
-  font-weight: 1000;
-  color: #d6e3ff;
-  line-height: 1.25;
-}
-.item-name-top .item-qty-label{
-  font-size: 10px;
-  font-weight: 800;
-  color: rgba(200,216,240,0.45);
+.card-img img {
+  width: 68px; height: 68px;
+  image-rendering: pixelated; object-fit: contain;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,.6));
 }
 
-.item-img-area{
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding: 12px;
-  min-height: 102px;
+.card-price {
+  background: #243450;
+  padding: 9px 10px; text-align: center;
+  font-size: 17px; font-weight: 900; color: #fff; letter-spacing:.01em;
 }
-.item-img-area img{
-  width: 76px; height: 76px;
-  image-rendering: pixelated;
-  object-fit: contain;
-  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.55));
-}
-.img-placeholder{
-  width: 76px; height: 76px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 12px;
-  border: 1px dashed rgba(255,255,255,0.10);
-}
-
-.item-price-bar{
-  background: var(--panel2);
-  padding: 10px 12px;
-  text-align:center;
-  font-size: 18px;
-  font-weight: 1000;
-  color:#fff;
-  letter-spacing: 0.01em;
-}
-.item-price-bar .cur{
-  font-size: 12px;
-  font-weight: 900;
-  color: rgba(255,255,255,0.45);
-  margin-left: 3px;
-}
+.card-price .cur { font-size:11px; font-weight:700; color:rgba(255,255,255,.4); margin-left:2px; }
 
 /* NO RESULTS */
-.no-results{
-  grid-column:1/-1;
-  text-align:center;
-  padding: 60px 20px;
-  color: rgba(255,255,255,0.28);
-  font-size: 15px;
-  font-weight: 900;
+.no-results {
+  grid-column:1/-1; text-align:center; padding:50px 20px;
+  color:rgba(255,255,255,.2); font-size:14px; font-weight:700;
 }
 
 /* FOOTER */
-footer{
-  position: relative; z-index: 10;
-  background: rgba(10,14,25,0.85);
-  border-top: 1px solid rgba(255,255,255,0.06);
-  padding: 26px 32px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 10px;
-  flex-wrap:wrap;
+footer {
+  background:#0d1420; border-top:1px solid rgba(255,255,255,.05);
+  padding:22px 28px; display:flex; align-items:center; justify-content:space-between;
 }
-.footer-brand{ font-size: 14px; font-weight: 1000; color: rgba(255,255,255,0.55); }
-.footer-copy{ font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.22); }
+.footer-brand { font-size:13px; font-weight:800; color:rgba(255,255,255,.4); }
+.footer-copy { font-size:11px; color:rgba(255,255,255,.18); }
 
-@media(max-width:900px){
-  .layout{ flex-direction:column; padding:16px; gap: 14px; }
-  .sidebar{ width:100%; }
-  .cat-list{ flex-direction:row; flex-wrap:wrap; }
-  .cat-btn{ width:auto; }
-  nav{ padding:0 16px; }
-  .nav-links{ display:none; }
-  .top-buttons{ padding:14px 16px 0; }
+@media(max-width:780px){
+  .layout{flex-direction:column;padding:12px;}
+  .sidebar{width:100%;margin-right:0;margin-bottom:14px;}
+  .cat-list{flex-direction:row;flex-wrap:wrap;}
+  nav{padding:0 14px;} .nav-links{display:none;}
+  .top-tabs{padding:12px 14px 0;}
 }
 </style>
 </head>
@@ -287,40 +179,35 @@ footer{
 <nav>
   <div class="nav-brand">Sun Federation</div>
   <div class="nav-links">
-    <a href="#">Снаряжение</a>
-    <a href="#">Зачарования</a>
-    <a href="#">Ресурсы</a>
-    <a href="#">Зелья</a>
+    <a href="#" onclick="setCategory('weapon');return false">Оружие</a>
+    <a href="#" onclick="setCategory('enchant');return false">Зачарования</a>
+    <a href="#" onclick="setCategory('resource');return false">Ресурсы</a>
+    <a href="#" onclick="setCategory('potion');return false">Зелья</a>
   </div>
   <a href="https://chanland4.vercel.app" target="_blank" class="btn-site">Основной сайт</a>
 </nav>
 
-<div class="top-buttons" id="topButtons">
-  <button class="top-btn active" data-mode="recommended">Рекомендуемые</button>
-  <button class="top-btn" data-mode="minimal">Минимальные</button>
-  <button class="top-btn" data-mode="all">Все</button>
+<div class="top-tabs">
+  <button class="tab-btn active">Рекомендуемые</button>
+  <button class="tab-btn" onclick="this.parentElement.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Минимальные</button>
 </div>
 
 <div class="layout">
   <aside class="sidebar">
     <div class="sidebar-title">Категории</div>
-
-    <div class="search-wrap">
-      <div class="search-box">
-        <svg class="s-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"/>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
-        <input type="text" id="searchInput" placeholder="Поиск товаров...">
-        <button class="search-clear" id="searchClear" type="button" title="Очистить">✕</button>
-      </div>
-    </div>
-
     <div class="cat-list" id="catList"></div>
   </aside>
 
   <main class="shop-main">
-    <div class="items-grid" id="itemsGrid"></div>
+    <div class="search-row">
+      <div class="search-box">
+        <svg class="s-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="Поиск товаров...">
+        <button class="s-clear" id="sClear" onclick="clearSearch()">✕</button>
+      </div>
+      <div class="items-count" id="iCount"></div>
+    </div>
+    <div class="items-grid" id="grid"></div>
   </main>
 </div>
 
@@ -330,169 +217,150 @@ footer{
 </footer>
 
 <script>
-/**
- * 1) Нормальные текстуры: mcasset.cloud (версия ассетов)
- * 2) Категории без inline onclick (делегирование событий)
- */
+// Using mcasset.cloud - official Minecraft texture hosting, no hotlink protection
+const A = 'https://mcasset.cloud/1.21.4/assets/minecraft/textures/item/';
+const B = 'https://mcasset.cloud/1.21.4/assets/minecraft/textures/block/';
+const E = 'https://mcasset.cloud/1.21.4/assets/minecraft/textures/entity/';
 
-const MC_VER = '1.21.1';
-const BASE = `https://mcasset.cloud/${MC_VER}/assets/minecraft/textures/`;
-const texItem  = (name) => `${BASE}item/${name}.png`;
-const texBlock = (name) => `${BASE}block/${name}.png`;
-
-/* Универсальная карта изображений */
-const IMG = {
-  // weapons
-  sword_netherite: texItem('netherite_sword'),
-  axe_netherite: texItem('netherite_axe'),
-  trident: texItem('trident'),
-  mace: texItem('mace'),
-  bow: texItem('bow'),
-  arrow: texItem('arrow'),
-
-  // armor
-  helmet_netherite: texItem('netherite_helmet'),
-  chestplate_netherite: texItem('netherite_chestplate'),
-  leggings_netherite: texItem('netherite_leggings'),
-  boots_netherite: texItem('netherite_boots'),
-  helmet_diamond: texItem('diamond_helmet'),
-  chestplate_diamond: texItem('diamond_chestplate'),
-  leggings_diamond: texItem('diamond_leggings'),
-  boots_diamond: texItem('diamond_boots'),
-
-  // tools
-  pickaxe_netherite: texItem('netherite_pickaxe'),
-  shovel_netherite: texItem('netherite_shovel'),
-  hoe_netherite: texItem('netherite_hoe'),
-  pickaxe_diamond: texItem('diamond_pickaxe'),
-  fishing_rod: texItem('fishing_rod'),
-
-  // enchants
-  enchanted_book: texItem('enchanted_book'),
-
-  // resources & misc items
-  netherite_ingot: texItem('netherite_ingot'),
-  ancient_debris: texBlock('ancient_debris'),
-  diamond: texItem('diamond'),
-  diamond_block: texBlock('diamond_block'),
-  iron_ingot: texItem('iron_ingot'),
-  iron_block: texBlock('iron_block'),
-  gold_ingot: texItem('gold_ingot'),
-  gold_block: texBlock('gold_block'),
-  emerald: texItem('emerald'),
-  emerald_block: texBlock('emerald_block'),
-  emerald_ore: texBlock('emerald_ore'),
-  copper_ingot: texItem('copper_ingot'),
-  copper_block: texBlock('copper_block'),
-  quartz_block: texBlock('quartz_block'),
-  bone_block: texBlock('bone_block'),
-  obsidian: texBlock('obsidian'),
-  sea_lantern: texBlock('sea_lantern'),
-  end_crystal: texItem('end_crystal'),
-  totem: texItem('totem_of_undying'),
-  ender_pearl: texItem('ender_pearl'),
-  netherite_upgrade: texItem('netherite_upgrade_smithing_template'),
-  beacon: texItem('beacon'),
-  exp_bottle: texItem('experience_bottle'),
-  lapis: texItem('lapis_lazuli'),
-  lapis_block: texBlock('lapis_block'),
-  tnt: texBlock('tnt'),
-  gunpowder: texItem('gunpowder'),
-  firework: texItem('firework_rocket'),
-  elytra: texItem('elytra'),
-  ghast_tear: texItem('ghast_tear'),
-  breeze_rod: texItem('breeze_rod'),
-  slime_block: texBlock('slime_block'),
-  honey_block: texBlock('honey_block'),
-  bread: texItem('bread'),
-  carrot: texItem('carrot'),
-  cooked_cod: texItem('cooked_cod'),
-  cooked_beef: texItem('cooked_beef'),
-  shulker_shell: texItem('shulker_shell'),
-  heart_of_sea: texItem('heart_of_the_sea'),
-  redstone_block: texBlock('redstone_block'),
-  amethyst: texItem('amethyst_shard'),
-  nether_wart: texItem('nether_wart'),
-  blaze_powder: texItem('blaze_powder'),
-  blaze_rod: texItem('blaze_rod'),
-  slimeball: texItem('slime_ball'),
-  light_block: texBlock('light'),
-  book: texItem('book'),
-  leather: texItem('leather'),
-  apple: texItem('apple'),
-  dragons_breath: texItem('dragon_breath'),
-  smithing_template: texItem('smithing_template'),
-  sugar_cane: texItem('sugar_cane'),
-  trial_key: texItem('trial_key'),
-  ominous_key: texItem('ominous_trial_key'),
-  wither_skull: texItem('wither_skeleton_skull'),
-
-  // potions (в Minecraft одна текстура + tint, поэтому честный вариант — potion.png)
-  potion_invis: texItem('potion'),
-  potion_nightvis: texItem('potion'),
-  potion_fire: texItem('potion'),
-  potion_jump: texItem('potion'),
-  potion_regen: texItem('potion'),
-  potion_strength: texItem('potion'),
-  potion_speed: texItem('potion'),
-  potion_turtle: texItem('potion'),
-  ominous_bottle: texItem('ominous_bottle'),
-
-  // food
-  golden_apple: texItem('golden_apple'),
-  enchanted_apple: texItem('enchanted_golden_apple'),
-  golden_carrot: texItem('golden_carrot'),
-
-  // music discs
-  music_disc_pigstep: texItem('music_disc_pigstep'),
-  music_disc_relic: texItem('music_disc_relic'),
-  music_disc_creator: texItem('music_disc_creator'),
-  music_disc_creator_music_box: texItem('music_disc_creator_music_box'),
-  music_disc_generic: texItem('music_disc_13'),
-
-  // fallback
-  fallback: texItem('barrier'),
+const T = {
+  // Weapons
+  sword_netherite:      A+'netherite_sword.png',
+  axe_netherite:        A+'netherite_axe.png',
+  trident:              A+'trident.png',
+  mace:                 A+'mace.png',
+  bow:                  A+'bow.png',
+  crossbow:             A+'crossbow_standby.png',
+  // Armor
+  helmet_netherite:     A+'netherite_helmet.png',
+  chestplate_netherite: A+'netherite_chestplate.png',
+  leggings_netherite:   A+'netherite_leggings.png',
+  boots_netherite:      A+'netherite_boots.png',
+  helmet_diamond:       A+'diamond_helmet.png',
+  chestplate_diamond:   A+'diamond_chestplate.png',
+  leggings_diamond:     A+'diamond_leggings.png',
+  boots_diamond:        A+'diamond_boots.png',
+  // Tools
+  pickaxe_netherite:    A+'netherite_pickaxe.png',
+  shovel_netherite:     A+'netherite_shovel.png',
+  hoe_netherite:        A+'netherite_hoe.png',
+  pickaxe_diamond:      A+'diamond_pickaxe.png',
+  fishing_rod:          A+'fishing_rod.png',
+  // Enchanting
+  enchanted_book:       A+'enchanted_book.png',
+  // Resources
+  netherite_ingot:      A+'netherite_ingot.png',
+  ancient_debris:       B+'ancient_debris_top.png',
+  diamond:              A+'diamond.png',
+  diamond_block:        B+'diamond_block.png',
+  iron_ingot:           A+'iron_ingot.png',
+  iron_block:           B+'iron_block.png',
+  gold_ingot:           A+'gold_ingot.png',
+  gold_block:           B+'gold_block.png',
+  emerald:              A+'emerald.png',
+  emerald_block:        B+'emerald_block.png',
+  emerald_ore:          B+'emerald_ore.png',
+  copper_ingot:         A+'copper_ingot.png',
+  copper_block:         B+'copper_block.png',
+  quartz_block:         B+'quartz_block_side.png',
+  bone_block:           B+'bone_block_top.png',
+  obsidian:             B+'obsidian.png',
+  sea_lantern:          B+'sea_lantern.png',
+  end_crystal:          A+'end_crystal.png',
+  totem:                A+'totem_of_undying.png',
+  ender_pearl:          A+'ender_pearl.png',
+  netherite_upgrade:    A+'netherite_upgrade_smithing_template.png',
+  golden_apple:         A+'golden_apple.png',
+  enchanted_apple:      A+'enchanted_golden_apple.png',
+  golden_carrot:        A+'golden_carrot.png',
+  beacon:               B+'beacon.png',
+  exp_bottle:           A+'experience_bottle.png',
+  lapis:                A+'lapis_lazuli.png',
+  lapis_block:          B+'lapis_block.png',
+  tnt:                  B+'tnt_side.png',
+  gunpowder:            A+'gunpowder.png',
+  arrow:                A+'arrow.png',
+  firework:             A+'firework_rocket.png',
+  elytra:               A+'elytra.png',
+  ghast_tear:           A+'ghast_tear.png',
+  breeze_rod:           A+'breeze_rod.png',
+  slime_block:          B+'slime_block.png',
+  honey_block:          B+'honey_block_side.png',
+  bread:                A+'bread.png',
+  carrot:               A+'carrot.png',
+  shulker_shell:        A+'shulker_shell.png',
+  heart_of_sea:         A+'heart_of_the_sea.png',
+  redstone_block:       B+'redstone_block.png',
+  amethyst:             A+'amethyst_shard.png',
+  nether_wart:          A+'nether_wart.png',
+  blaze_powder:         A+'blaze_powder.png',
+  blaze_rod:            A+'blaze_rod.png',
+  slimeball:            A+'slimeball.png',
+  light_block:          B+'light_block_15.png',
+  book:                 A+'book.png',
+  leather:              A+'leather.png',
+  music_disc:           A+'music_disc_pigstep.png',
+  ominous_bottle:       A+'ominous_bottle.png',
+  trial_key:            A+'trial_key.png',
+  ominous_key:          A+'ominous_trial_key.png',
+  wither_skull:         A+'wither_skeleton_skull.png',
+  apple:                A+'apple.png',
+  cooked_cod:           A+'cooked_cod.png',
+  cooked_beef:          A+'cooked_beef.png',
+  dragons_breath:       A+'dragon_breath.png',
+  smithing_template:    A+'netherite_upgrade_smithing_template.png',
+  sugar_cane:           B+'sugar_cane.png',
+  potion_invis:         A+'potion.png',
+  potion_nightvis:      A+'potion.png',
+  potion_fire:          A+'potion.png',
+  potion_jump:          A+'potion.png',
+  potion_regen:         A+'potion.png',
+  potion_strength:      A+'potion.png',
+  potion_speed:         A+'potion.png',
+  potion_turtle:        A+'potion.png',
+  // potions with tint via CSS filter
+  music_disc_relic:     A+'music_disc_relic.png',
+  music_disc_creator:   A+'music_disc_creator.png',
+  netherite_scrap:      A+'netherite_scrap.png',
+  gold_nugget:          A+'gold_nugget.png',
+  chorus_fruit:         A+'chorus_fruit.png',
+  string:               A+'string.png',
 };
 
-const CAT_IMG = {
-  all:      IMG.diamond,
-  weapon:   IMG.sword_netherite,
-  armor:    IMG.chestplate_netherite,
-  tool:     IMG.pickaxe_netherite,
-  enchant:  IMG.enchanted_book,
-  resource: IMG.netherite_ingot,
-  potion:   IMG.ominous_bottle,
-  food:     IMG.golden_apple,
-  build:    IMG.obsidian,
-  ore:      IMG.emerald_ore,
-  decor:    IMG.sea_lantern,
-  misc:     IMG.totem,
+// Potion colours (hue-rotate) to differentiate them
+const POTION_STYLE = {
+  potion_invis:    'filter:hue-rotate(220deg) saturate(0.3)',
+  potion_nightvis: 'filter:hue-rotate(45deg) saturate(1.5)',
+  potion_fire:     'filter:hue-rotate(340deg) saturate(2)',
+  potion_jump:     'filter:hue-rotate(90deg) saturate(1.8)',
+  potion_regen:    'filter:hue-rotate(300deg) saturate(2)',
+  potion_strength: 'filter:hue-rotate(0deg) saturate(2)',
+  potion_speed:    'filter:hue-rotate(150deg) saturate(2)',
+  potion_turtle:   'filter:hue-rotate(200deg) saturate(1.5)',
 };
 
-const CATEGORIES = [
-  {id:'all',label:'Все'},
-  {id:'decor',label:'Декорации'},
-  {id:'tool',label:'Инструменты'},
-  {id:'weapon',label:'Оружие'},
-  {id:'armor',label:'Броня'},
-  {id:'build',label:'Строительство'},
-  {id:'enchant',label:'Зачарование'},
-  {id:'ore',label:'Руда'},
-  {id:'potion',label:'Зельеварение'},
-  {id:'resource',label:'Ресурсы'},
-  {id:'food',label:'Еда'},
-  {id:'misc',label:'Прочее'},
+const CATS = [
+  {id:'all',     label:'Все',          img:T.diamond},
+  {id:'weapon',  label:'Оружие',       img:T.sword_netherite},
+  {id:'armor',   label:'Броня',        img:T.chestplate_netherite},
+  {id:'tool',    label:'Инструменты',  img:T.pickaxe_netherite},
+  {id:'enchant', label:'Зачарование',  img:T.enchanted_book},
+  {id:'resource',label:'Ресурсы',      img:T.netherite_ingot},
+  {id:'build',   label:'Строительство',img:T.obsidian},
+  {id:'decor',   label:'Декорации',    img:T.sea_lantern},
+  {id:'ore',     label:'Руда',         img:T.emerald_ore},
+  {id:'potion',  label:'Зельеварение', img:T.ominous_bottle},
+  {id:'food',    label:'Еда',          img:T.golden_apple},
+  {id:'misc',    label:'Прочее',       img:T.totem},
 ];
 
 const ITEMS = [
-  // WEAPONS
+  // WEAPON
   {name:'Незеритовый меч (фулл зачар)',qty:'без починки',price:90,cat:'weapon',img:'sword_netherite'},
   {name:'Незеритовый меч',qty:'1 шт.',price:24,cat:'weapon',img:'sword_netherite'},
   {name:'Незеритовый топор',qty:'1 шт.',price:24,cat:'weapon',img:'axe_netherite'},
   {name:'Трезубец',qty:'1 шт.',price:16,cat:'weapon',img:'trident'},
   {name:'Булава',qty:'1 шт.',price:16,cat:'weapon',img:'mace'},
   {name:'Лук (фулл зачар)',qty:'1 шт.',price:10,cat:'weapon',img:'bow'},
-
   // ARMOR
   {name:'Незеритовый шлем (топ зачар)',qty:'1 шт.',price:65,cat:'armor',img:'helmet_netherite'},
   {name:'Незеритовый шлем',qty:'1 шт.',price:26,cat:'armor',img:'helmet_netherite'},
@@ -506,7 +374,6 @@ const ITEMS = [
   {name:'Алмазный нагрудник',qty:'1 шт.',price:3,cat:'armor',img:'chestplate_diamond'},
   {name:'Алмазные поножи',qty:'1 шт.',price:3,cat:'armor',img:'leggings_diamond'},
   {name:'Алмазные ботинки',qty:'1 шт.',price:2,cat:'armor',img:'boots_diamond'},
-
   // TOOLS
   {name:'Незеритовая кирка (топ зачар)',qty:'без починки',price:46,cat:'tool',img:'pickaxe_netherite'},
   {name:'Незеритовая кирка',qty:'1 шт.',price:25,cat:'tool',img:'pickaxe_netherite'},
@@ -514,7 +381,6 @@ const ITEMS = [
   {name:'Незеритовая лопата',qty:'1 шт.',price:22,cat:'tool',img:'shovel_netherite'},
   {name:'Незеритовая мотыга',qty:'1 шт.',price:22,cat:'tool',img:'hoe_netherite'},
   {name:'Удочка (фулл зачар)',qty:'1 шт.',price:10,cat:'tool',img:'fishing_rod'},
-
   // ENCHANTS
   {name:'Починка',qty:'книга',price:200,cat:'enchant',img:'enchanted_book'},
   {name:'Проворство III',qty:'книга',price:500,cat:'enchant',img:'enchanted_book'},
@@ -556,7 +422,6 @@ const ITEMS = [
   {name:'Сила V',qty:'книга',price:12,cat:'enchant',img:'enchanted_book'},
   {name:'Тройной выстрел',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
   {name:'Тягун III',qty:'книга',price:23,cat:'enchant',img:'enchanted_book'},
-
   // RESOURCES
   {name:'Незеритовый слиток',qty:'1 шт.',price:23,cat:'resource',img:'netherite_ingot'},
   {name:'Древние обломки',qty:'1 шт.',price:5,cat:'resource',img:'ancient_debris'},
@@ -574,10 +439,8 @@ const ITEMS = [
   {name:'Осколок аметиста',qty:'64 шт.',price:1,cat:'resource',img:'amethyst'},
   {name:'Кристалл Края',qty:'16 шт.',price:16,cat:'resource',img:'end_crystal'},
   {name:'Сердце моря',qty:'1 шт.',price:64,cat:'resource',img:'heart_of_sea'},
-
   // ORE
   {name:'Изумрудная руда',qty:'1 шт.',price:10,cat:'ore',img:'emerald_ore'},
-
   // BUILD
   {name:'Медный блок',qty:'64 шт.',price:4,cat:'build',img:'copper_block'},
   {name:'Кварцевый блок',qty:'64 шт.',price:2,cat:'build',img:'quartz_block'},
@@ -586,16 +449,15 @@ const ITEMS = [
   {name:'Редстоуновый блок',qty:'32 шт.',price:4,cat:'build',img:'redstone_block'},
   {name:'Малахитовая кварца',qty:'64 шт.',price:4,cat:'build',img:'quartz_block'},
   {name:'Блок слизи',qty:'64 шт.',price:9,cat:'build',img:'slime_block'},
-
   // DECOR
   {name:'Морской фонарь',qty:'64 шт.',price:5,cat:'decor',img:'sea_lantern'},
   {name:'Блок мёда',qty:'16 шт.',price:4,cat:'decor',img:'honey_block'},
   {name:'Блок света',qty:'32 шт.',price:6,cat:'decor',img:'light_block'},
-  {name:'Пластинка PigStep',qty:'1 шт.',price:150,cat:'decor',img:'music_disc_pigstep'},
+  {name:'Пластинка PigStep',qty:'1 шт.',price:150,cat:'decor',img:'music_disc'},
   {name:'Пластинка Relic',qty:'1 шт.',price:150,cat:'decor',img:'music_disc_relic'},
-  {name:'Пластинка Aaron Cherof',qty:'1 шт.',price:175,cat:'decor',img:'music_disc_creator_music_box'},
   {name:'Пластинка Creator',qty:'1 шт.',price:100,cat:'decor',img:'music_disc_creator'},
-  {name:'Пластинки (прочие)',qty:'1 шт.',price:20,cat:'decor',img:'music_disc_generic'},
+  {name:'Пластинка Aaron Cherof',qty:'1 шт.',price:175,cat:'decor',img:'music_disc'},
+  {name:'Пластинки (прочие)',qty:'1 шт.',price:20,cat:'decor',img:'music_disc'},
   {name:'Отделка «Берег»',qty:'1 шт.',price:8,cat:'decor',img:'smithing_template'},
   {name:'Отделка «Вождь»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
   {name:'Отделка «Вредина»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
@@ -613,7 +475,6 @@ const ITEMS = [
   {name:'Отделка «Страж»',qty:'1 шт.',price:8,cat:'decor',img:'smithing_template'},
   {name:'Отделка «Тишина»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
   {name:'Отделка «Хранитель»',qty:'1 шт.',price:10,cat:'decor',img:'smithing_template'},
-
   // POTIONS
   {name:'Зелье невидимости',qty:'1 шт.',price:3,cat:'potion',img:'potion_invis'},
   {name:'Зелье ночного зрения',qty:'1 шт.',price:1,cat:'potion',img:'potion_nightvis'},
@@ -628,7 +489,6 @@ const ITEMS = [
   {name:'Зловещая бутылочка III',qty:'1 шт.',price:2,cat:'potion',img:'ominous_bottle'},
   {name:'Зловещая бутылочка IV',qty:'1 шт.',price:3,cat:'potion',img:'ominous_bottle'},
   {name:'Зловещая бутылочка V',qty:'1 шт.',price:3,cat:'potion',img:'ominous_bottle'},
-
   // FOOD
   {name:'Зачарованное золотое яблоко',qty:'1 шт.',price:9,cat:'food',img:'enchanted_apple'},
   {name:'Золотое яблоко',qty:'16 шт.',price:8,cat:'food',img:'golden_apple'},
@@ -638,7 +498,6 @@ const ITEMS = [
   {name:'Жареное мясо',qty:'64 шт.',price:2,cat:'food',img:'cooked_beef'},
   {name:'Морковь',qty:'64 шт.',price:2,cat:'food',img:'carrot'},
   {name:'Яблоко',qty:'64 шт.',price:8,cat:'food',img:'apple'},
-
   // MISC
   {name:'Тотем бессмертия',qty:'1 шт.',price:2,cat:'misc',img:'totem'},
   {name:'Эндер-жемчуг',qty:'16 шт.',price:4,cat:'misc',img:'ender_pearl'},
@@ -668,109 +527,63 @@ const ITEMS = [
   {name:'Ключ испытаний',qty:'1 шт.',price:2,cat:'misc',img:'trial_key'},
 ];
 
-let activeCategory = 'all';
-let searchQuery = '';
-let topMode = 'recommended'; // recommended | minimal | all
+let activeCat = 'all', search = '';
 
-const catListEl = document.getElementById('catList');
-const itemsGridEl = document.getElementById('itemsGrid');
-const searchInputEl = document.getElementById('searchInput');
-const searchClearEl = document.getElementById('searchClear');
-const topButtonsEl = document.getElementById('topButtons');
-
-function renderCategories(){
-  catListEl.innerHTML = CATEGORIES.map(c => {
-    const isActive = c.id === activeCategory;
-    const icon = CAT_IMG[c.id] || IMG.fallback;
-    return `
-      <button class="cat-btn ${isActive ? 'active' : ''}" type="button" data-cat="${c.id}">
-        <div class="cat-icon-wrap">
-          <img src="${icon}" alt="">
-        </div>
-        ${c.label}
-      </button>
-    `;
-  }).join('');
+function renderCats() {
+  document.getElementById('catList').innerHTML = CATS.map(c => `
+    <button class="cat-btn${c.id===activeCat?' active':''}" onclick="setCat('${c.id}')">
+      <div class="cat-icon"><img src="${c.img}" alt="" onerror="this.style.opacity=0"></div>
+      ${c.label}
+    </button>`).join('');
 }
 
-function passTopMode(item){
-  if (topMode === 'all') return true;
-  if (topMode === 'recommended') return item.price >= 10; // можно поменять правило
-  if (topMode === 'minimal') return item.price <= 5;      // можно поменять правило
-  return true;
+function setCat(id) {
+  activeCat = id;
+  renderCats();
+  renderItems();
 }
 
-function renderItems(){
-  const q = searchQuery.trim().toLowerCase();
+function clearSearch() {
+  document.getElementById('searchInput').value='';
+  search='';
+  document.getElementById('sClear').style.display='none';
+  renderItems();
+}
 
-  const filtered = ITEMS.filter(item => {
-    const okCat = (activeCategory === 'all' || item.cat === activeCategory);
-    const okSearch = (!q || item.name.toLowerCase().includes(q));
-    const okMode = passTopMode(item);
-    return okCat && okSearch && okMode;
-  });
+function renderItems() {
+  const q = search.toLowerCase();
+  const list = ITEMS.filter(it =>
+    (activeCat==='all'||it.cat===activeCat) && (!q||it.name.toLowerCase().includes(q))
+  );
+  document.getElementById('iCount').textContent = list.length + ' товаров';
 
-  if (!filtered.length){
-    itemsGridEl.innerHTML = `<div class="no-results">Ничего не найдено</div>`;
+  if (!list.length) {
+    document.getElementById('grid').innerHTML='<div class="no-results">Ничего не найдено</div>';
     return;
   }
 
-  itemsGridEl.innerHTML = filtered.map(item => {
-    const qtyLabel = (item.qty && item.qty !== '1 шт.') ? `<div class="item-qty-label">${item.qty}</div>` : '';
-    const src = IMG[item.img] || IMG.fallback;
-
-    return `
-      <div class="item-card">
-        <div class="item-name-top">
-          <div class="title">${item.name}</div>
-          ${qtyLabel}
-        </div>
-        <div class="item-img-area">
-          <img src="${src}" alt="${item.name}"
-               onerror="this.outerHTML='<div class=&quot;img-placeholder&quot;></div>'">
-        </div>
-        <div class="item-price-bar">${item.price}<span class="cur"> вон</span></div>
+  const ps = POTION_STYLE;
+  document.getElementById('grid').innerHTML = list.map(it => {
+    const imgStyle = ps[it.img] ? ` style="${ps[it.img]}"` : '';
+    const qtyHtml = (it.qty && it.qty!=='1 шт.') ? `<span class="card-qty">${it.qty}</span>` : '';
+    return `<div class="item-card">
+      <div class="card-name">${it.name}${qtyHtml}</div>
+      <div class="card-img">
+        <img src="${T[it.img]||''}" alt="${it.name}"${imgStyle}
+          onerror="this.style.opacity='0.15'">
       </div>
-    `;
+      <div class="card-price">${it.price}<span class="cur">вон</span></div>
+    </div>`;
   }).join('');
 }
 
-/* Категории: делегирование событий */
-catListEl.addEventListener('click', (e) => {
-  const btn = e.target.closest('.cat-btn');
-  if (!btn) return;
-  activeCategory = btn.dataset.cat;
-  renderCategories();
+document.getElementById('searchInput').addEventListener('input', function(){
+  search = this.value;
+  document.getElementById('sClear').style.display = this.value?'block':'none';
   renderItems();
 });
 
-/* Поиск */
-searchInputEl.addEventListener('input', () => {
-  searchQuery = searchInputEl.value;
-  searchClearEl.style.display = searchQuery ? 'block' : 'none';
-  renderItems();
-});
-searchClearEl.addEventListener('click', () => {
-  searchInputEl.value = '';
-  searchQuery = '';
-  searchClearEl.style.display = 'none';
-  renderItems();
-});
-
-/* Верхние кнопки */
-topButtonsEl.addEventListener('click', (e) => {
-  const btn = e.target.closest('.top-btn');
-  if (!btn) return;
-
-  topMode = btn.dataset.mode;
-
-  document.querySelectorAll('.top-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-
-  renderItems();
-});
-
-renderCategories();
+renderCats();
 renderItems();
 </script>
 </body>
