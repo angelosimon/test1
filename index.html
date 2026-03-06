@@ -1,71 +1,66 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Торговая Федерация</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0f1724;
-  --bg-deep:#0a1019;
+  --bg:#0a0f18;
   --panel:#162235;
-  --panel-2:#1b2a40;
-  --panel-3:#22344f;
+  --panel2:#1b2a40;
+  --panel3:#22344f;
   --card:#163053;
-  --card-2:#1a3760;
   --line:rgba(255,255,255,.08);
-  --line-2:rgba(255,255,255,.12);
-  --text:#f2f6ff;
-  --muted:rgba(226,235,255,.62);
-  --muted-2:rgba(226,235,255,.38);
+  --line2:rgba(255,255,255,.12);
+  --text:#f3f7ff;
+  --muted:rgba(243,247,255,.62);
+  --muted2:rgba(243,247,255,.38);
   --blue:#2488ff;
-  --blue-2:#1d74dd;
-  --price:#a7b7d1;
-  --shadow:0 18px 45px rgba(0,0,0,.34);
-  --radius:16px;
-  --radius2:12px;
+  --blue2:#1d74dd;
+  --price:#a9b8cf;
+  --shadow:0 18px 45px rgba(0,0,0,.35);
 }
 
-*{box-sizing:border-box;margin:0;padding:0}
+*{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%}
+html{overflow:hidden}
 body{
+  overflow:hidden;
   font-family:'Inter',sans-serif;
   color:var(--text);
   background:
-    radial-gradient(circle at 50% -10%, rgba(60,90,140,.18), transparent 35%),
-    linear-gradient(180deg, rgba(7,10,16,.82), rgba(7,10,16,.9)),
-    url('https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1600&q=80') center/cover fixed;
-  overflow-x:hidden;
+    linear-gradient(180deg, rgba(8,12,18,.72), rgba(8,12,18,.88)),
+    url('https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat fixed;
 }
 
-/* мягкое затемнение */
 body::before{
   content:"";
   position:fixed;
   inset:0;
-  background:
-    linear-gradient(180deg, rgba(8,13,22,.52), rgba(8,13,22,.78)),
-    radial-gradient(circle at center, transparent 20%, rgba(0,0,0,.28) 100%);
   pointer-events:none;
-  z-index:0;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(80,120,180,.12), transparent 36%),
+    radial-gradient(circle at 50% 50%, transparent 30%, rgba(0,0,0,.28) 100%);
 }
 
 .app{
   position:relative;
   z-index:1;
   width:min(1080px, calc(100% - 40px));
-  margin:52px auto;
+  height:min(820px, calc(100vh - 40px));
+  margin:20px auto;
 }
 
 .shop-wrap{
-  background:linear-gradient(180deg, rgba(18,31,50,.92), rgba(17,29,46,.94));
+  height:100%;
+  background:linear-gradient(180deg, rgba(18,31,50,.95), rgba(17,29,46,.96));
   border:1px solid var(--line);
   border-radius:18px;
   box-shadow:var(--shadow);
   display:grid;
   grid-template-columns:190px 1fr;
-  min-height:760px;
   overflow:hidden;
   backdrop-filter:blur(10px);
 }
@@ -75,6 +70,7 @@ body::before{
   background:linear-gradient(180deg, rgba(20,33,52,.96), rgba(18,29,45,.96));
   border-right:1px solid var(--line);
   padding:26px 14px 18px;
+  overflow:hidden;
 }
 
 .sidebar h2{
@@ -113,7 +109,7 @@ body::before{
 }
 
 .cat-btn.active{
-  background:linear-gradient(180deg, var(--blue), var(--blue-2));
+  background:linear-gradient(180deg, var(--blue), var(--blue2));
   border-color:rgba(255,255,255,.14);
   box-shadow:0 8px 20px rgba(36,136,255,.28);
 }
@@ -127,33 +123,50 @@ body::before{
   flex-shrink:0;
   font-size:18px;
 }
-
+.cat-icon img{
+  width:20px;
+  height:20px;
+  object-fit:contain;
+  image-rendering:pixelated;
+}
 .cat-label{
   font-size:15px;
   font-weight:600;
   line-height:1.1;
 }
 
-/* content */
+/* right side */
 .content{
-  padding:26px 24px 26px 24px;
+  height:100%;
+  display:flex;
+  flex-direction:column;
   min-width:0;
+  overflow:hidden;
+  padding:26px 24px 20px;
 }
 
 .topbar{
+  flex:0 0 auto;
   display:flex;
   flex-direction:column;
   gap:14px;
-  margin-bottom:18px;
+  margin-bottom:16px;
 }
 
 .title-row{
   display:flex;
   align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.title-left{
+  display:flex;
+  align-items:center;
   gap:8px;
 }
 
-.title-row h1{
+.title-left h1{
   font-size:18px;
   font-weight:800;
   letter-spacing:-.02em;
@@ -173,9 +186,25 @@ body::before{
   opacity:.9;
 }
 
+.info-btn{
+  border:none;
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  border:1px solid var(--line);
+  color:var(--text);
+  border-radius:10px;
+  padding:10px 14px;
+  cursor:pointer;
+  font:700 13px 'Inter',sans-serif;
+  transition:.18s ease;
+}
+.info-btn:hover{
+  background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.05));
+  border-color:var(--line2);
+}
+
 .search-wrap{
   position:relative;
-  width:min(640px, 100%);
+  width:min(650px,100%);
 }
 
 .search-wrap input{
@@ -189,13 +218,9 @@ body::before{
   background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
   border:1px solid var(--line);
   font:500 15px 'Inter',sans-serif;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
 }
 
-.search-wrap input::placeholder{
-  color:rgba(237,244,255,.5);
-}
-
+.search-wrap input::placeholder{color:rgba(237,244,255,.5)}
 .search-wrap svg{
   position:absolute;
   left:14px;
@@ -218,16 +243,62 @@ body::before{
   cursor:pointer;
   display:none;
 }
-
 .clear-btn:hover{
   background:rgba(255,255,255,.08);
   color:#fff;
 }
 
-/* grid */
+.subinfo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:600;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:7px 12px;
+}
+.badge-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#4ade80;
+  box-shadow:0 0 10px rgba(74,222,128,.4);
+}
+
+/* ONLY grid scrolls */
+.grid-wrap{
+  flex:1 1 auto;
+  min-height:0;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding-right:6px;
+}
+
+.grid-wrap::-webkit-scrollbar{width:10px}
+.grid-wrap::-webkit-scrollbar-track{background:transparent}
+.grid-wrap::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.12);
+  border-radius:20px;
+  border:2px solid transparent;
+  background-clip:padding-box;
+}
+.grid-wrap::-webkit-scrollbar-thumb:hover{
+  background:rgba(255,255,255,.18);
+}
+
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
   gap:12px;
   align-content:start;
 }
@@ -237,13 +308,12 @@ body::before{
   border:1px solid rgba(255,255,255,.08);
   border-radius:10px;
   overflow:hidden;
-  min-height:175px;
+  min-height:176px;
   display:flex;
   flex-direction:column;
   transition:.18s ease;
   box-shadow:0 6px 16px rgba(0,0,0,.16);
 }
-
 .card:hover{
   transform:translateY(-3px);
   border-color:rgba(255,255,255,.16);
@@ -251,7 +321,7 @@ body::before{
 }
 
 .card-name{
-  min-height:52px;
+  min-height:54px;
   padding:10px 10px 4px;
   text-align:center;
   font-size:13px;
@@ -259,16 +329,14 @@ body::before{
   line-height:1.28;
   color:#f4f8ff;
 }
-
 .card-img{
   flex:1;
-  min-height:82px;
+  min-height:84px;
   display:flex;
   align-items:center;
   justify-content:center;
   padding:6px 10px 10px;
 }
-
 .card-img img{
   width:52px;
   height:52px;
@@ -276,7 +344,6 @@ body::before{
   image-rendering:pixelated;
   filter:drop-shadow(0 4px 8px rgba(0,0,0,.28));
 }
-
 .card-price{
   background:linear-gradient(180deg, #9aa8bf, #aebbd0);
   color:#fff;
@@ -286,13 +353,11 @@ body::before{
   font-size:14px;
   letter-spacing:-.01em;
 }
-
 .card-price span{
   font-size:30px;
   line-height:1;
   vertical-align:middle;
 }
-
 .card-price small{
   font-size:13px;
   font-weight:700;
@@ -301,7 +366,6 @@ body::before{
 }
 
 .no-results{
-  grid-column:1/-1;
   min-height:240px;
   display:flex;
   align-items:center;
@@ -315,23 +379,123 @@ body::before{
   padding:20px;
 }
 
-/* custom scrollbar */
-.content{
-  max-height:760px;
+/* modal */
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  z-index:999;
+  background:rgba(7,10,16,.62);
+  backdrop-filter:blur(6px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  opacity:0;
+  pointer-events:none;
+  transition:.2s ease;
+}
+.modal-overlay.open{
+  opacity:1;
+  pointer-events:auto;
+}
+.modal{
+  width:min(700px,100%);
+  max-height:min(88vh,900px);
   overflow:auto;
+  background:linear-gradient(180deg, #18263a, #132032);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:18px;
+  box-shadow:0 24px 60px rgba(0,0,0,.45);
+  transform:translateY(16px) scale(.985);
+  transition:.22s ease;
 }
-.content::-webkit-scrollbar{width:10px}
-.content::-webkit-scrollbar-track{background:transparent}
-.content::-webkit-scrollbar-thumb{
+.modal-overlay.open .modal{
+  transform:none;
+}
+.modal::-webkit-scrollbar{width:10px}
+.modal::-webkit-scrollbar-thumb{
   background:rgba(255,255,255,.12);
-  border-radius:20px;
-  border:2px solid transparent;
-  background-clip:padding-box;
+  border-radius:999px;
 }
-.content::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.18)}
 
-@media (max-width: 900px){
+.modal-header{
+  position:relative;
+  padding:22px 22px 16px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.modal-title{
+  font-size:24px;
+  font-weight:900;
+  letter-spacing:-.03em;
+}
+.modal-sub{
+  margin-top:8px;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.5;
+}
+.modal-close{
+  position:absolute;
+  right:14px;
+  top:14px;
+  width:34px;
+  height:34px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  color:#fff;
+  background:rgba(255,255,255,.08);
+}
+.modal-close:hover{
+  background:rgba(255,255,255,.14);
+}
+
+.modal-body{
+  padding:18px 22px 22px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.modal-block{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  padding:16px;
+}
+.modal-block h3{
+  font-size:15px;
+  font-weight:800;
+  margin-bottom:10px;
+}
+.modal-block p,
+.modal-block li{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.65;
+}
+.modal-block ul{
+  padding-left:18px;
+}
+
+.note{
+  color:#dfe9ff;
+  background:rgba(36,136,255,.12);
+  border:1px solid rgba(36,136,255,.26);
+}
+
+/* responsive */
+@media (max-width:900px){
+  html,body{overflow:auto}
+  body{overflow:auto}
+  .app{
+    width:min(100% - 18px,1080px);
+    height:auto;
+    min-height:calc(100vh - 18px);
+    margin:9px auto;
+  }
   .shop-wrap{
+    height:auto;
     grid-template-columns:1fr;
   }
   .sidebar{
@@ -343,47 +507,104 @@ body::before{
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
   .content{
-    max-height:none;
+    overflow:visible;
+  }
+  .grid-wrap{
+    overflow:visible;
+    padding-right:0;
   }
 }
 
-@media (max-width: 560px){
-  .app{width:min(100% - 16px, 1080px);margin:18px auto}
-  .content,.sidebar{padding:16px}
-  .grid{grid-template-columns:repeat(2, minmax(0,1fr))}
+@media (max-width:560px){
   .cat-list{grid-template-columns:1fr}
+  .title-row{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
 }
 </style>
 </head>
 <body>
-  <div class="app">
-    <div class="shop-wrap">
-      <aside class="sidebar">
-        <h2>Категории</h2>
-        <div class="cat-list" id="catList"></div>
-      </aside>
+<div class="app">
+  <div class="shop-wrap">
+    <aside class="sidebar">
+      <h2>Категории</h2>
+      <div class="cat-list" id="catList"></div>
+    </aside>
 
-      <main class="content">
-        <div class="topbar">
-          <div class="title-row">
+    <main class="content">
+      <div class="topbar">
+        <div class="title-row">
+          <div class="title-left">
             <h1>Торговая Федерация</h1>
             <div class="info-dot">i</div>
           </div>
-
-          <div class="search-wrap">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round">
-              <circle cx="11" cy="11" r="7"></circle>
-              <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input id="searchInput" type="text" placeholder="Найти предмет">
-            <button class="clear-btn" id="clearBtn" aria-label="Очистить">✕</button>
-          </div>
+          <button class="info-btn" onclick="openModal()">Доп. инфо</button>
         </div>
 
+        <div class="search-wrap">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input id="searchInput" type="text" placeholder="Найти предмет">
+          <button class="clear-btn" id="clearBtn">✕</button>
+        </div>
+
+        <div class="subinfo">
+          <div class="badge"><span class="badge-dot"></span> Магазин открыт</div>
+          <div>Цены указаны как минимальные ориентиры</div>
+        </div>
+      </div>
+
+      <div class="grid-wrap">
         <div class="grid" id="grid"></div>
-      </main>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this) closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-title">Доп. информация</div>
+      <div class="modal-sub">Всё, что было нужно оставить из смысловой части: валюта, правила и пояснения по ценам.</div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-block">
+        <h3>Валюта</h3>
+        <p><strong>АР</strong> — внутренняя валюта торговли. Все цены на сайте указаны именно в АР.</p>
+      </div>
+
+      <div class="modal-block">
+        <h3>Как проходит торговля</h3>
+        <ul>
+          <li>Покупатель и продавец договариваются лично.</li>
+          <li>Цена на сайте — это ориентир, а не железобетонная стена.</li>
+          <li>Сделки лучше проводить прямо на территории торговой зоны.</li>
+        </ul>
+      </div>
+
+      <div class="modal-block">
+        <h3>Правила</h3>
+        <ul>
+          <li>Не обманывать при обмене.</li>
+          <li>Не подменять предметы в последний момент.</li>
+          <li>Дорогие сделки лучше проводить через сундук или при свидетелях.</li>
+        </ul>
+      </div>
+
+      <div class="modal-block note">
+        <h3>Важно</h3>
+        <p>Цены на сайте примерные и минимальные. Реальная стоимость может немного меняться в зависимости от продавца, количества и редкости предмета.</p>
+      </div>
     </div>
   </div>
+</div>
 
 <script>
 const BASE = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21/assets/minecraft/textures/';
@@ -500,9 +721,7 @@ const clearBtn = document.getElementById('clearBtn');
 function renderCategories(){
   catList.innerHTML = CATEGORIES.map(cat => `
     <button class="cat-btn ${cat.id === activeCategory ? 'active' : ''}" onclick="setCategory('${cat.id}')">
-      <div class="cat-icon">
-        <img src="${ICONS[cat.icon]}" alt="" style="width:20px;height:20px;object-fit:contain;image-rendering:pixelated">
-      </div>
+      <div class="cat-icon"><img src="${ICONS[cat.icon]}" alt=""></div>
       <div class="cat-label">${cat.label}</div>
     </button>
   `).join('');
@@ -539,6 +758,13 @@ function setCategory(id){
   renderItems();
 }
 
+function openModal(){
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
 searchInput.addEventListener('input', e => {
   searchValue = e.target.value;
   clearBtn.style.display = searchValue ? 'block' : 'none';
@@ -550,6 +776,10 @@ clearBtn.addEventListener('click', () => {
   searchInput.value = '';
   clearBtn.style.display = 'none';
   renderItems();
+});
+
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') closeModal();
 });
 
 renderCategories();
