@@ -24,7 +24,7 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
+html,body{height:100%;overflow:hidden}
 body{
   font-family:'Inter',sans-serif;
   color:var(--text);
@@ -34,21 +34,13 @@ body{
   overflow:hidden;
 }
 
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background:
-    radial-gradient(circle at center, transparent 35%, rgba(0,0,0,.26) 100%),
-    linear-gradient(to bottom, rgba(0,0,0,.08), rgba(0,0,0,.22));
-  pointer-events:none;
-}
-
-.app{
-  position:relative;
-  z-index:2;
-  width:100%;
-  height:100%;
+/* Scale wrapper — весь UI масштабируется как единый блок */
+#scaleRoot{
+  width:1280px;
+  height:800px;
+  transform-origin:top left;
+  position:absolute;
+  top:0;left:0;
   display:flex;
   flex-direction:column;
   overflow:hidden;
@@ -402,21 +394,11 @@ body::before{
   .cat-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   .items-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
-@media(max-width:700px){
-  body{overflow:auto}
-  .app{height:auto;min-height:100vh}
-  .header{padding:0 16px}
-  .header-nav{display:none}
-  .shop-body{padding:0 12px 20px}
-  .items-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .toolbar{flex-wrap:wrap}
-  .search-wrap{max-width:none}
-  .items-count{margin-left:0}
-}
 </style>
 </head>
 <body>
-<div class="app">
+<div id="scaleRoot">
+<div class="app" style="width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;position:relative;z-index:2;">
 
   <!-- HEADER -->
   <header class="header">
@@ -460,7 +442,8 @@ body::before{
       </div>
     </main>
   </div>
-</div>
+</div><!-- /app -->
+</div><!-- /scaleRoot -->
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
@@ -1168,6 +1151,20 @@ document.getElementById('searchInput').addEventListener('input',function(){
 
 renderCats();
 renderItems();
+
+// Масштабирование всего UI пропорционально окну
+function scaleUI(){
+  const root = document.getElementById('scaleRoot');
+  const baseW = 1280, baseH = 800;
+  const scaleX = window.innerWidth / baseW;
+  const scaleY = window.innerHeight / baseH;
+  const scale = Math.min(scaleX, scaleY);
+  root.style.transform = `scale(${scale})`;
+  root.style.left = ((window.innerWidth - baseW * scale) / 2) + 'px';
+  root.style.top = ((window.innerHeight - baseH * scale) / 2) + 'px';
+}
+scaleUI();
+window.addEventListener('resize', scaleUI);
 </script>
 </body>
 </html>
