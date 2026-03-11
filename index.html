@@ -9,25 +9,18 @@
 :root{
   --bg:#0a0f18;
   --panel:#19263aee;
-  --panel-2:#1d2c43f0;
-  --panel-3:#223553;
-  --panel-4:#2d4264;
   --card:#213452;
-  --card-2:#29405f;
-  --card-hover:#314c73;
+  --card-hover:#284875;
   --left-btn:#24344d;
   --left-btn-hover:#2c3e59;
   --left-btn-active:#1d86ff;
   --left-btn-active-2:#36a2ff;
-  --price:#8ea0be;
   --text:#f2f6ff;
   --muted:#b9c6db;
   --muted-2:#93a2bb;
   --border:rgba(255,255,255,.08);
-  --border-soft:rgba(255,255,255,.05);
   --shadow:0 10px 50px rgba(0,0,0,.35);
   --radius:16px;
-  --radius-sm:10px;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -41,7 +34,6 @@ body{
   overflow:hidden;
 }
 
-/* лёгкая виньетка как на скрине */
 body::before{
   content:"";
   position:fixed;
@@ -52,62 +44,168 @@ body::before{
   pointer-events:none;
 }
 
-/* общая сцена */
 .app{
   position:relative;
   z-index:2;
   width:100%;
   height:100%;
   display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:32px;
-}
-
-/* главный контейнер как на картинке */
-.shop-frame{
-  width:min(1080px, 100%);
-  height:min(760px, calc(100vh - 64px));
-  background:linear-gradient(180deg, rgba(25,38,58,.94), rgba(24,36,56,.96));
-  border:1px solid rgba(255,255,255,.06);
-  border-radius:10px;
-  box-shadow:var(--shadow);
-  display:flex;
   flex-direction:column;
   overflow:hidden;
-  backdrop-filter:blur(8px);
 }
 
-/* контент */
-.shop-content{
+/* HEADER */
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 32px;
+  height:60px;
+  background:rgba(10,15,24,.75);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  backdrop-filter:blur(10px);
+  flex-shrink:0;
+  gap:16px;
+}
+
+.header-logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:18px;
+  font-weight:800;
+  color:#fff;
+  text-decoration:none;
+}
+
+.header-logo img{
+  width:30px;
+  height:30px;
+  image-rendering:pixelated;
+}
+
+.header-nav{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  flex:1;
+  justify-content:center;
+}
+
+.nav-link{
+  padding:6px 14px;
+  border-radius:7px;
+  font-size:14px;
+  font-weight:600;
+  color:#c0cfe8;
+  text-decoration:none;
+  transition:.15s ease;
+  border:none;
+  background:transparent;
+  cursor:pointer;
+}
+.nav-link:hover{
+  color:#fff;
+  background:rgba(255,255,255,.06);
+}
+
+.nav-plain{
+  font-size:14px;font-weight:600;color:#93a2bb;text-decoration:none;
+  padding:6px 10px;border-radius:7px;transition:.15s ease;background:none;border:none;cursor:pointer;
+}
+.nav-plain:hover{color:#d0ddf5}
+
+.nav-link.site-btn{
+  background:linear-gradient(180deg, #1d86ff, #1468cc);
+  color:#fff;
+  padding:6px 16px;
+  box-shadow:0 4px 12px rgba(29,134,255,.3);
+}
+.nav-link.site-btn:hover{
+  background:linear-gradient(180deg, #36a2ff, #1d86ff);
+}
+
+.header-login{
+  padding:7px 18px;
+  border-radius:8px;
+  font-size:14px;
+  font-weight:700;
+  color:#d0ddf5;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.09);
+  cursor:pointer;
+  transition:.15s ease;
+}
+.header-login:hover{
+  background:rgba(255,255,255,.11);
+  color:#fff;
+}
+
+/* TABS */
+.tabs-bar{
+  display:flex;
+  align-items:center;
+  padding:14px 32px 0;
+  gap:8px;
+  flex-shrink:0;
+}
+
+.tab-btn{
+  padding:8px 22px;
+  border-radius:8px 8px 0 0;
+  font-size:14px;
+  font-weight:700;
+  border:none;
+  cursor:pointer;
+  transition:.15s ease;
+  color:#c0cfe8;
+  background:rgba(255,255,255,.05);
+}
+.tab-btn.active{
+  background:linear-gradient(180deg, #1d86ff, #1468cc);
+  color:#fff;
+  box-shadow:0 4px 12px rgba(29,134,255,.25);
+}
+.tab-btn:hover:not(.active){
+  background:rgba(255,255,255,.09);
+  color:#fff;
+}
+
+/* MAIN LAYOUT */
+.shop-body{
+  flex:1;
+  min-height:0;
   display:grid;
   grid-template-columns:190px 1fr;
-  gap:22px;
-  padding:28px;
-  height:100%;
-  min-height:0;
+  gap:0;
+  padding:0 24px 24px;
 }
 
-/* левая колонка */
+/* SIDEBAR */
 .sidebar{
-  min-height:0;
+  padding:18px 14px 18px 0;
   display:flex;
   flex-direction:column;
+  min-height:0;
+  overflow-y:auto;
 }
 
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-track{background:transparent}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(130,151,184,.3);border-radius:99px}
+
 .sidebar-title{
-  font-size:20px;
+  font-size:18px;
   font-weight:800;
   color:#ffffff;
-  margin-bottom:14px;
+  margin-bottom:12px;
   letter-spacing:.01em;
 }
 
 .cat-list{
   display:flex;
   flex-direction:column;
-  gap:10px;
-  min-height:0;
+  gap:6px;
 }
 
 .cat-btn{
@@ -117,483 +215,254 @@ body::before{
   text-align:left;
   display:flex;
   align-items:center;
-  gap:12px;
-  min-height:48px;
-  padding:0 14px;
+  gap:10px;
+  min-height:44px;
+  padding:0 12px;
   border-radius:8px;
-  background:linear-gradient(180deg, rgba(47,62,87,.9), rgba(37,50,72,.95));
+  background:linear-gradient(180deg, rgba(47,62,87,.85), rgba(37,50,72,.9));
   color:#dfe8f7;
-  font-size:15px;
+  font-size:14px;
   font-weight:600;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.05),
-    inset 0 -1px 0 rgba(0,0,0,.22);
+    inset 0 -1px 0 rgba(0,0,0,.2);
   border:1px solid rgba(255,255,255,.04);
   transition:.15s ease;
 }
-
 .cat-btn:hover{
-  background:linear-gradient(180deg, rgba(56,74,103,.96), rgba(43,59,86,.98));
+  background:linear-gradient(180deg, rgba(56,74,103,.95), rgba(43,59,86,.97));
   transform:translateY(-1px);
 }
-
 .cat-btn.active{
   background:linear-gradient(180deg, var(--left-btn-active), var(--left-btn-active-2));
   color:#fff;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.18),
-    0 8px 18px rgba(24,116,255,.22);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18), 0 6px 14px rgba(24,116,255,.2);
 }
 
-.cat-ico{
-  width:26px;
-  height:26px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-shrink:0;
-}
+.cat-ico{width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cat-ico img{width:20px;height:20px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
 
-.cat-ico img{
-  width:24px;
-  height:24px;
-  object-fit:contain;
-  image-rendering:pixelated;
-  filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
-}
-
-.cat-count{display:none;}
-
-/* правая часть */
+/* RIGHT PANEL */
 .main{
+  padding:18px 0 0 18px;
   min-width:0;
   min-height:0;
   display:flex;
   flex-direction:column;
 }
 
-.main-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:14px;
-  margin-bottom:14px;
-}
-
-.main-title{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:19px;
-  font-weight:800;
-  color:#fff;
-}
-
-.info-dot{
-  width:18px;
-  height:18px;
-  border-radius:50%;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  font-size:12px;
-  font-weight:800;
-  color:#33a5ff;
-  border:1px solid rgba(51,165,255,.5);
-  cursor:pointer;
-  user-select:none;
-}
-
 .toolbar{
   display:flex;
   align-items:center;
   gap:12px;
-  margin-bottom:16px;
+  margin-bottom:14px;
+  flex-shrink:0;
 }
 
 .search-wrap{
   position:relative;
   width:100%;
-  max-width:360px;
+  max-width:340px;
 }
 
 .search-wrap input{
   width:100%;
-  height:42px;
+  height:38px;
   border-radius:8px;
-  border:1px solid rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.07);
   outline:none;
-  background:linear-gradient(180deg, rgba(53,67,91,.82), rgba(40,53,76,.9));
+  background:linear-gradient(180deg, rgba(50,65,90,.8), rgba(38,52,74,.88));
   color:#eff5ff;
-  padding:0 42px;
-  font-size:15px;
+  padding:0 38px;
+  font-size:14px;
   font-weight:600;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
 }
+.search-wrap input::placeholder{color:#b3bfd5;font-weight:500}
+.search-wrap input:focus{border-color:rgba(74,151,255,.5);box-shadow:0 0 0 2px rgba(74,151,255,.1)}
 
-.search-wrap input::placeholder{
-  color:#b3bfd5;
-  font-weight:500;
-}
-
-.search-wrap input:focus{
-  border-color:rgba(74,151,255,.55);
-  box-shadow:0 0 0 2px rgba(74,151,255,.12);
-}
-
-.search-icon{
-  position:absolute;
-  left:14px;
-  top:50%;
-  transform:translateY(-50%);
-  width:18px;
-  height:18px;
-  opacity:.75;
-}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:.7}
 
 .clear-btn{
-  position:absolute;
-  right:10px;
-  top:50%;
-  transform:translateY(-50%);
-  width:22px;
-  height:22px;
-  border:none;
-  border-radius:6px;
-  background:transparent;
-  color:#d8e3f8;
-  cursor:pointer;
-  display:none;
+  position:absolute;right:9px;top:50%;transform:translateY(-50%);
+  width:20px;height:20px;border:none;border-radius:5px;
+  background:transparent;color:#d8e3f8;cursor:pointer;display:none;font-size:13px;
 }
-
 .clear-btn:hover{background:rgba(255,255,255,.08)}
 
 .items-count{
-  margin-left:auto;
-  font-size:13px;
-  color:var(--muted-2);
-  font-weight:700;
-  letter-spacing:.02em;
+  margin-left:auto;font-size:12px;color:var(--muted-2);font-weight:700;letter-spacing:.02em;white-space:nowrap;
 }
 
-/* список товаров */
+/* GRID */
 .grid-wrap{
-  min-height:0;
-  overflow:auto;
-  padding-right:6px;
+  flex:1;min-height:0;overflow-y:auto;padding-right:6px;
 }
-
-.grid-wrap::-webkit-scrollbar{width:10px}
-.grid-wrap::-webkit-scrollbar-track{
-  background:rgba(255,255,255,.04);
-  border-radius:999px;
-}
-.grid-wrap::-webkit-scrollbar-thumb{
-  background:rgba(130,151,184,.42);
-  border-radius:999px;
-  border:2px solid transparent;
-  background-clip:padding-box;
-}
-.grid-wrap::-webkit-scrollbar-thumb:hover{
-  background:rgba(150,172,208,.62);
-  background-clip:padding-box;
-}
+.grid-wrap::-webkit-scrollbar{width:8px}
+.grid-wrap::-webkit-scrollbar-track{background:rgba(255,255,255,.03);border-radius:99px}
+.grid-wrap::-webkit-scrollbar-thumb{background:rgba(130,151,184,.38);border-radius:99px;border:2px solid transparent;background-clip:padding-box}
+.grid-wrap::-webkit-scrollbar-thumb:hover{background:rgba(150,172,208,.58);background-clip:padding-box}
 
 .items-grid{
   display:grid;
-  grid-template-columns:repeat(4, minmax(0, 1fr));
-  gap:14px;
+  grid-template-columns:repeat(4, minmax(0,1fr));
+  gap:12px;
 }
 
-/* карточка товара */
 .item-card{
   background:linear-gradient(180deg, #234068 0%, #20385c 100%);
   border:1px solid rgba(255,255,255,.07);
   border-radius:8px;
   overflow:hidden;
-  min-height:160px;
+  min-height:155px;
   display:flex;
   flex-direction:column;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.05),
-    0 8px 14px rgba(0,0,0,.12);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05), 0 6px 12px rgba(0,0,0,.12);
   transition:.15s ease;
+  cursor:pointer;
 }
-
 .item-card:hover{
   transform:translateY(-2px);
   background:linear-gradient(180deg, #284875 0%, #234068 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.06),
-    0 12px 22px rgba(0,0,0,.2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 12px 22px rgba(0,0,0,.2);
 }
 
 .card-name{
-  min-height:54px;
-  padding:10px 9px 4px;
-  text-align:center;
-  font-size:12px;
-  font-weight:800;
-  line-height:1.25;
-  color:#ffffff;
-  text-shadow:0 1px 0 rgba(0,0,0,.25);
+  min-height:50px;padding:9px 8px 3px;
+  text-align:center;font-size:11.5px;font-weight:800;line-height:1.25;
+  color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.25);
 }
-
 .card-qty{
-  display:block;
-  margin-top:3px;
-  font-size:11px;
-  font-weight:700;
-  color:#d8e4fb;
-  opacity:.95;
+  display:block;margin-top:2px;font-size:10.5px;font-weight:700;color:#d8e4fb;opacity:.9;
 }
 
 .card-img{
-  flex:1;
-  min-height:78px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:8px;
+  flex:1;min-height:72px;display:flex;align-items:center;justify-content:center;padding:6px;
 }
-
 .card-img img{
-  width:52px;
-  height:52px;
-  object-fit:contain;
-  image-rendering:pixelated;
-  filter:drop-shadow(0 5px 6px rgba(0,0,0,.25));
+  width:48px;height:48px;object-fit:contain;image-rendering:pixelated;
+  filter:drop-shadow(0 4px 5px rgba(0,0,0,.25));
 }
 
 .card-price{
   background:linear-gradient(180deg, #8a9ab8 0%, #9eb0cc 100%);
-  color:#fff;
-  min-height:31px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
+  color:#fff;min-height:29px;
+  display:flex;align-items:center;justify-content:center;gap:3px;
   border-top:1px solid rgba(255,255,255,.08);
 }
+.card-price-label{font-size:12px;font-weight:800;color:#f6f9ff;opacity:.9}
+.card-price-num{font-size:15px;font-weight:900;color:#fff}
+.card-price-cur{font-size:12px;font-weight:800;color:#e8eefc}
 
-.card-price-label{
-  font-size:13px;
-  font-weight:800;
-  color:#f6f9ff;
-  opacity:.95;
-}
-
-.card-price-num{
-  font-size:16px;
-  font-weight:900;
-  color:#ffffff;
-}
-
-.card-price-cur{
-  font-size:13px;
-  font-weight:800;
-  color:#e8eefc;
-}
-
-/* если ничего не найдено */
 .no-results{
-  grid-column:1/-1;
-  min-height:240px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  color:#d9e4f7;
-  background:rgba(255,255,255,.02);
-  border:1px dashed rgba(255,255,255,.08);
-  border-radius:10px;
-  font-size:15px;
-  font-weight:700;
+  grid-column:1/-1;min-height:200px;display:flex;align-items:center;justify-content:center;
+  text-align:center;color:#d9e4f7;background:rgba(255,255,255,.02);
+  border:1px dashed rgba(255,255,255,.08);border-radius:10px;font-size:14px;font-weight:700;
 }
 
-/* модалка */
+/* MODAL */
 .modal-overlay{
-  position:fixed;
-  inset:0;
-  z-index:50;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  background:rgba(4,9,16,.62);
-  backdrop-filter:blur(6px);
-  opacity:0;
-  pointer-events:none;
-  transition:.18s ease;
+  position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;
+  padding:20px;background:rgba(4,9,16,.62);backdrop-filter:blur(6px);
+  opacity:0;pointer-events:none;transition:.18s ease;
 }
-.modal-overlay.open{
-  opacity:1;
-  pointer-events:auto;
-}
+.modal-overlay.open{opacity:1;pointer-events:auto}
 .modal{
-  width:min(560px, 100%);
+  width:min(520px,100%);
   background:linear-gradient(180deg, #1e2d44 0%, #18263b 100%);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:16px;
-  box-shadow:0 24px 60px rgba(0,0,0,.42);
-  overflow:hidden;
-  transform:translateY(14px) scale(.98);
-  transition:.2s ease;
+  border:1px solid rgba(255,255,255,.08);border-radius:16px;
+  box-shadow:0 24px 60px rgba(0,0,0,.42);overflow:hidden;
+  transform:translateY(14px) scale(.98);transition:.2s ease;
 }
-.modal-overlay.open .modal{
-  transform:translateY(0) scale(1);
-}
-
+.modal-overlay.open .modal{transform:translateY(0) scale(1)}
 .modal-header{
-  padding:20px 22px 16px;
-  border-bottom:1px solid rgba(255,255,255,.06);
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:12px;
+  padding:18px 20px 14px;border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
 }
-.modal-title{
-  font-size:22px;
-  font-weight:900;
-  color:#fff;
-}
-.modal-sub{
-  margin-top:6px;
-  font-size:13px;
-  line-height:1.5;
-  color:#c4d1e7;
-}
+.modal-title{font-size:20px;font-weight:900;color:#fff}
+.modal-sub{margin-top:5px;font-size:13px;line-height:1.5;color:#c4d1e7}
 .modal-close{
-  width:34px;
-  height:34px;
-  border:none;
-  border-radius:10px;
-  background:rgba(255,255,255,.06);
-  color:#fff;
-  font-size:16px;
-  cursor:pointer;
+  width:32px;height:32px;border:none;border-radius:9px;
+  background:rgba(255,255,255,.06);color:#fff;font-size:15px;cursor:pointer;
 }
-.modal-close:hover{
-  background:rgba(255,255,255,.12);
-}
-.modal-body{
-  padding:18px 22px 22px;
-  display:grid;
-  gap:14px;
-}
+.modal-close:hover{background:rgba(255,255,255,.12)}
+.modal-body{padding:16px 20px 20px;display:grid;gap:12px}
 .info-box{
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.06);
-  border-radius:12px;
-  padding:14px 15px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;padding:13px 14px;
 }
-.info-box h3{
-  font-size:15px;
-  font-weight:800;
-  margin-bottom:8px;
-}
-.info-box p, .info-box li{
-  font-size:14px;
-  line-height:1.55;
-  color:#d0dcef;
-}
-.info-box ul{
-  padding-left:18px;
-}
-.info-box li+li{
-  margin-top:6px;
-}
+.info-box h3{font-size:14px;font-weight:800;margin-bottom:7px}
+.info-box p,.info-box li{font-size:13px;line-height:1.55;color:#d0dcef}
+.info-box ul{padding-left:17px}
+.info-box li+li{margin-top:5px}
 
-/* адаптив */
-@media (max-width: 980px){
-  .shop-frame{
-    height:calc(100vh - 28px);
-  }
-  .shop-content{
-    grid-template-columns:1fr;
-    gap:16px;
-  }
-  .sidebar{
-    min-height:auto;
-  }
-  .cat-list{
-    display:grid;
-    grid-template-columns:repeat(2, minmax(0,1fr));
-  }
-  .items-grid{
-    grid-template-columns:repeat(3, minmax(0,1fr));
-  }
+@media(max-width:980px){
+  .shop-body{grid-template-columns:1fr}
+  .sidebar{padding:14px 0 10px}
+  .cat-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .items-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
-
-@media (max-width: 700px){
+@media(max-width:700px){
   body{overflow:auto}
-  .app{
-    align-items:flex-start;
-    padding:12px;
-  }
-  .shop-frame{
-    height:auto;
-    min-height:calc(100vh - 24px);
-  }
-  .shop-content{
-    padding:16px;
-  }
-  .cat-list{
-    grid-template-columns:1fr 1fr;
-  }
-  .items-grid{
-    grid-template-columns:repeat(2, minmax(0,1fr));
-  }
-  .toolbar{
-    flex-wrap:wrap;
-  }
-  .search-wrap{
-    max-width:none;
-  }
-  .items-count{
-    margin-left:0;
-  }
+  .app{height:auto;min-height:100vh}
+  .header{padding:0 16px}
+  .header-nav{display:none}
+  .shop-body{padding:0 12px 20px}
+  .items-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .toolbar{flex-wrap:wrap}
+  .search-wrap{max-width:none}
+  .items-count{margin-left:0}
 }
 </style>
 </head>
 <body>
-
 <div class="app">
-  <div class="shop-frame">
-    <div class="shop-content">
-      <aside class="sidebar">
-        <div class="sidebar-title">Категории</div>
-        <div class="cat-list" id="catList"></div>
-      </aside>
 
-      <main class="main">
-        <div class="main-head">
-          <div class="main-title">
-            Торговая федерация
-            <span class="info-dot" onclick="openModal()">i</span>
-          </div>
-        </div>
+  <!-- HEADER -->
+  <header class="header">
+    <a class="header-logo" href="#">
+      <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21/assets/minecraft/textures/item/pig_spawn_egg.png" alt="logo">
+      SvinLand
+    </a>
+    <nav class="header-nav">
+      <a class="nav-plain" href="https://chanland.vercel.app" target="_blank">Официальный сайт</a>
+      <a class="nav-plain" href="https://discord.gg/9WsxwGyVkE" target="_blank">Дискорд</a>
+    </nav>
+    <button class="header-login">Войти</button>
+  </header>
 
-        <div class="toolbar">
-          <div class="search-wrap">
-            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="7"></circle>
-              <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input type="text" id="searchInput" placeholder="Найти предмет">
-            <button class="clear-btn" id="clearBtn" onclick="clearSearch()">✕</button>
-          </div>
-          <div class="items-count" id="itemsCount"></div>
-        </div>
+  <!-- TABS -->
+  <div class="tabs-bar">
+    <button class="tab-btn active">Рекомендуемые</button>
+  </div>
 
-        <div class="grid-wrap">
-          <div class="items-grid" id="grid"></div>
+  <!-- BODY -->
+  <div class="shop-body">
+    <aside class="sidebar">
+      <div class="sidebar-title">Категории</div>
+      <div class="cat-list" id="catList"></div>
+    </aside>
+
+    <main class="main">
+      <div class="toolbar">
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"></circle><line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="searchInput" placeholder="Найти предмет">
+          <button class="clear-btn" id="clearBtn" onclick="clearSearch()">✕</button>
         </div>
-      </main>
-    </div>
+        <div class="items-count" id="itemsCount"></div>
+      </div>
+
+      <div class="grid-wrap">
+        <div class="items-grid" id="grid"></div>
+      </div>
+    </main>
   </div>
 </div>
 
+<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-header">
@@ -606,7 +475,7 @@ body::before{
     <div class="modal-body">
       <div class="info-box">
         <h3>Валюта</h3>
-        <p><strong>ВОН</strong> — основная валюта сервера. Все цены на сайте указаны в вонах.</p>
+        <p><strong>ВОН</strong> — основная валюта сервера. Все цены указаны в вонах.</p>
       </div>
       <div class="info-box">
         <h3>Как проходит торговля</h3>
@@ -629,15 +498,9 @@ body::before{
 </div>
 
 <script>
-function openModal(){
-  document.getElementById('modalOverlay').classList.add('open');
-}
-function closeModal(){
-  document.getElementById('modalOverlay').classList.remove('open');
-}
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape') closeModal();
-});
+function openModal(){document.getElementById('modalOverlay').classList.add('open')}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 
 const G='https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21/assets/minecraft/textures/';
 const I=G+'item/', B=G+'block/';
@@ -748,7 +611,139 @@ const T={
   tpl_wayfinder:I+'wayfinder_armor_trim_smithing_template.png',
   tpl_wild:I+'wild_armor_trim_smithing_template.png',
   tpl_flow:I+'flow_armor_trim_smithing_template.png',
-  netherite_upgrade_tpl:I+'netherite_upgrade_smithing_template.png'
+  netherite_upgrade_tpl:I+'netherite_upgrade_smithing_template.png',
+  // New items
+  mangrove_log:B+'mangrove_log.png',
+  chorus_fruit:I+'chorus_fruit.png',
+  popped_chorus:I+'popped_chorus_fruit.png',
+  end_rod:B+'end_rod.png',
+  glow_lichen:B+'glow_lichen.png',
+  chorus_flower:B+'chorus_flower_dead.png',
+  shulker:I+'shulker_shell.png',
+  bamboo_block:B+'bamboo_block.png',
+  oak_log:B+'oak_log.png',
+  bamboo_planks:B+'bamboo_planks.png',
+  oak_planks:B+'oak_planks.png',
+  leaves:B+'oak_leaves.png',
+  chiseled_bookshelf:B+'chiseled_bookshelf.png',
+  bookshelf:B+'bookshelf.png',
+  melon_slice:I+'melon_slice.png',
+  melon:B+'melon_side.png',
+  pale_moss:B+'pale_moss_block.png',
+  moss_block:B+'moss_block.png',
+  dirt:B+'dirt.png',
+  grass_block:B+'grass_block_top.png',
+  raw_beef:I+'raw_beef.png',
+  clay_block:B+'clay.png',
+  gravel:B+'gravel.png',
+  sand:B+'sand.png',
+  glass:B+'glass.png',
+  raw_cod:I+'raw_cod.png',
+  sandstone:B+'sandstone.png',
+  red_sand:B+'red_sand.png',
+  red_sandstone:B+'red_sandstone.png',
+  cobblestone:B+'cobblestone.png',
+  mossy_cobblestone:B+'mossy_cobblestone.png',
+  stone:B+'stone.png',
+  tuff:B+'tuff.png',
+  deepslate:B+'deepslate.png',
+  andesite:B+'andesite.png',
+  diorite:B+'diorite.png',
+  granite:B+'granite.png',
+  calcite:B+'calcite.png',
+  amethyst_block:B+'amethyst_block.png',
+  terracotta:B+'terracotta.png',
+  glazed_terracotta:B+'cyan_glazed_terracotta.png',
+  concrete:B+'white_concrete.png',
+  mushroom_stem:B+'mushroom_stem.png',
+  red_mushroom_block:B+'red_mushroom_block.png',
+  prismarine:B+'prismarine.png',
+  dark_prismarine:B+'dark_prismarine.png',
+  mud:B+'mud.png',
+  mud_bricks:B+'mud_bricks.png',
+  bricks:B+'bricks.png',
+  nether_bricks:B+'nether_bricks.png',
+  crimson_nylium:B+'crimson_nylium.png',
+  honeycomb_block:B+'honeycomb_block.png',
+  dripstone_block:B+'dripstone_block.png',
+  coral_block:B+'tube_coral_block.png',
+  packed_ice:B+'packed_ice.png',
+  white_wool:B+'white_wool.png',
+  sculk:B+'sculk.png',
+  netherrack:B+'netherrack.png',
+  blackstone:B+'blackstone.png',
+  crying_obsidian:B+'crying_obsidian.png',
+  ender_chest:B+'ender_chest.png',
+  azalea:B+'azalea.png',
+  amethyst_bud:B+'medium_amethyst_bud.png',
+  crimson_roots:B+'crimson_roots.png',
+  basalt:B+'basalt_top.png',
+  white_dye:I+'white_dye.png',
+  cyan_dye:I+'cyan_dye.png',
+  waxed_copper:B+'waxed_copper_block.png',
+  kelp_block:B+'dried_kelp_block.png',
+  nether_wart_block:B+'nether_wart_block.png',
+  cobweb:B+'cobweb.png',
+  light_blue_dye:I+'light_blue_dye.png',
+  snow_block:B+'snow.png',
+  spore_blossom:B+'spore_blossom.png',
+  blue_dye:I+'blue_dye.png',
+  shroomlight:B+'shroomlight.png',
+  mushroom:I+'red_mushroom.png',
+  iron_bars:B+'iron_bars.png',
+  yellow_dye:I+'yellow_dye.png',
+  green_dye:I+'green_dye.png',
+  gilded_blackstone:B+'gilded_blackstone.png',
+  cactus:B+'cactus_side.png',
+  potato:I+'potato.png',
+  sniffer_egg:B+'sniffer_egg_not_cracked.png',
+  bell:I+'bell.png',
+  coral:I+'tube_coral.png',
+  brown_dye:I+'brown_dye.png',
+  campfire:B+'campfire_fire.png',
+  soul_campfire:B+'soul_campfire_fire.png',
+  red_dye:I+'red_dye.png',
+  lime_dye:I+'lime_dye.png',
+  vine:B+'vine.png',
+  magma:B+'magma.png',
+  copper_lamp:B+'copper_bulb_lit.png',
+  copper_grate:B+'copper_grate.png',
+  seagrass:I+'seagrass.png',
+  sea_pickle:B+'sea_pickle.png',
+  orange_dye:I+'orange_dye.png',
+  fern:B+'fern.png',
+  soul_sand:B+'soul_sand.png',
+  baked_potato:I+'baked_potato.png',
+  cookie:I+'cookie.png',
+  hanging_roots:B+'hanging_roots.png',
+  prismarine_bricks:B+'prismarine_bricks.png',
+  purpur_block:B+'purpur_block.png',
+  item_frame:I+'item_frame.png',
+  wither_rose:B+'wither_rose.png',
+  pink_dye:I+'pink_dye.png',
+  light_gray_dye:I+'light_gray_dye.png',
+  glowstone:B+'glowstone.png',
+  glow_item_frame:I+'glow_item_frame.png',
+  glow_berries:I+'glow_berries.png',
+  candle:B+'candle.png',
+  gray_dye:I+'gray_dye.png',
+  magenta_dye:I+'magenta_dye.png',
+  sculk_vein:B+'sculk_vein.png',
+  sweet_berries:I+'sweet_berries.png',
+  cake:I+'cake.png',
+  pumpkin_pie:I+'pumpkin_pie.png',
+  decorated_pot:I+'decorated_pot.png',
+  purple_dye:I+'purple_dye.png',
+  white_banner:I+'white_banner.png',
+  lantern:B+'lantern.png',
+  soul_lantern:B+'soul_lantern.png',
+  flower_pot:I+'flower_pot.png',
+  chain:B+'chain.png',
+  black_dye:I+'black_dye.png',
+  end_stone:B+'end_stone.png',
+  torchflower:B+'torchflower_crop_stage1.png',
+  flower:B+'dandelion.png',
+  packed_mud:B+'packed_mud.png',
 };
 
 const PTINT={
@@ -778,192 +773,341 @@ const CATS=[
   {id:'other',label:'Прочее',img:T.book}
 ];
 
+// Prices increased ~40-50% from original values
 const ITEMS = [
-  {name:'Незеритовый меч (фулл зачар)',qty:'без починки',price:90,cat:'weapon',img:'sword_netherite'},
-  {name:'Незеритовый меч',qty:'1 шт.',price:24,cat:'weapon',img:'sword_netherite'},
-  {name:'Незеритовый топор',qty:'1 шт.',price:24,cat:'weapon',img:'axe_netherite'},
-  {name:'Трезубец',qty:'1 шт.',price:16,cat:'weapon',img:'trident'},
-  {name:'Булава',qty:'1 шт.',price:16,cat:'weapon',img:'mace'},
-  {name:'Лук (фулл зачар)',qty:'1 шт.',price:10,cat:'weapon',img:'bow'},
+  // WEAPON
+  {name:'Незеритовый меч (фулл зачар)',qty:'без починки',price:135,cat:'weapon',img:'sword_netherite'},
+  {name:'Незеритовый меч',qty:'1 шт.',price:35,cat:'weapon',img:'sword_netherite'},
+  {name:'Незеритовый топор',qty:'1 шт.',price:35,cat:'weapon',img:'axe_netherite'},
+  {name:'Трезубец',qty:'1 шт.',price:23,cat:'weapon',img:'trident'},
+  {name:'Булава',qty:'1 шт.',price:23,cat:'weapon',img:'mace'},
+  {name:'Лук (фулл зачар)',qty:'1 шт.',price:15,cat:'weapon',img:'bow'},
 
-  {name:'Незеритовый шлем (топ зачар)',qty:'1 шт.',price:65,cat:'armor',img:'helmet_netherite'},
-  {name:'Незеритовый шлем',qty:'1 шт.',price:26,cat:'armor',img:'helmet_netherite'},
-  {name:'Незеритовый нагрудник (топ зачар)',qty:'1 шт.',price:86,cat:'armor',img:'chest_netherite'},
-  {name:'Незеритовый нагрудник',qty:'1 шт.',price:29,cat:'armor',img:'chest_netherite'},
-  {name:'Незеритовые поножи (топ зачар)',qty:'1 шт.',price:48,cat:'armor',img:'legs_netherite'},
-  {name:'Незеритовые поножи',qty:'1 шт.',price:28,cat:'armor',img:'legs_netherite'},
-  {name:'Незеритовые ботинки (топ зачар)',qty:'1 шт.',price:80,cat:'armor',img:'boots_netherite'},
-  {name:'Незеритовые ботинки',qty:'1 шт.',price:25,cat:'armor',img:'boots_netherite'},
-  {name:'Алмазный шлем',qty:'1 шт.',price:2,cat:'armor',img:'helmet_diamond'},
-  {name:'Алмазный нагрудник',qty:'1 шт.',price:3,cat:'armor',img:'chest_diamond'},
-  {name:'Алмазные поножи',qty:'1 шт.',price:3,cat:'armor',img:'legs_diamond'},
-  {name:'Алмазные ботинки',qty:'1 шт.',price:2,cat:'armor',img:'boots_diamond'},
+  // ARMOR
+  {name:'Незеритовый шлем (топ зачар)',qty:'1 шт.',price:95,cat:'armor',img:'helmet_netherite'},
+  {name:'Незеритовый шлем',qty:'1 шт.',price:38,cat:'armor',img:'helmet_netherite'},
+  {name:'Незеритовый нагрудник (топ зачар)',qty:'1 шт.',price:125,cat:'armor',img:'chest_netherite'},
+  {name:'Незеритовый нагрудник',qty:'1 шт.',price:42,cat:'armor',img:'chest_netherite'},
+  {name:'Незеритовые поножи (топ зачар)',qty:'1 шт.',price:70,cat:'armor',img:'legs_netherite'},
+  {name:'Незеритовые поножи',qty:'1 шт.',price:40,cat:'armor',img:'legs_netherite'},
+  {name:'Незеритовые ботинки (топ зачар)',qty:'1 шт.',price:115,cat:'armor',img:'boots_netherite'},
+  {name:'Незеритовые ботинки',qty:'1 шт.',price:36,cat:'armor',img:'boots_netherite'},
+  {name:'Алмазный шлем',qty:'1 шт.',price:3,cat:'armor',img:'helmet_diamond'},
+  {name:'Алмазный нагрудник',qty:'1 шт.',price:4,cat:'armor',img:'chest_diamond'},
+  {name:'Алмазные поножи',qty:'1 шт.',price:4,cat:'armor',img:'legs_diamond'},
+  {name:'Алмазные ботинки',qty:'1 шт.',price:3,cat:'armor',img:'boots_diamond'},
 
-  {name:'Незеритовая кирка (топ зачар)',qty:'без починки',price:46,cat:'tool',img:'pick_netherite'},
-  {name:'Незеритовая кирка',qty:'1 шт.',price:25,cat:'tool',img:'pick_netherite'},
-  {name:'Алмазная кирка (фулл зачар)',qty:'без починки',price:15,cat:'tool',img:'pick_diamond'},
-  {name:'Незеритовая лопата',qty:'1 шт.',price:22,cat:'tool',img:'shovel_netherite'},
-  {name:'Незеритовая мотыга',qty:'1 шт.',price:22,cat:'tool',img:'hoe_netherite'},
-  {name:'Удочка (фулл зачар)',qty:'1 шт.',price:10,cat:'tool',img:'fishing_rod'},
+  // TOOLS
+  {name:'Незеритовая кирка (топ зачар)',qty:'без починки',price:68,cat:'tool',img:'pick_netherite'},
+  {name:'Незеритовая кирка',qty:'1 шт.',price:36,cat:'tool',img:'pick_netherite'},
+  {name:'Алмазная кирка (фулл зачар)',qty:'без починки',price:22,cat:'tool',img:'pick_diamond'},
+  {name:'Незеритовая лопата',qty:'1 шт.',price:32,cat:'tool',img:'shovel_netherite'},
+  {name:'Незеритовая мотыга',qty:'1 шт.',price:32,cat:'tool',img:'hoe_netherite'},
+  {name:'Удочка (фулл зачар)',qty:'1 шт.',price:15,cat:'tool',img:'fishing_rod'},
 
-  {name:'Починка',qty:'книга',price:200,cat:'enchant',img:'enchanted_book'},
-  {name:'Проворство III',qty:'книга',price:500,cat:'enchant',img:'enchanted_book'},
-  {name:'Скорость души III',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
-  {name:'Защита IV',qty:'книга',price:16,cat:'enchant',img:'enchanted_book'},
-  {name:'Шёлковое касание',qty:'книга',price:14,cat:'enchant',img:'enchanted_book'},
-  {name:'Прочность III',qty:'книга',price:16,cat:'enchant',img:'enchanted_book'},
-  {name:'Добыча III',qty:'книга',price:21,cat:'enchant',img:'enchanted_book'},
-  {name:'Острота V',qty:'книга',price:22,cat:'enchant',img:'enchanted_book'},
-  {name:'Удача III',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
-  {name:'Шипы III',qty:'книга',price:25,cat:'enchant',img:'enchanted_book'},
-  {name:'Эффективность V',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
-  {name:'Бесконечность',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
-  {name:'Быстрая перезарядка III',qty:'книга',price:6,cat:'enchant',img:'enchanted_book'},
-  {name:'Везучий рыбак III',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
-  {name:'Верность III',qty:'книга',price:11,cat:'enchant',img:'enchanted_book'},
-  {name:'Взрывоустойчивость IV',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
-  {name:'Воспламенение',qty:'книга',price:6,cat:'enchant',img:'enchanted_book'},
-  {name:'Громовержец',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
-  {name:'Заговор огня II',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
-  {name:'Защита от снарядов IV',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
-  {name:'Ледоход II',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
-  {name:'Небесная кара V',qty:'книга',price:5,cat:'enchant',img:'enchanted_book'},
-  {name:'Невесомость IV',qty:'книга',price:25,cat:'enchant',img:'enchanted_book'},
-  {name:'Бич членистоногих V',qty:'книга',price:5,cat:'enchant',img:'enchanted_book'},
-  {name:'Огнеупорность IV',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
-  {name:'Отдача II',qty:'книга',price:9,cat:'enchant',img:'enchanted_book'},
-  {name:'Откидывание II',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
-  {name:'Плотность V',qty:'книга',price:20,cat:'enchant',img:'enchanted_book'},
-  {name:'Подводная ходьба III',qty:'книга',price:14,cat:'enchant',img:'enchanted_book'},
-  {name:'Подводник',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
-  {name:'Подводное дыхание III',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
-  {name:'Порыв ветра III',qty:'книга',price:100,cat:'enchant',img:'enchanted_book'},
-  {name:'Приманка III',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
-  {name:'Пробитие IV',qty:'книга',price:18,cat:'enchant',img:'enchanted_book'},
-  {name:'Пронзатель V',qty:'книга',price:7,cat:'enchant',img:'enchanted_book'},
-  {name:'Пронзающая стрела IV',qty:'книга',price:6,cat:'enchant',img:'enchanted_book'},
-  {name:'Разящий клинок III',qty:'книга',price:16,cat:'enchant',img:'enchanted_book'},
-  {name:'Сила V',qty:'книга',price:12,cat:'enchant',img:'enchanted_book'},
-  {name:'Тройной выстрел',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
-  {name:'Тягун III',qty:'книга',price:23,cat:'enchant',img:'enchanted_book'},
+  // ENCHANT
+  {name:'Починка',qty:'книга',price:290,cat:'enchant',img:'enchanted_book'},
+  {name:'Проворство III',qty:'книга',price:720,cat:'enchant',img:'enchanted_book'},
+  {name:'Скорость души III',qty:'книга',price:22,cat:'enchant',img:'enchanted_book'},
+  {name:'Защита IV',qty:'книга',price:23,cat:'enchant',img:'enchanted_book'},
+  {name:'Шёлковое касание',qty:'книга',price:20,cat:'enchant',img:'enchanted_book'},
+  {name:'Прочность III',qty:'книга',price:23,cat:'enchant',img:'enchanted_book'},
+  {name:'Добыча III',qty:'книга',price:30,cat:'enchant',img:'enchanted_book'},
+  {name:'Острота V',qty:'книга',price:32,cat:'enchant',img:'enchanted_book'},
+  {name:'Удача III',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
+  {name:'Шипы III',qty:'книга',price:36,cat:'enchant',img:'enchanted_book'},
+  {name:'Эффективность V',qty:'книга',price:22,cat:'enchant',img:'enchanted_book'},
+  {name:'Бесконечность',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
+  {name:'Быстрая перезарядка III',qty:'книга',price:9,cat:'enchant',img:'enchanted_book'},
+  {name:'Везучий рыбак III',qty:'книга',price:12,cat:'enchant',img:'enchanted_book'},
+  {name:'Верность III',qty:'книга',price:16,cat:'enchant',img:'enchanted_book'},
+  {name:'Взрывоустойчивость IV',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
+  {name:'Воспламенение',qty:'книга',price:9,cat:'enchant',img:'enchanted_book'},
+  {name:'Громовержец',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
+  {name:'Заговор огня II',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
+  {name:'Защита от снарядов IV',qty:'книга',price:12,cat:'enchant',img:'enchanted_book'},
+  {name:'Ледоход II',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
+  {name:'Небесная кара V',qty:'книга',price:7,cat:'enchant',img:'enchanted_book'},
+  {name:'Невесомость IV',qty:'книга',price:36,cat:'enchant',img:'enchanted_book'},
+  {name:'Бич членистоногих V',qty:'книга',price:7,cat:'enchant',img:'enchanted_book'},
+  {name:'Огнеупорность IV',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
+  {name:'Отдача II',qty:'книга',price:13,cat:'enchant',img:'enchanted_book'},
+  {name:'Откидывание II',qty:'книга',price:12,cat:'enchant',img:'enchanted_book'},
+  {name:'Плотность V',qty:'книга',price:29,cat:'enchant',img:'enchanted_book'},
+  {name:'Подводная ходьба III',qty:'книга',price:20,cat:'enchant',img:'enchanted_book'},
+  {name:'Подводник',qty:'книга',price:12,cat:'enchant',img:'enchanted_book'},
+  {name:'Подводное дыхание III',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
+  {name:'Порыв ветра III',qty:'книга',price:145,cat:'enchant',img:'enchanted_book'},
+  {name:'Приманка III',qty:'книга',price:12,cat:'enchant',img:'enchanted_book'},
+  {name:'Пробитие IV',qty:'книга',price:26,cat:'enchant',img:'enchanted_book'},
+  {name:'Пронзатель V',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
+  {name:'Пронзающая стрела IV',qty:'книга',price:9,cat:'enchant',img:'enchanted_book'},
+  {name:'Разящий клинок III',qty:'книга',price:23,cat:'enchant',img:'enchanted_book'},
+  {name:'Сила V',qty:'книга',price:17,cat:'enchant',img:'enchanted_book'},
+  {name:'Тройной выстрел',qty:'книга',price:12,cat:'enchant',img:'enchanted_book'},
+  {name:'Тягун III',qty:'книга',price:33,cat:'enchant',img:'enchanted_book'},
 
-  {name:'Незеритовый слиток',qty:'1 шт.',price:23,cat:'resource',img:'netherite_ingot'},
-  {name:'Древние обломки',qty:'1 шт.',price:5,cat:'resource',img:'ancient_debris'},
+  // RESOURCES / СТРОИТЕЛЬСТВО
+  {name:'Незеритовый слиток',qty:'1 шт.',price:34,cat:'resource',img:'netherite_ingot'},
+  {name:'Древние обломки',qty:'1 шт.',price:7,cat:'resource',img:'ancient_debris'},
   {name:'Алмаз',qty:'3 шт.',price:1,cat:'resource',img:'diamond'},
-  {name:'Алмазный блок',qty:'16 шт.',price:48,cat:'resource',img:'diamond_block'},
+  {name:'Алмазный блок',qty:'16 шт.',price:70,cat:'resource',img:'diamond_block'},
   {name:'Железо',qty:'64 шт.',price:1,cat:'resource',img:'iron_ingot'},
-  {name:'Железный блок',qty:'64 шт.',price:8,cat:'resource',img:'iron_block'},
-  {name:'Золото',qty:'64 шт.',price:3,cat:'resource',img:'gold_ingot'},
-  {name:'Золотой блок',qty:'64 шт.',price:24,cat:'resource',img:'gold_block'},
+  {name:'Железный блок',qty:'64 шт.',price:12,cat:'resource',img:'iron_block'},
+  {name:'Золото',qty:'64 шт.',price:4,cat:'resource',img:'gold_ingot'},
+  {name:'Золотой блок',qty:'64 шт.',price:35,cat:'resource',img:'gold_block'},
   {name:'Изумруд',qty:'64 шт.',price:1,cat:'resource',img:'emerald'},
-  {name:'Изумрудный блок',qty:'64 шт.',price:8,cat:'resource',img:'emerald_block'},
+  {name:'Изумрудный блок',qty:'64 шт.',price:6,cat:'resource',img:'emerald_block'},
   {name:'Медь',qty:'64 шт.',price:1,cat:'resource',img:'copper_ingot'},
   {name:'Лазурит',qty:'64 шт.',price:1,cat:'resource',img:'lapis'},
-  {name:'Лазуритовый блок',qty:'64 шт.',price:9,cat:'resource',img:'lapis_block'},
+  {name:'Лазуритовый блок',qty:'64 шт.',price:13,cat:'resource',img:'lapis_block'},
   {name:'Осколок аметиста',qty:'64 шт.',price:1,cat:'resource',img:'amethyst'},
-  {name:'Кристалл Края',qty:'16 шт.',price:16,cat:'resource',img:'end_crystal'},
-  {name:'Сердце моря',qty:'1 шт.',price:64,cat:'resource',img:'heart_of_sea'},
-  {name:'Изумрудная руда',qty:'1 шт.',price:10,cat:'ore',img:'emerald_ore'},
+  {name:'Кристалл Края',qty:'16 шт.',price:23,cat:'resource',img:'end_crystal'},
+  {name:'Сердце моря',qty:'1 шт.',price:93,cat:'resource',img:'heart_of_sea'},
+  {name:'Медный блок',qty:'64 шт.',price:6,cat:'resource',img:'copper_block'},
+  {name:'Кварцевый блок',qty:'64 шт.',price:3,cat:'resource',img:'quartz_block'},
+  {name:'Обсидиан',qty:'64 шт.',price:12,cat:'resource',img:'obsidian'},
+  // New resource/build items
+  {name:'Мангровое бревно',qty:'64 шт.',price:6,cat:'resource',img:'mangrove_log'},
+  {name:'Блок бамбука',qty:'64 шт.',price:6,cat:'resource',img:'bamboo_block'},
+  {name:'Бревна (все типы)',qty:'64 шт.',price:4,cat:'resource',img:'oak_log'},
+  {name:'Бамбуковые доски',qty:'64 шт.',price:3,cat:'resource',img:'bamboo_planks'},
+  {name:'Все типы досок',qty:'64 шт.',price:1,cat:'resource',img:'oak_planks'},
+  {name:'Вся листва',qty:'64 шт.',price:1,cat:'resource',img:'leaves'},
+  {name:'Резная книжная полка',qty:'64 шт.',price:3,cat:'resource',img:'chiseled_bookshelf'},
+  {name:'Книжная полка',qty:'64 шт.',price:13,cat:'resource',img:'bookshelf'},
+  {name:'Арбуз',qty:'64 шт.',price:6,cat:'resource',img:'melon'},
+  {name:'Бледный мох',qty:'64 шт.',price:1,cat:'resource',img:'pale_moss'},
+  {name:'Блок мха',qty:'64 шт.',price:1,cat:'resource',img:'moss_block'},
+  {name:'Земля',qty:'64 шт.',price:1,cat:'resource',img:'dirt'},
+  {name:'Дёрн',qty:'64 шт.',price:1,cat:'resource',img:'grass_block'},
+  {name:'Глина',qty:'64 шт.',price:3,cat:'resource',img:'clay_block'},
+  {name:'Гравий',qty:'64 шт.',price:3,cat:'resource',img:'gravel'},
+  {name:'Песок',qty:'64 шт.',price:1,cat:'resource',img:'sand'},
+  {name:'Стекло',qty:'64 шт.',price:3,cat:'resource',img:'glass'},
+  {name:'Песчаник',qty:'64 шт.',price:3,cat:'resource',img:'sandstone'},
+  {name:'Красный песок',qty:'64 шт.',price:3,cat:'resource',img:'red_sand'},
+  {name:'Красный песчаник',qty:'64 шт.',price:6,cat:'resource',img:'red_sandstone'},
+  {name:'Булыжник',qty:'64 шт.',price:1,cat:'resource',img:'cobblestone'},
+  {name:'Замшелый камень/булыжник',qty:'64 шт.',price:3,cat:'resource',img:'mossy_cobblestone'},
+  {name:'Камень',qty:'64 шт.',price:1,cat:'resource',img:'stone'},
+  {name:'Туф',qty:'64 шт.',price:1,cat:'resource',img:'tuff'},
+  {name:'Глубинный сланец',qty:'64 шт.',price:1,cat:'resource',img:'deepslate'},
+  {name:'Андезит',qty:'64 шт.',price:3,cat:'resource',img:'andesite'},
+  {name:'Диорит',qty:'64 шт.',price:3,cat:'resource',img:'diorite'},
+  {name:'Гранит',qty:'64 шт.',price:3,cat:'resource',img:'granite'},
+  {name:'Кальцит',qty:'64 шт.',price:7,cat:'resource',img:'calcite'},
+  {name:'Аметист (блок)',qty:'64 шт.',price:6,cat:'resource',img:'amethyst_block'},
+  {name:'Терракота/керамика',qty:'64 шт.',price:3,cat:'resource',img:'terracotta'},
+  {name:'Глазурованная керамика',qty:'64 шт.',price:4,cat:'resource',img:'glazed_terracotta'},
+  {name:'Бетон/Сухой бетон',qty:'64 шт.',price:4,cat:'resource',img:'concrete'},
+  {name:'Костяной блок',qty:'64 шт.',price:12,cat:'resource',img:'bone_block'},
+  {name:'Ножка гриба',qty:'64 шт.',price:4,cat:'resource',img:'mushroom_stem'},
+  {name:'Блок гриба',qty:'64 шт.',price:4,cat:'resource',img:'red_mushroom_block'},
+  {name:'Призмарин',qty:'64 шт.',price:4,cat:'resource',img:'prismarine'},
+  {name:'Тёмный призмарин',qty:'64 шт.',price:9,cat:'resource',img:'dark_prismarine'},
+  {name:'Грязь',qty:'64 шт.',price:3,cat:'resource',img:'mud'},
+  {name:'Саманные кирпичи',qty:'64 шт.',price:6,cat:'resource',img:'mud_bricks'},
+  {name:'Кирпичи',qty:'64 шт.',price:6,cat:'resource',img:'bricks'},
+  {name:'Смоляные кирпичи',qty:'64 шт.',price:6,cat:'resource',img:'nether_bricks'},
+  {name:'Блок пчелиных сот',qty:'64 шт.',price:6,cat:'resource',img:'honeycomb_block'},
+  {name:'Капельниковый блок',qty:'64 шт.',price:3,cat:'resource',img:'dripstone_block'},
+  {name:'Блок коралл',qty:'64 шт.',price:7,cat:'resource',img:'coral_block'},
+  {name:'Плотный лёд',qty:'64 шт.',price:3,cat:'resource',img:'packed_ice'},
+  {name:'Шерсть',qty:'64 шт.',price:3,cat:'resource',img:'white_wool'},
+  {name:'Скалк',qty:'64 шт.',price:4,cat:'resource',img:'sculk'},
+  {name:'Незерак',qty:'64 шт.',price:1,cat:'resource',img:'netherrack'},
+  {name:'Незерские кирпичи',qty:'64 шт.',price:3,cat:'resource',img:'nether_bricks'},
+  {name:'Адские кирпичи',qty:'64 шт.',price:4,cat:'resource',img:'crimson_nylium'},
+  {name:'Чернит',qty:'64 шт.',price:3,cat:'resource',img:'blackstone'},
+  {name:'Плачущий обсидиан',qty:'64 шт.',price:10,cat:'resource',img:'crying_obsidian'},
+  {name:'Эндерняк',qty:'64 шт.',price:3,cat:'resource',img:'end_stone'},
+  {name:'Азалия/Цветущая',qty:'64 шт.',price:3,cat:'resource',img:'azalea'},
+  {name:'Аметистовые бутоны',qty:'64 шт.',price:3,cat:'resource',img:'amethyst_bud'},
+  {name:'Багровые/Искаженные корни',qty:'64 шт.',price:3,cat:'resource',img:'crimson_roots'},
+  {name:'Базальт',qty:'64 шт.',price:3,cat:'resource',img:'basalt'},
+  {name:'Блок Вощёной меди',qty:'64 шт.',price:6,cat:'resource',img:'waxed_copper'},
+  {name:'Блок ламинарии',qty:'64 шт.',price:4,cat:'resource',img:'kelp_block'},
+  {name:'Блок нароста',qty:'64 шт.',price:1,cat:'resource',img:'nether_wart_block'},
+  {name:'Блок паутины',qty:'64 шт.',price:22,cat:'resource',img:'cobweb'},
+  {name:'Блок снега',qty:'64 шт.',price:3,cat:'resource',img:'snow_block'},
+  {name:'Бросянка',qty:'64 шт.',price:4,cat:'resource',img:'spore_blossom'},
+  {name:'Грибосвет',qty:'64 шт.',price:4,cat:'resource',img:'shroomlight'},
+  {name:'Грибы',qty:'64 шт.',price:3,cat:'resource',img:'mushroom'},
+  {name:'Железные прутья',qty:'64 шт.',price:4,cat:'resource',img:'iron_bars'},
+  {name:'Золочёный чернит',qty:'64 шт.',price:22,cat:'resource',img:'gilded_blackstone'},
+  {name:'Кактус',qty:'64 шт.',price:1,cat:'resource',img:'cactus'},
+  {name:'Кораллы',qty:'64 шт.',price:3,cat:'resource',img:'coral'},
+  {name:'Лиана',qty:'64 шт.',price:3,cat:'resource',img:'vine'},
+  {name:'Магма',qty:'64 шт.',price:3,cat:'resource',img:'magma'},
+  {name:'Морская трава',qty:'64 шт.',price:4,cat:'resource',img:'seagrass'},
+  {name:'Морской огурец',qty:'64 шт.',price:4,cat:'resource',img:'sea_pickle'},
+  {name:'Папоротник',qty:'64 шт.',price:3,cat:'resource',img:'fern'},
+  {name:'Песок/Почва душ',qty:'64 шт.',price:3,cat:'resource',img:'soul_sand'},
+  {name:'Плакучая/Вьющаяся лоза',qty:'64 шт.',price:3,cat:'resource',img:'hanging_roots'},
+  {name:'Плотная грязь',qty:'64 шт.',price:3,cat:'resource',img:'packed_mud'},
+  {name:'Призмариновые кирпичи',qty:'64 шт.',price:6,cat:'resource',img:'prismarine_bricks'},
+  {name:'Пурпур',qty:'64 шт.',price:4,cat:'resource',img:'purpur_block'},
+  {name:'Роза визера',qty:'64 шт.',price:1,cat:'resource',img:'wither_rose'},
+  {name:'Свисающие корни',qty:'64 шт.',price:4,cat:'resource',img:'hanging_roots'},
+  {name:'Свисающий бледный мох',qty:'64 шт.',price:4,cat:'resource',img:'pale_moss'},
+  {name:'Скалковая жила',qty:'64 шт.',price:4,cat:'resource',img:'sculk_vein'},
+  {name:'Спороцвет',qty:'16 шт.',price:7,cat:'resource',img:'spore_blossom'},
+  {name:'Узорчатая ваза',qty:'64 шт.',price:4,cat:'resource',img:'decorated_pot'},
+  {name:'Цветочный горшок',qty:'64 шт.',price:4,cat:'resource',img:'flower_pot'},
+  {name:'Цепи',qty:'64 шт.',price:3,cat:'resource',img:'chain'},
+  {name:'Любой цветок',qty:'64 шт.',price:1,cat:'resource',img:'flower'},
 
-  {name:'Медный блок',qty:'64 шт.',price:4,cat:'resource',img:'copper_block'},
-  {name:'Кварцевый блок',qty:'64 шт.',price:2,cat:'resource',img:'quartz_block'},
-  {name:'Костяной блок',qty:'64 шт.',price:8,cat:'resource',img:'bone_block'},
-  {name:'Обсидиан',qty:'64 шт.',price:10,cat:'resource',img:'obsidian'},
-  {name:'Редстоуновый блок',qty:'32 шт.',price:4,cat:'build',img:'redstone_block'},
-  {name:'Малахитовая кварца',qty:'64 шт.',price:4,cat:'resource',img:'quartz_block'},
-  {name:'Блок слизи',qty:'64 шт.',price:9,cat:'build',img:'slime_block'},
+  // DECOR
+  {name:'Морской фонарь',qty:'64 шт.',price:9,cat:'decor',img:'sea_lantern'},
+  {name:'Блок мёда',qty:'16 шт.',price:6,cat:'decor',img:'honey_block'},
+  {name:'Блок света',qty:'32 шт.',price:3,cat:'decor',img:'light_block'},
+  {name:'Пластинка PigStep',qty:'1 шт.',price:220,cat:'decor',img:'music_disc'},
+  {name:'Пластинка Relic',qty:'1 шт.',price:220,cat:'decor',img:'music_disc_relic'},
+  {name:'Пластинка Creator',qty:'1 шт.',price:145,cat:'decor',img:'music_disc_creator'},
+  {name:'Пластинка Aaron Cherof',qty:'1 шт.',price:255,cat:'decor',img:'music_disc'},
+  {name:'Пластинки (прочие)',qty:'1 шт.',price:29,cat:'decor',img:'music_disc'},
+  {name:'Отделка Берег',qty:'1 шт.',price:12,cat:'decor',img:'tpl_coast'},
+  {name:'Отделка Дюна',qty:'1 шт.',price:15,cat:'decor',img:'tpl_dune'},
+  {name:'Отделка Oko',qty:'1 шт.',price:15,cat:'decor',img:'tpl_eye'},
+  {name:'Отделка Хранитель',qty:'1 шт.',price:15,cat:'decor',img:'tpl_host'},
+  {name:'Отделка Собиратель',qty:'1 шт.',price:15,cat:'decor',img:'tpl_raiser'},
+  {name:'Отделка Ребро',qty:'1 шт.',price:12,cat:'decor',img:'tpl_rib'},
+  {name:'Отделка Страж',qty:'1 шт.',price:12,cat:'decor',img:'tpl_sentry'},
+  {name:'Отделка Скульптор',qty:'1 шт.',price:22,cat:'decor',img:'tpl_shaper'},
+  {name:'Отделка Тишина',qty:'1 шт.',price:15,cat:'decor',img:'tpl_silence'},
+  {name:'Отделка Рыло',qty:'1 шт.',price:15,cat:'decor',img:'tpl_snout'},
+  {name:'Отделка Ось',qty:'1 шт.',price:12,cat:'decor',img:'tpl_spire'},
+  {name:'Отделка Прилив',qty:'1 шт.',price:22,cat:'decor',img:'tpl_tide'},
+  {name:'Отделка Вредина',qty:'1 шт.',price:15,cat:'decor',img:'tpl_vex'},
+  {name:'Отделка Вождь',qty:'1 шт.',price:15,cat:'decor',img:'tpl_ward'},
+  {name:'Отделка Искатель',qty:'1 шт.',price:15,cat:'decor',img:'tpl_wayfinder'},
+  {name:'Отделка Дебри',qty:'1 шт.',price:15,cat:'decor',img:'tpl_wild'},
+  {name:'Отделка Поток',qty:'1 шт.',price:12,cat:'decor',img:'tpl_flow'},
+  // New decor
+  {name:'Стержень энда',qty:'16 шт.',price:3,cat:'decor',img:'end_rod'},
+  {name:'Факельник/Кувшинница',qty:'64 шт.',price:3,cat:'decor',img:'torchflower'},
+  {name:'Светящийся лишайник',qty:'64 шт.',price:4,cat:'decor',img:'glow_lichen'},
+  {name:'Медные лампы',qty:'64 шт.',price:6,cat:'decor',img:'copper_lamp'},
+  {name:'Медные решётки',qty:'64 шт.',price:6,cat:'decor',img:'copper_grate'},
+  {name:'Подвесная табличка',qty:'16 шт.',price:4,cat:'decor',img:'item_frame'},
+  {name:'Рамка',qty:'64 шт.',price:3,cat:'decor',img:'item_frame'},
+  {name:'Светящаяся рамка',qty:'64 шт.',price:4,cat:'decor',img:'glow_item_frame'},
+  {name:'Свеча',qty:'64 шт.',price:3,cat:'decor',img:'candle'},
+  {name:'Светокамень',qty:'64 шт.',price:12,cat:'decor',img:'glowstone'},
+  {name:'Фонарь',qty:'64 шт.',price:6,cat:'decor',img:'lantern'},
+  {name:'Фонарь душ',qty:'64 шт.',price:7,cat:'decor',img:'soul_lantern'},
+  {name:'Костёр',qty:'64 шт.',price:10,cat:'decor',img:'campfire'},
+  {name:'Костёр душ',qty:'64 шт.',price:12,cat:'decor',img:'soul_campfire'},
+  {name:'Флаг',qty:'16 шт.',price:3,cat:'decor',img:'white_banner'},
+  {name:'Колокол',qty:'1 шт.',price:15,cat:'decor',img:'bell'},
+  {name:'Эндер-сундук',qty:'1 шт.',price:7,cat:'decor',img:'ender_chest'},
 
-  {name:'Морской фонарь',qty:'64 шт.',price:5,cat:'decor',img:'sea_lantern'},
-  {name:'Блок мёда',qty:'16 шт.',price:4,cat:'decor',img:'honey_block'},
-  {name:'Блок света',qty:'32 шт.',price:6,cat:'decor',img:'light_block'},
-  {name:'Пластинка PigStep',qty:'1 шт.',price:150,cat:'decor',img:'music_disc'},
-  {name:'Пластинка Relic',qty:'1 шт.',price:150,cat:'decor',img:'music_disc_relic'},
-  {name:'Пластинка Creator',qty:'1 шт.',price:100,cat:'decor',img:'music_disc_creator'},
-  {name:'Пластинка Aaron Cherof',qty:'1 шт.',price:175,cat:'decor',img:'music_disc'},
-  {name:'Пластинки (прочие)',qty:'1 шт.',price:20,cat:'decor',img:'music_disc'},
-  {name:'Отделка Берег',qty:'1 шт.',price:8,cat:'decor',img:'tpl_coast'},
-  {name:'Отделка Дюна',qty:'1 шт.',price:10,cat:'decor',img:'tpl_dune'},
-  {name:'Отделка Oko',qty:'1 шт.',price:10,cat:'decor',img:'tpl_eye'},
-  {name:'Отделка Хранитель',qty:'1 шт.',price:10,cat:'decor',img:'tpl_host'},
-  {name:'Отделка Собиратель',qty:'1 шт.',price:10,cat:'decor',img:'tpl_raiser'},
-  {name:'Отделка Ребро',qty:'1 шт.',price:8,cat:'decor',img:'tpl_rib'},
-  {name:'Отделка Страж',qty:'1 шт.',price:8,cat:'decor',img:'tpl_sentry'},
-  {name:'Отделка Скульптор',qty:'1 шт.',price:15,cat:'decor',img:'tpl_shaper'},
-  {name:'Отделка Тишина',qty:'1 шт.',price:10,cat:'decor',img:'tpl_silence'},
-  {name:'Отделка Рыло',qty:'1 шт.',price:10,cat:'decor',img:'tpl_snout'},
-  {name:'Отделка Ось',qty:'1 шт.',price:8,cat:'decor',img:'tpl_spire'},
-  {name:'Отделка Прилив',qty:'1 шт.',price:15,cat:'decor',img:'tpl_tide'},
-  {name:'Отделка Вредина',qty:'1 шт.',price:10,cat:'decor',img:'tpl_vex'},
-  {name:'Отделка Вождь',qty:'1 шт.',price:10,cat:'decor',img:'tpl_ward'},
-  {name:'Отделка Искатель',qty:'1 шт.',price:10,cat:'decor',img:'tpl_wayfinder'},
-  {name:'Отделка Дебри',qty:'1 шт.',price:10,cat:'decor',img:'tpl_wild'},
-  {name:'Отделка Поток',qty:'1 шт.',price:8,cat:'decor',img:'tpl_flow'},
+  // DYES
+  {name:'Белый краситель',qty:'64 шт.',price:1,cat:'resource',img:'white_dye'},
+  {name:'Бирюзовый краситель',qty:'64 шт.',price:3,cat:'resource',img:'cyan_dye'},
+  {name:'Голубой краситель',qty:'64 шт.',price:3,cat:'resource',img:'light_blue_dye'},
+  {name:'Жёлтый краситель',qty:'64 шт.',price:1,cat:'resource',img:'yellow_dye'},
+  {name:'Зелёный краситель',qty:'64 шт.',price:1,cat:'resource',img:'green_dye'},
+  {name:'Коричневый краситель',qty:'64 шт.',price:1,cat:'resource',img:'brown_dye'},
+  {name:'Красный краситель',qty:'64 шт.',price:1,cat:'resource',img:'red_dye'},
+  {name:'Лаймовый краситель',qty:'64 шт.',price:3,cat:'resource',img:'lime_dye'},
+  {name:'Оранжевый краситель',qty:'64 шт.',price:3,cat:'resource',img:'orange_dye'},
+  {name:'Розовый краситель',qty:'64 шт.',price:3,cat:'resource',img:'pink_dye'},
+  {name:'Светло-серый краситель',qty:'64 шт.',price:3,cat:'resource',img:'light_gray_dye'},
+  {name:'Серый краситель',qty:'64 шт.',price:3,cat:'resource',img:'gray_dye'},
+  {name:'Синий краситель',qty:'64 шт.',price:1,cat:'resource',img:'blue_dye'},
+  {name:'Сиреневый краситель',qty:'32 шт.',price:3,cat:'resource',img:'magenta_dye'},
+  {name:'Фиолетовый краситель',qty:'64 шт.',price:3,cat:'resource',img:'purple_dye'},
+  {name:'Чёрный краситель',qty:'64 шт.',price:1,cat:'resource',img:'black_dye'},
 
-  {name:'Незеритовое улучшение',qty:'1 шт.',price:7,cat:'other',img:'netherite_upgrade_tpl'},
+  // BUILD / MECHANISMS
+  {name:'Редстоуновый блок',qty:'32 шт.',price:6,cat:'build',img:'redstone_block'},
+  {name:'Блок слизи',qty:'64 шт.',price:13,cat:'build',img:'slime_block'},
 
-  {name:'Зелье невидимости',qty:'1 шт.',price:3,cat:'potion',img:'potion_invis'},
+  // ORE
+  {name:'Изумрудная руда',qty:'1 шт.',price:15,cat:'ore',img:'emerald_ore'},
+
+  // POTIONS
+  {name:'Зелье невидимости',qty:'1 шт.',price:4,cat:'potion',img:'potion_invis'},
   {name:'Зелье ночного зрения',qty:'1 шт.',price:1,cat:'potion',img:'potion_nightvis'},
   {name:'Зелье огнестойкости',qty:'1 шт.',price:1,cat:'potion',img:'potion_fire'},
-  {name:'Зелье прыгучести',qty:'1 шт.',price:2,cat:'potion',img:'potion_jump'},
-  {name:'Зелье регенерации',qty:'1 шт.',price:2,cat:'potion',img:'potion_regen'},
-  {name:'Зелье силы',qty:'1 шт.',price:3,cat:'potion',img:'potion_strength'},
-  {name:'Зелье стремительности',qty:'1 шт.',price:2,cat:'potion',img:'potion_speed'},
-  {name:'Зелье черепашьей мощи IV',qty:'1 шт.',price:7,cat:'potion',img:'potion_turtle'},
-  {name:'Зловещая бутылочка I',qty:'2 шт.',price:2,cat:'potion',img:'ominous_bottle'},
-  {name:'Зловещая бутылочка II',qty:'1 шт.',price:2,cat:'potion',img:'ominous_bottle'},
-  {name:'Зловещая бутылочка III',qty:'1 шт.',price:2,cat:'potion',img:'ominous_bottle'},
-  {name:'Зловещая бутылочка IV',qty:'1 шт.',price:3,cat:'potion',img:'ominous_bottle'},
-  {name:'Зловещая бутылочка V',qty:'1 шт.',price:3,cat:'potion',img:'ominous_bottle'},
+  {name:'Зелье прыгучести',qty:'1 шт.',price:3,cat:'potion',img:'potion_jump'},
+  {name:'Зелье регенерации',qty:'1 шт.',price:3,cat:'potion',img:'potion_regen'},
+  {name:'Зелье силы',qty:'1 шт.',price:4,cat:'potion',img:'potion_strength'},
+  {name:'Зелье стремительности',qty:'1 шт.',price:3,cat:'potion',img:'potion_speed'},
+  {name:'Зелье черепашьей мощи IV',qty:'1 шт.',price:10,cat:'potion',img:'potion_turtle'},
+  {name:'Зловещая бутылочка I',qty:'2 шт.',price:3,cat:'potion',img:'ominous_bottle'},
+  {name:'Зловещая бутылочка II',qty:'1 шт.',price:3,cat:'potion',img:'ominous_bottle'},
+  {name:'Зловещая бутылочка III',qty:'1 шт.',price:3,cat:'potion',img:'ominous_bottle'},
+  {name:'Зловещая бутылочка IV',qty:'1 шт.',price:4,cat:'potion',img:'ominous_bottle'},
+  {name:'Зловещая бутылочка V',qty:'1 шт.',price:4,cat:'potion',img:'ominous_bottle'},
 
-  {name:'Зачарованное золотое яблоко',qty:'1 шт.',price:9,cat:'food',img:'enchanted_apple'},
-  {name:'Золотое яблоко',qty:'16 шт.',price:8,cat:'food',img:'golden_apple'},
-  {name:'Золотая морковь',qty:'64 шт.',price:5,cat:'food',img:'golden_carrot'},
-  {name:'Хлеб',qty:'64 шт.',price:2,cat:'food',img:'bread'},
-  {name:'Жареная рыба',qty:'64 шт.',price:2,cat:'food',img:'cooked_cod'},
-  {name:'Жареное мясо',qty:'64 шт.',price:2,cat:'food',img:'cooked_beef'},
-  {name:'Морковь',qty:'64 шт.',price:2,cat:'food',img:'carrot'},
-  {name:'Яблоко',qty:'64 шт.',price:8,cat:'food',img:'apple'},
+  // FOOD
+  {name:'Зачарованное золотое яблоко',qty:'1 шт.',price:13,cat:'food',img:'enchanted_apple'},
+  {name:'Золотое яблоко',qty:'16 шт.',price:12,cat:'food',img:'golden_apple'},
+  {name:'Золотая морковь',qty:'64 шт.',price:7,cat:'food',img:'golden_carrot'},
+  {name:'Хлеб',qty:'64 шт.',price:3,cat:'food',img:'bread'},
+  {name:'Жареная рыба',qty:'64 шт.',price:4,cat:'food',img:'cooked_cod'},
+  {name:'Жареное мясо',qty:'64 шт.',price:4,cat:'food',img:'cooked_beef'},
+  {name:'Морковь',qty:'64 шт.',price:3,cat:'food',img:'carrot'},
+  {name:'Яблоко',qty:'64 шт.',price:3,cat:'food',img:'apple'},
+  // New food
+  {name:'Плод хоруса',qty:'64 шт.',price:3,cat:'food',img:'chorus_fruit'},
+  {name:'Приготовленный плод хоруса',qty:'64 шт.',price:4,cat:'food',img:'popped_chorus'},
+  {name:'Ломтик арбуза',qty:'64 шт.',price:3,cat:'food',img:'melon_slice'},
+  {name:'Сырое мясо',qty:'64 шт.',price:3,cat:'food',img:'raw_beef'},
+  {name:'Сырая рыба/любая',qty:'64 шт.',price:3,cat:'food',img:'raw_cod'},
+  {name:'Картофель',qty:'64 шт.',price:3,cat:'food',img:'potato'},
+  {name:'Печёный картофель',qty:'64 шт.',price:4,cat:'food',img:'baked_potato'},
+  {name:'Печенье',qty:'64 шт.',price:6,cat:'food',img:'cookie'},
+  {name:'Торт',qty:'64 шт.',price:7,cat:'food',img:'cake'},
+  {name:'Тыквенный пирог',qty:'64 шт.',price:7,cat:'food',img:'pumpkin_pie'},
+  {name:'Сладкие ягоды',qty:'64 шт.',price:3,cat:'food',img:'sweet_berries'},
+  {name:'Светящиеся ягоды',qty:'64 шт.',price:3,cat:'food',img:'glow_berries'},
 
-  {name:'Тотем бессмертия',qty:'1 шт.',price:2,cat:'other',img:'totem'},
-  {name:'Эндер-жемчуг',qty:'16 шт.',price:4,cat:'other',img:'ender_pearl'},
-  {name:'Маяк',qty:'1 шт.',price:50,cat:'other',img:'beacon'},
+  // MISC / TRANSPORT
+  {name:'Элитры',qty:'1 шт.',price:2200,cat:'misc',img:'elytra'},
+
+  // OTHER
+  {name:'Незеритовое улучшение',qty:'1 шт.',price:10,cat:'other',img:'netherite_upgrade_tpl'},
+  {name:'Тотем бессмертия',qty:'1 шт.',price:3,cat:'other',img:'totem'},
+  {name:'Эндер-жемчуг',qty:'16 шт.',price:6,cat:'other',img:'ender_pearl'},
+  {name:'Маяк',qty:'1 шт.',price:73,cat:'other',img:'beacon'},
   {name:'Зелье опыта',qty:'1 шт.',price:1,cat:'other',img:'exp_bottle'},
-  {name:'Динамит',qty:'64 шт.',price:18,cat:'other',img:'tnt'},
-  {name:'Драконье дыхание',qty:'16 шт.',price:8,cat:'other',img:'dragons_breath'},
-  {name:'Книга',qty:'64 шт.',price:4,cat:'other',img:'book'},
-  {name:'Кожа',qty:'64 шт.',price:3,cat:'other',img:'leather'},
-  {name:'Незерский нарост',qty:'64 шт.',price:3,cat:'other',img:'nether_wart'},
-  {name:'Огненный порошок',qty:'64 шт.',price:6,cat:'other',img:'blaze_powder'},
-  {name:'Огненный стержень',qty:'32 шт.',price:6,cat:'other',img:'blaze_rod'},
-  {name:'Панцирь шалкера',qty:'16 шт.',price:4,cat:'other',img:'shulker_shell'},
-  {name:'Порох',qty:'64 шт.',price:3,cat:'other',img:'gunpowder'},
+  {name:'Динамит',qty:'64 шт.',price:26,cat:'other',img:'tnt'},
+  {name:'Драконье дыхание',qty:'16 шт.',price:12,cat:'other',img:'dragons_breath'},
+  {name:'Книга',qty:'64 шт.',price:6,cat:'other',img:'book'},
+  {name:'Кожа',qty:'64 шт.',price:4,cat:'other',img:'leather'},
+  {name:'Незерский нарост',qty:'64 шт.',price:4,cat:'other',img:'nether_wart'},
+  {name:'Огненный порошок',qty:'64 шт.',price:9,cat:'other',img:'blaze_powder'},
+  {name:'Огненный стержень',qty:'32 шт.',price:9,cat:'other',img:'blaze_rod'},
+  {name:'Панцирь шалкера',qty:'16 шт.',price:6,cat:'other',img:'shulker_shell'},
+  {name:'Порох',qty:'64 шт.',price:4,cat:'other',img:'gunpowder'},
   {name:'Сахарный тростник',qty:'64 шт.',price:1,cat:'other',img:'sugar_cane'},
-  {name:'Слеза гаста',qty:'32 шт.',price:12,cat:'other',img:'ghast_tear'},
+  {name:'Слеза гаста',qty:'32 шт.',price:17,cat:'other',img:'ghast_tear'},
   {name:'Слизь',qty:'64 шт.',price:1,cat:'other',img:'slimeball'},
-  {name:'Стержень вихря',qty:'32 шт.',price:4,cat:'other',img:'breeze_rod'},
-  {name:'Стрела',qty:'64 шт.',price:2,cat:'other',img:'arrow'},
-  {name:'Череп скелета-иссушителя',qty:'1 шт.',price:20,cat:'other',img:'wither_skull'},
-  {name:'Элитры',qty:'1 шт.',price:1500,cat:'misc',img:'elytra'},
-  {name:'Фейерверк 1 ур.',qty:'64 шт.',price:5,cat:'other',img:'firework'},
-  {name:'Фейерверк 2 ур.',qty:'64 шт.',price:10,cat:'other',img:'firework'},
-  {name:'Фейерверк 3 ур.',qty:'64 шт.',price:15,cat:'other',img:'firework'},
-  {name:'Зловещий ключ испытаний',qty:'1 шт.',price:3,cat:'other',img:'ominous_key'},
-  {name:'Ключ испытаний',qty:'1 шт.',price:2,cat:'other',img:'trial_key'}
+  {name:'Стержень вихря',qty:'32 шт.',price:6,cat:'other',img:'breeze_rod'},
+  {name:'Стрела',qty:'64 шт.',price:3,cat:'other',img:'arrow'},
+  {name:'Череп скелета-иссушителя',qty:'1 шт.',price:29,cat:'other',img:'wither_skull'},
+  {name:'Фейерверк 1 ур.',qty:'64 шт.',price:7,cat:'other',img:'firework'},
+  {name:'Фейерверк 2 ур.',qty:'64 шт.',price:15,cat:'other',img:'firework'},
+  {name:'Фейерверк 3 ур.',qty:'64 шт.',price:22,cat:'other',img:'firework'},
+  {name:'Зловещий ключ испытаний',qty:'1 шт.',price:4,cat:'other',img:'ominous_key'},
+  {name:'Ключ испытаний',qty:'1 шт.',price:3,cat:'other',img:'trial_key'},
+  {name:'Цветок хоруса',qty:'64 шт.',price:7,cat:'other',img:'chorus_flower'},
+  {name:'Шалкер',qty:'1 шт.',price:7,cat:'other',img:'shulker'},
+  {name:'Квампа',qty:'64 шт.',price:9,cat:'other',img:'sniffer_egg'},
+  {name:'Блок мёда (предмет)',qty:'64 шт.',price:6,cat:'other',img:'honey_block'},
+  {name:'Блок меди',qty:'64 шт.',price:4,cat:'other',img:'copper_block'},
 ];
 
 let activeCat = 'all';
 let search = '';
 
-function getCategoryCount(id){
-  if(id === 'all') return ITEMS.length;
-  if(id === 'other') return ITEMS.filter(i => i.cat === 'other').length;
-  return ITEMS.filter(i => i.cat === id).length;
-}
-
 function renderCats(){
-  const catList = document.getElementById('catList');
-  catList.innerHTML = CATS.map(cat => `
-    <button class="cat-btn ${activeCat === cat.id ? 'active' : ''}" onclick="setCat('${cat.id}')">
+  document.getElementById('catList').innerHTML = CATS.map(cat=>`
+    <button class="cat-btn ${activeCat===cat.id?'active':''}" onclick="setCat('${cat.id}')">
       <div class="cat-ico"><img src="${cat.img}" alt=""></div>
       <span>${cat.label}</span>
     </button>
@@ -971,60 +1115,54 @@ function renderCats(){
 }
 
 function setCat(id){
-  activeCat = id;
+  activeCat=id;
   renderCats();
   renderItems();
 }
 
 function clearSearch(){
-  search = '';
-  const input = document.getElementById('searchInput');
-  input.value = '';
-  document.getElementById('clearBtn').style.display = 'none';
+  search='';
+  document.getElementById('searchInput').value='';
+  document.getElementById('clearBtn').style.display='none';
   renderItems();
 }
 
 function renderItems(){
-  const q = search.trim().toLowerCase();
-
-  let list = ITEMS.filter(item => {
-    const catMatch = activeCat === 'all' ? true : item.cat === activeCat;
-    const searchMatch = !q || item.name.toLowerCase().includes(q);
-    return catMatch && searchMatch;
+  const q=search.trim().toLowerCase();
+  let list=ITEMS.filter(item=>{
+    const catMatch=activeCat==='all'?true:item.cat===activeCat;
+    const searchMatch=!q||item.name.toLowerCase().includes(q);
+    return catMatch&&searchMatch;
   });
 
-  document.getElementById('itemsCount').textContent = `${list.length} товаров`;
-
-  const grid = document.getElementById('grid');
+  document.getElementById('itemsCount').textContent=`${list.length} товаров`;
+  const grid=document.getElementById('grid');
 
   if(!list.length){
-    grid.innerHTML = `<div class="no-results">Ничего не найдено</div>`;
+    grid.innerHTML=`<div class="no-results">Ничего не найдено</div>`;
     return;
   }
 
-  grid.innerHTML = list.map(item => {
-    const img = T[item.img] || '';
-    const filter = PTINT[item.img] ? `style="filter:${PTINT[item.img]}"` : '';
-    const qty = item.qty && item.qty !== '1 шт.' ? `<span class="card-qty">${item.qty}</span>` : '';
+  grid.innerHTML=list.map(item=>{
+    const img=T[item.img]||'';
+    const filter=PTINT[item.img]?`style="filter:${PTINT[item.img]}"`:'' ;
+    const qty=item.qty&&item.qty!=='1 шт.'?`<span class="card-qty">${item.qty}</span>`:'';
     return `
       <div class="item-card">
         <div class="card-name">${item.name}${qty}</div>
-        <div class="card-img">
-          <img src="${img}" alt="${item.name}" ${filter} loading="lazy">
-        </div>
+        <div class="card-img"><img src="${img}" alt="${item.name}" ${filter} loading="lazy"></div>
         <div class="card-price">
           <span class="card-price-label">от</span>
           <span class="card-price-num">${item.price}</span>
-          <span class="card-price-cur">ap</span>
+          <span class="card-price-cur">вон</span>
         </div>
-      </div>
-    `;
+      </div>`;
   }).join('');
 }
 
-document.getElementById('searchInput').addEventListener('input', function(){
-  search = this.value;
-  document.getElementById('clearBtn').style.display = this.value ? 'block' : 'none';
+document.getElementById('searchInput').addEventListener('input',function(){
+  search=this.value;
+  document.getElementById('clearBtn').style.display=this.value?'block':'none';
   renderItems();
 });
 
