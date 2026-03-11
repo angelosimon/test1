@@ -7,19 +7,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0a0f18;
-  --panel:#19263aee;
-  --card:#213452;
-  --card-hover:#284875;
-  --left-btn:#24344d;
-  --left-btn-hover:#2c3e59;
-  --left-btn-active:#1d86ff;
-  --left-btn-active-2:#36a2ff;
-  --text:#f2f6ff;
-  --muted:#b9c6db;
-  --muted-2:#93a2bb;
-  --border:rgba(255,255,255,.08);
-  --shadow:0 10px 50px rgba(0,0,0,.35);
+  --bg:#0d0d0f;
+  --panel:#1a1a1fee;
+  --card:#1e1e24;
+  --card-hover:#26262e;
+  --left-btn:#202028;
+  --left-btn-hover:#2a2a34;
+  --left-btn-active:#3e3e52;
+  --left-btn-active-2:#52526a;
+  --text:#e8e8f0;
+  --muted:#a0a0b8;
+  --muted-2:#78788a;
+  --border:rgba(255,255,255,.07);
+  --shadow:0 10px 50px rgba(0,0,0,.5);
   --radius:16px;
 }
 
@@ -29,8 +29,8 @@ body{
   font-family:'Inter',sans-serif;
   color:var(--text);
   background:
-    linear-gradient(rgba(6,10,18,.72), rgba(6,10,18,.82)),
-    url("https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2000&auto=format&fit=crop") center/cover no-repeat fixed;
+    linear-gradient(rgba(6,6,8,.65), rgba(6,6,8,.75)),
+    url("https://i.ibb.co/nMKyv02m/Screenshot-2026-03-11-102906.png") center/cover no-repeat fixed;
   overflow:hidden;
 }
 
@@ -61,8 +61,8 @@ body::before{
   justify-content:space-between;
   padding:0 32px;
   height:60px;
-  background:rgba(10,15,24,.75);
-  border-bottom:1px solid rgba(255,255,255,.07);
+  background:rgba(8,8,10,.82);
+  border-bottom:1px solid rgba(255,255,255,.06);
   backdrop-filter:blur(10px);
   flex-shrink:0;
   gap:16px;
@@ -162,9 +162,9 @@ body::before{
   background:rgba(255,255,255,.05);
 }
 .tab-btn.active{
-  background:linear-gradient(180deg, #1d86ff, #1468cc);
+  background:linear-gradient(180deg, #3e3e52, #52526a);
   color:#fff;
-  box-shadow:0 4px 12px rgba(29,134,255,.25);
+  box-shadow:0 4px 12px rgba(0,0,0,.3);
 }
 .tab-btn:hover:not(.active){
   background:rgba(255,255,255,.09);
@@ -219,8 +219,8 @@ body::before{
   min-height:44px;
   padding:0 12px;
   border-radius:8px;
-  background:linear-gradient(180deg, rgba(47,62,87,.85), rgba(37,50,72,.9));
-  color:#dfe8f7;
+  background:linear-gradient(180deg, rgba(38,38,46,.9), rgba(30,30,36,.95));
+  color:#c8c8d8;
   font-size:14px;
   font-weight:600;
   box-shadow:
@@ -230,13 +230,13 @@ body::before{
   transition:.15s ease;
 }
 .cat-btn:hover{
-  background:linear-gradient(180deg, rgba(56,74,103,.95), rgba(43,59,86,.97));
+  background:linear-gradient(180deg, rgba(48,48,58,.95), rgba(38,38,46,.97));
   transform:translateY(-1px);
 }
 .cat-btn.active{
-  background:linear-gradient(180deg, var(--left-btn-active), var(--left-btn-active-2));
+  background:linear-gradient(180deg, #3e3e52, #52526a);
   color:#fff;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.18), 0 6px 14px rgba(24,116,255,.2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12), 0 6px 14px rgba(0,0,0,.3);
 }
 
 .cat-ico{width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -310,21 +310,21 @@ body::before{
 }
 
 .item-card{
-  background:linear-gradient(180deg, #234068 0%, #20385c 100%);
+  background:linear-gradient(180deg, #252530 0%, #1e1e28 100%);
   border:1px solid rgba(255,255,255,.07);
   border-radius:8px;
   overflow:hidden;
   min-height:155px;
   display:flex;
   flex-direction:column;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.05), 0 6px 12px rgba(0,0,0,.12);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05), 0 6px 12px rgba(0,0,0,.18);
   transition:.15s ease;
   cursor:pointer;
 }
 .item-card:hover{
   transform:translateY(-2px);
-  background:linear-gradient(180deg, #284875 0%, #234068 100%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 12px 22px rgba(0,0,0,.2);
+  background:linear-gradient(180deg, #2e2e3c 0%, #252530 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 12px 22px rgba(0,0,0,.28);
 }
 
 .card-name{
@@ -345,10 +345,10 @@ body::before{
 }
 
 .card-price{
-  background:linear-gradient(180deg, #8a9ab8 0%, #9eb0cc 100%);
+  background:linear-gradient(180deg, #36364a 0%, #42425a 100%);
   color:#fff;min-height:29px;
   display:flex;align-items:center;justify-content:center;gap:3px;
-  border-top:1px solid rgba(255,255,255,.08);
+  border-top:1px solid rgba(255,255,255,.07);
 }
 .card-price-label{font-size:12px;font-weight:800;color:#f6f9ff;opacity:.9}
 .card-price-num{font-size:15px;font-weight:900;color:#fff}
@@ -421,8 +421,8 @@ body::before{
   <!-- HEADER -->
   <header class="header">
     <a class="header-logo" href="#">
-      <img src="https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21/assets/minecraft/textures/item/pig_spawn_egg.png" alt="logo">
-      SvinLand
+      <img src="https://i.ibb.co/4R2BgXKh/minecraft-title-23.png" alt="logo">
+      SunShield
     </a>
     <nav class="header-nav">
       <a class="nav-plain" href="https://chanland.vercel.app" target="_blank">Официальный сайт</a>
