@@ -39,11 +39,16 @@ body{
   width:1280px;
   height:800px;
   transform-origin:top left;
-  position:absolute;
-  top:0;left:0;
+  position:fixed;
+  top:0;
+  left:0;
   display:flex;
   flex-direction:column;
   overflow:hidden;
+  will-change:transform;
+}
+#scaleRoot img{
+  image-rendering:auto;
 }
 
 /* HEADER */
@@ -73,7 +78,7 @@ body{
 .header-logo img{
   width:30px;
   height:30px;
-  image-rendering:pixelated;
+  image-rendering:auto;
 }
 
 .header-nav{
@@ -232,7 +237,7 @@ body{
 }
 
 .cat-ico{width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.cat-ico img{width:20px;height:20px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+.cat-ico img{width:20px;height:20px;object-fit:contain;image-rendering:auto;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
 
 /* RIGHT PANEL */
 .main{
@@ -332,7 +337,7 @@ body{
   flex:1;min-height:72px;display:flex;align-items:center;justify-content:center;padding:6px;
 }
 .card-img img{
-  width:48px;height:48px;object-fit:contain;image-rendering:pixelated;
+  width:48px;height:48px;object-fit:contain;image-rendering:auto;
   filter:drop-shadow(0 4px 5px rgba(0,0,0,.25));
 }
 
@@ -756,101 +761,101 @@ const CATS=[
   {id:'other',label:'Прочее',img:T.book}
 ];
 
-// Prices increased ~40-50% from original values
+// Prices: original items keep original prices, new items have +40-50%
 const ITEMS = [
   // WEAPON
-  {name:'Незеритовый меч (фулл зачар)',qty:'без починки',price:135,cat:'weapon',img:'sword_netherite'},
-  {name:'Незеритовый меч',qty:'1 шт.',price:35,cat:'weapon',img:'sword_netherite'},
-  {name:'Незеритовый топор',qty:'1 шт.',price:35,cat:'weapon',img:'axe_netherite'},
-  {name:'Трезубец',qty:'1 шт.',price:23,cat:'weapon',img:'trident'},
-  {name:'Булава',qty:'1 шт.',price:23,cat:'weapon',img:'mace'},
-  {name:'Лук (фулл зачар)',qty:'1 шт.',price:15,cat:'weapon',img:'bow'},
+  {name:'Незеритовый меч (фулл зачар)',qty:'без починки',price:90,cat:'weapon',img:'sword_netherite'},
+  {name:'Незеритовый меч',qty:'1 шт.',price:24,cat:'weapon',img:'sword_netherite'},
+  {name:'Незеритовый топор',qty:'1 шт.',price:24,cat:'weapon',img:'axe_netherite'},
+  {name:'Трезубец',qty:'1 шт.',price:16,cat:'weapon',img:'trident'},
+  {name:'Булава',qty:'1 шт.',price:16,cat:'weapon',img:'mace'},
+  {name:'Лук (фулл зачар)',qty:'1 шт.',price:10,cat:'weapon',img:'bow'},
 
   // ARMOR
-  {name:'Незеритовый шлем (топ зачар)',qty:'1 шт.',price:95,cat:'armor',img:'helmet_netherite'},
-  {name:'Незеритовый шлем',qty:'1 шт.',price:38,cat:'armor',img:'helmet_netherite'},
-  {name:'Незеритовый нагрудник (топ зачар)',qty:'1 шт.',price:125,cat:'armor',img:'chest_netherite'},
-  {name:'Незеритовый нагрудник',qty:'1 шт.',price:42,cat:'armor',img:'chest_netherite'},
-  {name:'Незеритовые поножи (топ зачар)',qty:'1 шт.',price:70,cat:'armor',img:'legs_netherite'},
-  {name:'Незеритовые поножи',qty:'1 шт.',price:40,cat:'armor',img:'legs_netherite'},
-  {name:'Незеритовые ботинки (топ зачар)',qty:'1 шт.',price:115,cat:'armor',img:'boots_netherite'},
-  {name:'Незеритовые ботинки',qty:'1 шт.',price:36,cat:'armor',img:'boots_netherite'},
-  {name:'Алмазный шлем',qty:'1 шт.',price:3,cat:'armor',img:'helmet_diamond'},
-  {name:'Алмазный нагрудник',qty:'1 шт.',price:4,cat:'armor',img:'chest_diamond'},
-  {name:'Алмазные поножи',qty:'1 шт.',price:4,cat:'armor',img:'legs_diamond'},
-  {name:'Алмазные ботинки',qty:'1 шт.',price:3,cat:'armor',img:'boots_diamond'},
+  {name:'Незеритовый шлем (топ зачар)',qty:'1 шт.',price:65,cat:'armor',img:'helmet_netherite'},
+  {name:'Незеритовый шлем',qty:'1 шт.',price:26,cat:'armor',img:'helmet_netherite'},
+  {name:'Незеритовый нагрудник (топ зачар)',qty:'1 шт.',price:86,cat:'armor',img:'chest_netherite'},
+  {name:'Незеритовый нагрудник',qty:'1 шт.',price:29,cat:'armor',img:'chest_netherite'},
+  {name:'Незеритовые поножи (топ зачар)',qty:'1 шт.',price:48,cat:'armor',img:'legs_netherite'},
+  {name:'Незеритовые поножи',qty:'1 шт.',price:28,cat:'armor',img:'legs_netherite'},
+  {name:'Незеритовые ботинки (топ зачар)',qty:'1 шт.',price:80,cat:'armor',img:'boots_netherite'},
+  {name:'Незеритовые ботинки',qty:'1 шт.',price:25,cat:'armor',img:'boots_netherite'},
+  {name:'Алмазный шлем',qty:'1 шт.',price:2,cat:'armor',img:'helmet_diamond'},
+  {name:'Алмазный нагрудник',qty:'1 шт.',price:3,cat:'armor',img:'chest_diamond'},
+  {name:'Алмазные поножи',qty:'1 шт.',price:3,cat:'armor',img:'legs_diamond'},
+  {name:'Алмазные ботинки',qty:'1 шт.',price:2,cat:'armor',img:'boots_diamond'},
 
   // TOOLS
-  {name:'Незеритовая кирка (топ зачар)',qty:'без починки',price:68,cat:'tool',img:'pick_netherite'},
-  {name:'Незеритовая кирка',qty:'1 шт.',price:36,cat:'tool',img:'pick_netherite'},
-  {name:'Алмазная кирка (фулл зачар)',qty:'без починки',price:22,cat:'tool',img:'pick_diamond'},
-  {name:'Незеритовая лопата',qty:'1 шт.',price:32,cat:'tool',img:'shovel_netherite'},
-  {name:'Незеритовая мотыга',qty:'1 шт.',price:32,cat:'tool',img:'hoe_netherite'},
-  {name:'Удочка (фулл зачар)',qty:'1 шт.',price:15,cat:'tool',img:'fishing_rod'},
+  {name:'Незеритовая кирка (топ зачар)',qty:'без починки',price:46,cat:'tool',img:'pick_netherite'},
+  {name:'Незеритовая кирка',qty:'1 шт.',price:25,cat:'tool',img:'pick_netherite'},
+  {name:'Алмазная кирка (фулл зачар)',qty:'без починки',price:15,cat:'tool',img:'pick_diamond'},
+  {name:'Незеритовая лопата',qty:'1 шт.',price:22,cat:'tool',img:'shovel_netherite'},
+  {name:'Незеритовая мотыга',qty:'1 шт.',price:22,cat:'tool',img:'hoe_netherite'},
+  {name:'Удочка (фулл зачар)',qty:'1 шт.',price:10,cat:'tool',img:'fishing_rod'},
 
   // ENCHANT
-  {name:'Починка',qty:'книга',price:290,cat:'enchant',img:'enchanted_book'},
-  {name:'Проворство III',qty:'книга',price:720,cat:'enchant',img:'enchanted_book'},
-  {name:'Скорость души III',qty:'книга',price:22,cat:'enchant',img:'enchanted_book'},
-  {name:'Защита IV',qty:'книга',price:23,cat:'enchant',img:'enchanted_book'},
-  {name:'Шёлковое касание',qty:'книга',price:20,cat:'enchant',img:'enchanted_book'},
-  {name:'Прочность III',qty:'книга',price:23,cat:'enchant',img:'enchanted_book'},
-  {name:'Добыча III',qty:'книга',price:30,cat:'enchant',img:'enchanted_book'},
-  {name:'Острота V',qty:'книга',price:32,cat:'enchant',img:'enchanted_book'},
-  {name:'Удача III',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
-  {name:'Шипы III',qty:'книга',price:36,cat:'enchant',img:'enchanted_book'},
-  {name:'Эффективность V',qty:'книга',price:22,cat:'enchant',img:'enchanted_book'},
-  {name:'Бесконечность',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
-  {name:'Быстрая перезарядка III',qty:'книга',price:9,cat:'enchant',img:'enchanted_book'},
-  {name:'Везучий рыбак III',qty:'книга',price:12,cat:'enchant',img:'enchanted_book'},
-  {name:'Верность III',qty:'книга',price:16,cat:'enchant',img:'enchanted_book'},
-  {name:'Взрывоустойчивость IV',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
-  {name:'Воспламенение',qty:'книга',price:9,cat:'enchant',img:'enchanted_book'},
-  {name:'Громовержец',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
-  {name:'Заговор огня II',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
-  {name:'Защита от снарядов IV',qty:'книга',price:12,cat:'enchant',img:'enchanted_book'},
-  {name:'Ледоход II',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
-  {name:'Небесная кара V',qty:'книга',price:7,cat:'enchant',img:'enchanted_book'},
-  {name:'Невесомость IV',qty:'книга',price:36,cat:'enchant',img:'enchanted_book'},
-  {name:'Бич членистоногих V',qty:'книга',price:7,cat:'enchant',img:'enchanted_book'},
-  {name:'Огнеупорность IV',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
-  {name:'Отдача II',qty:'книга',price:13,cat:'enchant',img:'enchanted_book'},
-  {name:'Откидывание II',qty:'книга',price:12,cat:'enchant',img:'enchanted_book'},
-  {name:'Плотность V',qty:'книга',price:29,cat:'enchant',img:'enchanted_book'},
-  {name:'Подводная ходьба III',qty:'книга',price:20,cat:'enchant',img:'enchanted_book'},
-  {name:'Подводник',qty:'книга',price:12,cat:'enchant',img:'enchanted_book'},
-  {name:'Подводное дыхание III',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
-  {name:'Порыв ветра III',qty:'книга',price:145,cat:'enchant',img:'enchanted_book'},
-  {name:'Приманка III',qty:'книга',price:12,cat:'enchant',img:'enchanted_book'},
-  {name:'Пробитие IV',qty:'книга',price:26,cat:'enchant',img:'enchanted_book'},
-  {name:'Пронзатель V',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
-  {name:'Пронзающая стрела IV',qty:'книга',price:9,cat:'enchant',img:'enchanted_book'},
-  {name:'Разящий клинок III',qty:'книга',price:23,cat:'enchant',img:'enchanted_book'},
-  {name:'Сила V',qty:'книга',price:17,cat:'enchant',img:'enchanted_book'},
-  {name:'Тройной выстрел',qty:'книга',price:12,cat:'enchant',img:'enchanted_book'},
-  {name:'Тягун III',qty:'книга',price:33,cat:'enchant',img:'enchanted_book'},
+  {name:'Починка',qty:'книга',price:200,cat:'enchant',img:'enchanted_book'},
+  {name:'Проворство III',qty:'книга',price:500,cat:'enchant',img:'enchanted_book'},
+  {name:'Скорость души III',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
+  {name:'Защита IV',qty:'книга',price:16,cat:'enchant',img:'enchanted_book'},
+  {name:'Шёлковое касание',qty:'книга',price:14,cat:'enchant',img:'enchanted_book'},
+  {name:'Прочность III',qty:'книга',price:16,cat:'enchant',img:'enchanted_book'},
+  {name:'Добыча III',qty:'книга',price:21,cat:'enchant',img:'enchanted_book'},
+  {name:'Острота V',qty:'книга',price:22,cat:'enchant',img:'enchanted_book'},
+  {name:'Удача III',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
+  {name:'Шипы III',qty:'книга',price:25,cat:'enchant',img:'enchanted_book'},
+  {name:'Эффективность V',qty:'книга',price:15,cat:'enchant',img:'enchanted_book'},
+  {name:'Бесконечность',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
+  {name:'Быстрая перезарядка III',qty:'книга',price:6,cat:'enchant',img:'enchanted_book'},
+  {name:'Везучий рыбак III',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
+  {name:'Верность III',qty:'книга',price:11,cat:'enchant',img:'enchanted_book'},
+  {name:'Взрывоустойчивость IV',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
+  {name:'Воспламенение',qty:'книга',price:6,cat:'enchant',img:'enchanted_book'},
+  {name:'Громовержец',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
+  {name:'Заговор огня II',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
+  {name:'Защита от снарядов IV',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
+  {name:'Ледоход II',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
+  {name:'Небесная кара V',qty:'книга',price:5,cat:'enchant',img:'enchanted_book'},
+  {name:'Невесомость IV',qty:'книга',price:25,cat:'enchant',img:'enchanted_book'},
+  {name:'Бич членистоногих V',qty:'книга',price:5,cat:'enchant',img:'enchanted_book'},
+  {name:'Огнеупорность IV',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
+  {name:'Отдача II',qty:'книга',price:9,cat:'enchant',img:'enchanted_book'},
+  {name:'Откидывание II',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
+  {name:'Плотность V',qty:'книга',price:20,cat:'enchant',img:'enchanted_book'},
+  {name:'Подводная ходьба III',qty:'книга',price:14,cat:'enchant',img:'enchanted_book'},
+  {name:'Подводник',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
+  {name:'Подводное дыхание III',qty:'книга',price:10,cat:'enchant',img:'enchanted_book'},
+  {name:'Порыв ветра III',qty:'книга',price:100,cat:'enchant',img:'enchanted_book'},
+  {name:'Приманка III',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
+  {name:'Пробитие IV',qty:'книга',price:18,cat:'enchant',img:'enchanted_book'},
+  {name:'Пронзатель V',qty:'книга',price:7,cat:'enchant',img:'enchanted_book'},
+  {name:'Пронзающая стрела IV',qty:'книга',price:6,cat:'enchant',img:'enchanted_book'},
+  {name:'Разящий клинок III',qty:'книга',price:16,cat:'enchant',img:'enchanted_book'},
+  {name:'Сила V',qty:'книга',price:12,cat:'enchant',img:'enchanted_book'},
+  {name:'Тройной выстрел',qty:'книга',price:8,cat:'enchant',img:'enchanted_book'},
+  {name:'Тягун III',qty:'книга',price:23,cat:'enchant',img:'enchanted_book'},
 
-  // RESOURCES / СТРОИТЕЛЬСТВО
-  {name:'Незеритовый слиток',qty:'1 шт.',price:34,cat:'resource',img:'netherite_ingot'},
-  {name:'Древние обломки',qty:'1 шт.',price:7,cat:'resource',img:'ancient_debris'},
+  // RESOURCES / СТРОИТЕЛЬСТВО (original prices)
+  {name:'Незеритовый слиток',qty:'1 шт.',price:23,cat:'resource',img:'netherite_ingot'},
+  {name:'Древние обломки',qty:'1 шт.',price:5,cat:'resource',img:'ancient_debris'},
   {name:'Алмаз',qty:'3 шт.',price:1,cat:'resource',img:'diamond'},
-  {name:'Алмазный блок',qty:'16 шт.',price:70,cat:'resource',img:'diamond_block'},
+  {name:'Алмазный блок',qty:'16 шт.',price:48,cat:'resource',img:'diamond_block'},
   {name:'Железо',qty:'64 шт.',price:1,cat:'resource',img:'iron_ingot'},
-  {name:'Железный блок',qty:'64 шт.',price:12,cat:'resource',img:'iron_block'},
-  {name:'Золото',qty:'64 шт.',price:4,cat:'resource',img:'gold_ingot'},
-  {name:'Золотой блок',qty:'64 шт.',price:35,cat:'resource',img:'gold_block'},
+  {name:'Железный блок',qty:'64 шт.',price:8,cat:'resource',img:'iron_block'},
+  {name:'Золото',qty:'64 шт.',price:3,cat:'resource',img:'gold_ingot'},
+  {name:'Золотой блок',qty:'64 шт.',price:24,cat:'resource',img:'gold_block'},
   {name:'Изумруд',qty:'64 шт.',price:1,cat:'resource',img:'emerald'},
-  {name:'Изумрудный блок',qty:'64 шт.',price:6,cat:'resource',img:'emerald_block'},
+  {name:'Изумрудный блок',qty:'64 шт.',price:8,cat:'resource',img:'emerald_block'},
   {name:'Медь',qty:'64 шт.',price:1,cat:'resource',img:'copper_ingot'},
   {name:'Лазурит',qty:'64 шт.',price:1,cat:'resource',img:'lapis'},
-  {name:'Лазуритовый блок',qty:'64 шт.',price:13,cat:'resource',img:'lapis_block'},
+  {name:'Лазуритовый блок',qty:'64 шт.',price:9,cat:'resource',img:'lapis_block'},
   {name:'Осколок аметиста',qty:'64 шт.',price:1,cat:'resource',img:'amethyst'},
-  {name:'Кристалл Края',qty:'16 шт.',price:23,cat:'resource',img:'end_crystal'},
-  {name:'Сердце моря',qty:'1 шт.',price:93,cat:'resource',img:'heart_of_sea'},
-  {name:'Медный блок',qty:'64 шт.',price:6,cat:'resource',img:'copper_block'},
-  {name:'Кварцевый блок',qty:'64 шт.',price:3,cat:'resource',img:'quartz_block'},
-  {name:'Обсидиан',qty:'64 шт.',price:12,cat:'resource',img:'obsidian'},
-  // New resource/build items
+  {name:'Кристалл Края',qty:'16 шт.',price:16,cat:'resource',img:'end_crystal'},
+  {name:'Сердце моря',qty:'1 шт.',price:64,cat:'resource',img:'heart_of_sea'},
+  {name:'Медный блок',qty:'64 шт.',price:4,cat:'resource',img:'copper_block'},
+  {name:'Кварцевый блок',qty:'64 шт.',price:2,cat:'resource',img:'quartz_block'},
+  {name:'Обсидиан',qty:'64 шт.',price:10,cat:'resource',img:'obsidian'},
+  // NEW items (+40-50%)
   {name:'Мангровое бревно',qty:'64 шт.',price:6,cat:'resource',img:'mangrove_log'},
   {name:'Блок бамбука',qty:'64 шт.',price:6,cat:'resource',img:'bamboo_block'},
   {name:'Бревна (все типы)',qty:'64 шт.',price:4,cat:'resource',img:'oak_log'},
@@ -884,7 +889,7 @@ const ITEMS = [
   {name:'Терракота/керамика',qty:'64 шт.',price:3,cat:'resource',img:'terracotta'},
   {name:'Глазурованная керамика',qty:'64 шт.',price:4,cat:'resource',img:'glazed_terracotta'},
   {name:'Бетон/Сухой бетон',qty:'64 шт.',price:4,cat:'resource',img:'concrete'},
-  {name:'Костяной блок',qty:'64 шт.',price:12,cat:'resource',img:'bone_block'},
+  {name:'Костяной блок',qty:'64 шт.',price:3,cat:'resource',img:'bone_block'},
   {name:'Ножка гриба',qty:'64 шт.',price:4,cat:'resource',img:'mushroom_stem'},
   {name:'Блок гриба',qty:'64 шт.',price:4,cat:'resource',img:'red_mushroom_block'},
   {name:'Призмарин',qty:'64 шт.',price:4,cat:'resource',img:'prismarine'},
@@ -941,33 +946,33 @@ const ITEMS = [
   {name:'Цепи',qty:'64 шт.',price:3,cat:'resource',img:'chain'},
   {name:'Любой цветок',qty:'64 шт.',price:1,cat:'resource',img:'flower'},
 
-  // DECOR
-  {name:'Морской фонарь',qty:'64 шт.',price:9,cat:'decor',img:'sea_lantern'},
-  {name:'Блок мёда',qty:'16 шт.',price:6,cat:'decor',img:'honey_block'},
-  {name:'Блок света',qty:'32 шт.',price:3,cat:'decor',img:'light_block'},
-  {name:'Пластинка PigStep',qty:'1 шт.',price:220,cat:'decor',img:'music_disc'},
-  {name:'Пластинка Relic',qty:'1 шт.',price:220,cat:'decor',img:'music_disc_relic'},
-  {name:'Пластинка Creator',qty:'1 шт.',price:145,cat:'decor',img:'music_disc_creator'},
-  {name:'Пластинка Aaron Cherof',qty:'1 шт.',price:255,cat:'decor',img:'music_disc'},
-  {name:'Пластинки (прочие)',qty:'1 шт.',price:29,cat:'decor',img:'music_disc'},
-  {name:'Отделка Берег',qty:'1 шт.',price:12,cat:'decor',img:'tpl_coast'},
-  {name:'Отделка Дюна',qty:'1 шт.',price:15,cat:'decor',img:'tpl_dune'},
-  {name:'Отделка Oko',qty:'1 шт.',price:15,cat:'decor',img:'tpl_eye'},
-  {name:'Отделка Хранитель',qty:'1 шт.',price:15,cat:'decor',img:'tpl_host'},
-  {name:'Отделка Собиратель',qty:'1 шт.',price:15,cat:'decor',img:'tpl_raiser'},
-  {name:'Отделка Ребро',qty:'1 шт.',price:12,cat:'decor',img:'tpl_rib'},
-  {name:'Отделка Страж',qty:'1 шт.',price:12,cat:'decor',img:'tpl_sentry'},
-  {name:'Отделка Скульптор',qty:'1 шт.',price:22,cat:'decor',img:'tpl_shaper'},
-  {name:'Отделка Тишина',qty:'1 шт.',price:15,cat:'decor',img:'tpl_silence'},
-  {name:'Отделка Рыло',qty:'1 шт.',price:15,cat:'decor',img:'tpl_snout'},
-  {name:'Отделка Ось',qty:'1 шт.',price:12,cat:'decor',img:'tpl_spire'},
-  {name:'Отделка Прилив',qty:'1 шт.',price:22,cat:'decor',img:'tpl_tide'},
-  {name:'Отделка Вредина',qty:'1 шт.',price:15,cat:'decor',img:'tpl_vex'},
-  {name:'Отделка Вождь',qty:'1 шт.',price:15,cat:'decor',img:'tpl_ward'},
-  {name:'Отделка Искатель',qty:'1 шт.',price:15,cat:'decor',img:'tpl_wayfinder'},
-  {name:'Отделка Дебри',qty:'1 шт.',price:15,cat:'decor',img:'tpl_wild'},
-  {name:'Отделка Поток',qty:'1 шт.',price:12,cat:'decor',img:'tpl_flow'},
-  // New decor
+  // DECOR (original prices)
+  {name:'Морской фонарь',qty:'64 шт.',price:5,cat:'decor',img:'sea_lantern'},
+  {name:'Блок мёда',qty:'16 шт.',price:4,cat:'decor',img:'honey_block'},
+  {name:'Блок света',qty:'32 шт.',price:6,cat:'decor',img:'light_block'},
+  {name:'Пластинка PigStep',qty:'1 шт.',price:150,cat:'decor',img:'music_disc'},
+  {name:'Пластинка Relic',qty:'1 шт.',price:150,cat:'decor',img:'music_disc_relic'},
+  {name:'Пластинка Creator',qty:'1 шт.',price:100,cat:'decor',img:'music_disc_creator'},
+  {name:'Пластинка Aaron Cherof',qty:'1 шт.',price:175,cat:'decor',img:'music_disc'},
+  {name:'Пластинки (прочие)',qty:'1 шт.',price:20,cat:'decor',img:'music_disc'},
+  {name:'Отделка Берег',qty:'1 шт.',price:8,cat:'decor',img:'tpl_coast'},
+  {name:'Отделка Дюна',qty:'1 шт.',price:10,cat:'decor',img:'tpl_dune'},
+  {name:'Отделка Oko',qty:'1 шт.',price:10,cat:'decor',img:'tpl_eye'},
+  {name:'Отделка Хранитель',qty:'1 шт.',price:10,cat:'decor',img:'tpl_host'},
+  {name:'Отделка Собиратель',qty:'1 шт.',price:10,cat:'decor',img:'tpl_raiser'},
+  {name:'Отделка Ребро',qty:'1 шт.',price:8,cat:'decor',img:'tpl_rib'},
+  {name:'Отделка Страж',qty:'1 шт.',price:8,cat:'decor',img:'tpl_sentry'},
+  {name:'Отделка Скульптор',qty:'1 шт.',price:15,cat:'decor',img:'tpl_shaper'},
+  {name:'Отделка Тишина',qty:'1 шт.',price:10,cat:'decor',img:'tpl_silence'},
+  {name:'Отделка Рыло',qty:'1 шт.',price:10,cat:'decor',img:'tpl_snout'},
+  {name:'Отделка Ось',qty:'1 шт.',price:8,cat:'decor',img:'tpl_spire'},
+  {name:'Отделка Прилив',qty:'1 шт.',price:15,cat:'decor',img:'tpl_tide'},
+  {name:'Отделка Вредина',qty:'1 шт.',price:10,cat:'decor',img:'tpl_vex'},
+  {name:'Отделка Вождь',qty:'1 шт.',price:10,cat:'decor',img:'tpl_ward'},
+  {name:'Отделка Искатель',qty:'1 шт.',price:10,cat:'decor',img:'tpl_wayfinder'},
+  {name:'Отделка Дебри',qty:'1 шт.',price:10,cat:'decor',img:'tpl_wild'},
+  {name:'Отделка Поток',qty:'1 шт.',price:8,cat:'decor',img:'tpl_flow'},
+  // NEW decor (+40-50%)
   {name:'Стержень энда',qty:'16 шт.',price:3,cat:'decor',img:'end_rod'},
   {name:'Факельник/Кувшинница',qty:'64 шт.',price:3,cat:'decor',img:'torchflower'},
   {name:'Светящийся лишайник',qty:'64 шт.',price:4,cat:'decor',img:'glow_lichen'},
@@ -986,7 +991,7 @@ const ITEMS = [
   {name:'Колокол',qty:'1 шт.',price:15,cat:'decor',img:'bell'},
   {name:'Эндер-сундук',qty:'1 шт.',price:7,cat:'decor',img:'ender_chest'},
 
-  // DYES
+  // DYES (new items)
   {name:'Белый краситель',qty:'64 шт.',price:1,cat:'resource',img:'white_dye'},
   {name:'Бирюзовый краситель',qty:'64 шт.',price:3,cat:'resource',img:'cyan_dye'},
   {name:'Голубой краситель',qty:'64 шт.',price:3,cat:'resource',img:'light_blue_dye'},
@@ -1004,38 +1009,38 @@ const ITEMS = [
   {name:'Фиолетовый краситель',qty:'64 шт.',price:3,cat:'resource',img:'purple_dye'},
   {name:'Чёрный краситель',qty:'64 шт.',price:1,cat:'resource',img:'black_dye'},
 
-  // BUILD / MECHANISMS
-  {name:'Редстоуновый блок',qty:'32 шт.',price:6,cat:'build',img:'redstone_block'},
-  {name:'Блок слизи',qty:'64 шт.',price:13,cat:'build',img:'slime_block'},
+  // BUILD / MECHANISMS (original prices)
+  {name:'Редстоуновый блок',qty:'32 шт.',price:4,cat:'build',img:'redstone_block'},
+  {name:'Блок слизи',qty:'64 шт.',price:9,cat:'build',img:'slime_block'},
 
-  // ORE
-  {name:'Изумрудная руда',qty:'1 шт.',price:15,cat:'ore',img:'emerald_ore'},
+  // ORE (original price)
+  {name:'Изумрудная руда',qty:'1 шт.',price:10,cat:'ore',img:'emerald_ore'},
 
-  // POTIONS
-  {name:'Зелье невидимости',qty:'1 шт.',price:4,cat:'potion',img:'potion_invis'},
+  // POTIONS (original prices)
+  {name:'Зелье невидимости',qty:'1 шт.',price:3,cat:'potion',img:'potion_invis'},
   {name:'Зелье ночного зрения',qty:'1 шт.',price:1,cat:'potion',img:'potion_nightvis'},
   {name:'Зелье огнестойкости',qty:'1 шт.',price:1,cat:'potion',img:'potion_fire'},
-  {name:'Зелье прыгучести',qty:'1 шт.',price:3,cat:'potion',img:'potion_jump'},
-  {name:'Зелье регенерации',qty:'1 шт.',price:3,cat:'potion',img:'potion_regen'},
-  {name:'Зелье силы',qty:'1 шт.',price:4,cat:'potion',img:'potion_strength'},
-  {name:'Зелье стремительности',qty:'1 шт.',price:3,cat:'potion',img:'potion_speed'},
-  {name:'Зелье черепашьей мощи IV',qty:'1 шт.',price:10,cat:'potion',img:'potion_turtle'},
-  {name:'Зловещая бутылочка I',qty:'2 шт.',price:3,cat:'potion',img:'ominous_bottle'},
-  {name:'Зловещая бутылочка II',qty:'1 шт.',price:3,cat:'potion',img:'ominous_bottle'},
-  {name:'Зловещая бутылочка III',qty:'1 шт.',price:3,cat:'potion',img:'ominous_bottle'},
-  {name:'Зловещая бутылочка IV',qty:'1 шт.',price:4,cat:'potion',img:'ominous_bottle'},
-  {name:'Зловещая бутылочка V',qty:'1 шт.',price:4,cat:'potion',img:'ominous_bottle'},
+  {name:'Зелье прыгучести',qty:'1 шт.',price:2,cat:'potion',img:'potion_jump'},
+  {name:'Зелье регенерации',qty:'1 шт.',price:2,cat:'potion',img:'potion_regen'},
+  {name:'Зелье силы',qty:'1 шт.',price:3,cat:'potion',img:'potion_strength'},
+  {name:'Зелье стремительности',qty:'1 шт.',price:2,cat:'potion',img:'potion_speed'},
+  {name:'Зелье черепашьей мощи IV',qty:'1 шт.',price:7,cat:'potion',img:'potion_turtle'},
+  {name:'Зловещая бутылочка I',qty:'2 шт.',price:2,cat:'potion',img:'ominous_bottle'},
+  {name:'Зловещая бутылочка II',qty:'1 шт.',price:2,cat:'potion',img:'ominous_bottle'},
+  {name:'Зловещая бутылочка III',qty:'1 шт.',price:2,cat:'potion',img:'ominous_bottle'},
+  {name:'Зловещая бутылочка IV',qty:'1 шт.',price:3,cat:'potion',img:'ominous_bottle'},
+  {name:'Зловещая бутылочка V',qty:'1 шт.',price:3,cat:'potion',img:'ominous_bottle'},
 
-  // FOOD
-  {name:'Зачарованное золотое яблоко',qty:'1 шт.',price:13,cat:'food',img:'enchanted_apple'},
-  {name:'Золотое яблоко',qty:'16 шт.',price:12,cat:'food',img:'golden_apple'},
-  {name:'Золотая морковь',qty:'64 шт.',price:7,cat:'food',img:'golden_carrot'},
-  {name:'Хлеб',qty:'64 шт.',price:3,cat:'food',img:'bread'},
-  {name:'Жареная рыба',qty:'64 шт.',price:4,cat:'food',img:'cooked_cod'},
-  {name:'Жареное мясо',qty:'64 шт.',price:4,cat:'food',img:'cooked_beef'},
-  {name:'Морковь',qty:'64 шт.',price:3,cat:'food',img:'carrot'},
-  {name:'Яблоко',qty:'64 шт.',price:3,cat:'food',img:'apple'},
-  // New food
+  // FOOD (original prices)
+  {name:'Зачарованное золотое яблоко',qty:'1 шт.',price:9,cat:'food',img:'enchanted_apple'},
+  {name:'Золотое яблоко',qty:'16 шт.',price:8,cat:'food',img:'golden_apple'},
+  {name:'Золотая морковь',qty:'64 шт.',price:5,cat:'food',img:'golden_carrot'},
+  {name:'Хлеб',qty:'64 шт.',price:2,cat:'food',img:'bread'},
+  {name:'Жареная рыба',qty:'64 шт.',price:2,cat:'food',img:'cooked_cod'},
+  {name:'Жареное мясо',qty:'64 шт.',price:2,cat:'food',img:'cooked_beef'},
+  {name:'Морковь',qty:'64 шт.',price:2,cat:'food',img:'carrot'},
+  {name:'Яблоко',qty:'64 шт.',price:8,cat:'food',img:'apple'},
+  // NEW food (+40-50%)
   {name:'Плод хоруса',qty:'64 шт.',price:3,cat:'food',img:'chorus_fruit'},
   {name:'Приготовленный плод хоруса',qty:'64 шт.',price:4,cat:'food',img:'popped_chorus'},
   {name:'Ломтик арбуза',qty:'64 шт.',price:3,cat:'food',img:'melon_slice'},
@@ -1049,39 +1054,39 @@ const ITEMS = [
   {name:'Сладкие ягоды',qty:'64 шт.',price:3,cat:'food',img:'sweet_berries'},
   {name:'Светящиеся ягоды',qty:'64 шт.',price:3,cat:'food',img:'glow_berries'},
 
-  // MISC / TRANSPORT
-  {name:'Элитры',qty:'1 шт.',price:2200,cat:'misc',img:'elytra'},
+  // MISC / TRANSPORT (original price)
+  {name:'Элитры',qty:'1 шт.',price:1500,cat:'misc',img:'elytra'},
 
-  // OTHER
-  {name:'Незеритовое улучшение',qty:'1 шт.',price:10,cat:'other',img:'netherite_upgrade_tpl'},
-  {name:'Тотем бессмертия',qty:'1 шт.',price:3,cat:'other',img:'totem'},
-  {name:'Эндер-жемчуг',qty:'16 шт.',price:6,cat:'other',img:'ender_pearl'},
-  {name:'Маяк',qty:'1 шт.',price:73,cat:'other',img:'beacon'},
+  // OTHER (original prices)
+  {name:'Незеритовое улучшение',qty:'1 шт.',price:7,cat:'other',img:'netherite_upgrade_tpl'},
+  {name:'Тотем бессмертия',qty:'1 шт.',price:2,cat:'other',img:'totem'},
+  {name:'Эндер-жемчуг',qty:'16 шт.',price:4,cat:'other',img:'ender_pearl'},
+  {name:'Маяк',qty:'1 шт.',price:50,cat:'other',img:'beacon'},
   {name:'Зелье опыта',qty:'1 шт.',price:1,cat:'other',img:'exp_bottle'},
-  {name:'Динамит',qty:'64 шт.',price:26,cat:'other',img:'tnt'},
-  {name:'Драконье дыхание',qty:'16 шт.',price:12,cat:'other',img:'dragons_breath'},
-  {name:'Книга',qty:'64 шт.',price:6,cat:'other',img:'book'},
-  {name:'Кожа',qty:'64 шт.',price:4,cat:'other',img:'leather'},
-  {name:'Незерский нарост',qty:'64 шт.',price:4,cat:'other',img:'nether_wart'},
-  {name:'Огненный порошок',qty:'64 шт.',price:9,cat:'other',img:'blaze_powder'},
-  {name:'Огненный стержень',qty:'32 шт.',price:9,cat:'other',img:'blaze_rod'},
-  {name:'Панцирь шалкера',qty:'16 шт.',price:6,cat:'other',img:'shulker_shell'},
-  {name:'Порох',qty:'64 шт.',price:4,cat:'other',img:'gunpowder'},
+  {name:'Динамит',qty:'64 шт.',price:18,cat:'other',img:'tnt'},
+  {name:'Драконье дыхание',qty:'16 шт.',price:8,cat:'other',img:'dragons_breath'},
+  {name:'Книга',qty:'64 шт.',price:4,cat:'other',img:'book'},
+  {name:'Кожа',qty:'64 шт.',price:3,cat:'other',img:'leather'},
+  {name:'Незерский нарост',qty:'64 шт.',price:3,cat:'other',img:'nether_wart'},
+  {name:'Огненный порошок',qty:'64 шт.',price:6,cat:'other',img:'blaze_powder'},
+  {name:'Огненный стержень',qty:'32 шт.',price:6,cat:'other',img:'blaze_rod'},
+  {name:'Панцирь шалкера',qty:'16 шт.',price:4,cat:'other',img:'shulker_shell'},
+  {name:'Порох',qty:'64 шт.',price:3,cat:'other',img:'gunpowder'},
   {name:'Сахарный тростник',qty:'64 шт.',price:1,cat:'other',img:'sugar_cane'},
-  {name:'Слеза гаста',qty:'32 шт.',price:17,cat:'other',img:'ghast_tear'},
+  {name:'Слеза гаста',qty:'32 шт.',price:12,cat:'other',img:'ghast_tear'},
   {name:'Слизь',qty:'64 шт.',price:1,cat:'other',img:'slimeball'},
-  {name:'Стержень вихря',qty:'32 шт.',price:6,cat:'other',img:'breeze_rod'},
-  {name:'Стрела',qty:'64 шт.',price:3,cat:'other',img:'arrow'},
-  {name:'Череп скелета-иссушителя',qty:'1 шт.',price:29,cat:'other',img:'wither_skull'},
-  {name:'Фейерверк 1 ур.',qty:'64 шт.',price:7,cat:'other',img:'firework'},
-  {name:'Фейерверк 2 ур.',qty:'64 шт.',price:15,cat:'other',img:'firework'},
-  {name:'Фейерверк 3 ур.',qty:'64 шт.',price:22,cat:'other',img:'firework'},
-  {name:'Зловещий ключ испытаний',qty:'1 шт.',price:4,cat:'other',img:'ominous_key'},
-  {name:'Ключ испытаний',qty:'1 шт.',price:3,cat:'other',img:'trial_key'},
+  {name:'Стержень вихря',qty:'32 шт.',price:4,cat:'other',img:'breeze_rod'},
+  {name:'Стрела',qty:'64 шт.',price:2,cat:'other',img:'arrow'},
+  {name:'Череп скелета-иссушителя',qty:'1 шт.',price:20,cat:'other',img:'wither_skull'},
+  {name:'Фейерверк 1 ур.',qty:'64 шт.',price:5,cat:'other',img:'firework'},
+  {name:'Фейерверк 2 ур.',qty:'64 шт.',price:10,cat:'other',img:'firework'},
+  {name:'Фейерверк 3 ур.',qty:'64 шт.',price:15,cat:'other',img:'firework'},
+  {name:'Зловещий ключ испытаний',qty:'1 шт.',price:3,cat:'other',img:'ominous_key'},
+  {name:'Ключ испытаний',qty:'1 шт.',price:2,cat:'other',img:'trial_key'},
+  // NEW other (+40-50%)
   {name:'Цветок хоруса',qty:'64 шт.',price:7,cat:'other',img:'chorus_flower'},
   {name:'Шалкер',qty:'1 шт.',price:7,cat:'other',img:'shulker'},
   {name:'Квампа',qty:'64 шт.',price:9,cat:'other',img:'sniffer_egg'},
-  {name:'Блок мёда (предмет)',qty:'64 шт.',price:6,cat:'other',img:'honey_block'},
   {name:'Блок меди',qty:'64 шт.',price:4,cat:'other',img:'copper_block'},
 ];
 
@@ -1159,9 +1164,9 @@ function scaleUI(){
   const scaleX = window.innerWidth / baseW;
   const scaleY = window.innerHeight / baseH;
   const scale = Math.min(scaleX, scaleY);
-  root.style.transform = `scale(${scale})`;
-  root.style.left = ((window.innerWidth - baseW * scale) / 2) + 'px';
-  root.style.top = ((window.innerHeight - baseH * scale) / 2) + 'px';
+  const offsetX = (window.innerWidth - baseW * scale) / 2;
+  const offsetY = (window.innerHeight - baseH * scale) / 2;
+  root.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
 }
 scaleUI();
 window.addEventListener('resize', scaleUI);
