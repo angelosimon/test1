@@ -1,671 +1,131 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Торговая Федерация — SunShield</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--teal:#1de9d5;--bg:#0a0a0a;--card:#181818;--border:rgba(255,255,255,0.08);--text:#fff;--muted:rgba(255,255,255,.55);--muted2:rgba(255,255,255,.3)}
-html{scroll-behavior:smooth;overflow-x:hidden}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Плавное приближение картинки</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
 
-@keyframes spinBeam{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 36px;height:54px;background:rgba(8,8,8,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.nav-logo{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:600;cursor:pointer}
-.nav-logo img{width:28px;height:28px;border-radius:7px;object-fit:cover}
-.nav-links{display:flex;align-items:center}
-.nav-links a{font-size:13px;font-weight:400;color:var(--muted);padding:6px 14px;border-radius:6px;transition:color .2s,background .2s;cursor:pointer}
-.nav-links a:hover{color:var(--text);background:rgba(255,255,255,.05)}
-.nav-links a.active{color:var(--teal);font-weight:500}
-.nav-right{display:flex;align-items:center}
-.nav-btn{display:flex;align-items:center;gap:6px;background:var(--teal);color:#000!important;font-weight:600;padding:7px 16px;border-radius:7px;font-size:13px;transition:opacity .2s}
-.nav-btn:hover{opacity:.85}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            color: #fff;
+            overflow: hidden; /* Скрываем прокрутку страницы */
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-/* TOAST */
-.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--teal);color:#000;font-weight:600;font-size:12px;padding:10px 20px;border-radius:8px;z-index:9999;transition:transform .3s;display:flex;align-items:center;gap:6px;pointer-events:none}
-.toast svg{width:13px;height:13px;stroke:#000;fill:none;stroke-width:2.5}
-.toast.show{transform:translateX(-50%) translateY(0)}
+        /* Контейнер для кнопок управления */
+        .controls {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: flex;
+            gap: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-/* HERO */
-.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:90px 40px 0;overflow:hidden;text-align:center;background:radial-gradient(ellipse 110% 80% at 50% 25%,#083320 0%,#031a0e 28%,#020d07 55%,#010603 100%)}
-.hero-title{position:relative;z-index:3;font-size:44px;font-weight:700;letter-spacing:-.022em;margin-bottom:20px;line-height:1.15;color:#fff;display:flex;align-items:center;justify-content:center;gap:14px}
-.hero-logo-img{width:38px;height:38px;border-radius:7px;object-fit:cover}
-.hero-sub{position:relative;z-index:3;max-width:400px;color:rgba(255,255,255,.72);font-size:15px;line-height:1.6;margin-bottom:30px}
-.hero-actions{position:relative;z-index:3;display:flex;align-items:center;gap:12px;margin-bottom:14px;justify-content:center;flex-wrap:wrap}
-.btn-teal{background:var(--teal);color:#000;font-weight:600;padding:11px 26px;border-radius:8px;font-size:14px;transition:opacity .2s;cursor:pointer;border:none;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:7px}
-.btn-teal:hover{opacity:.86}
-.ip-copy{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.22);border-radius:8px;padding:9px 16px;cursor:pointer;transition:background .2s}
-.ip-copy:hover{background:rgba(255,255,255,.14)}
-.ip-copy .lbl{font-size:11px;color:rgba(255,255,255,.45);margin-bottom:1px}
-.ip-copy .val{font-size:13px;color:#fff;font-weight:500}
-.ip-copy svg{width:14px;height:14px;stroke:rgba(255,255,255,.4);fill:none;stroke-width:2;flex-shrink:0}
-.hero-note{position:relative;z-index:3;font-size:12px;color:rgba(255,255,255,.38);margin-bottom:20px}
-.hero-visual{position:relative;z-index:2;width:820px;max-width:90vw;margin-top:-70px}
-.hero-visual-inner{position:relative}
+        .btn {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s, transform 0.1s;
+        }
 
-/* SECTION */
-.section{position:relative;z-index:2;padding:80px 40px;border-top:1px solid var(--border);display:flex;flex-direction:column;align-items:center;background:var(--bg)}
+        .btn:hover {
+            background: #555;
+        }
 
-/* ABOUT-STYLE INNER TABS */
-.about-subnav{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:0;overflow-x:auto;width:100%;max-width:980px}
-.about-tab{padding:11px 20px;font-size:13px;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .2s;background:none;border-left:none;border-right:none;border-top:none;font-family:'Inter',sans-serif}
-.about-tab:hover{color:rgba(255,255,255,.8)}
-.about-tab.active{color:var(--teal);border-bottom-color:var(--teal);font-weight:500}
-.about-panel{display:none;padding-top:40px;width:100%;max-width:980px}
-.about-panel.active{display:block}
+        .btn:active {
+            transform: scale(0.95);
+        }
 
-/* MARKET */
-.shop-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
-.search-wrap{position:relative;flex:1;min-width:200px;max-width:300px}
-.search-wrap input{width:100%;height:36px;border-radius:8px;border:1px solid var(--border);outline:none;background:rgba(255,255,255,.05);color:#fff;padding:0 12px 0 34px;font-size:13px;font-family:'Inter',sans-serif;transition:border-color .2s}
-.search-wrap input::placeholder{color:var(--muted2)}
-.search-wrap input:focus{border-color:rgba(29,233,213,.35)}
-.search-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:13px;height:13px;stroke:var(--muted2);fill:none;stroke-width:2;pointer-events:none}
-.items-lbl{margin-left:auto;font-size:12px;color:var(--muted2)}
-.cat-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
-.cat-tab{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:7px;font-size:12px;font-weight:500;border:1px solid var(--border);color:var(--muted);background:rgba(255,255,255,.03);cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
-.cat-tab:hover{color:var(--text);background:rgba(255,255,255,.06)}
-.cat-tab.active{background:var(--teal);color:#000;border-color:var(--teal);font-weight:600}
-.cat-tab img{width:14px;height:14px;object-fit:contain}
-.cat-tab.active img{filter:brightness(0)}
-.items-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
-.item-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .15s,transform .15s;cursor:default}
-.item-card:hover{border-color:rgba(29,233,213,.2);transform:translateY(-2px)}
-.card-img{display:flex;align-items:center;justify-content:center;padding:14px 10px 8px;min-height:64px}
-.card-img img{width:38px;height:38px;object-fit:contain;image-rendering:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4))}
-.card-name{padding:0 8px 4px;text-align:center;font-size:11.5px;font-weight:600;color:#fff;line-height:1.3;flex:1;display:flex;align-items:center;justify-content:center}
-.card-qty{display:block;font-size:10px;font-weight:400;color:var(--muted);margin-top:2px}
-.card-price{background:#111;border-top:1px solid var(--border);padding:6px 8px;display:flex;align-items:center;justify-content:center;gap:3px}
-.card-price-num{font-size:13px;font-weight:700;color:#fff}
-.card-price-cur{font-size:11px;font-weight:600;color:var(--teal)}
-.no-results{grid-column:1/-1;min-height:160px;display:flex;align-items:center;justify-content:center;color:var(--muted);border:1px dashed var(--border);border-radius:10px;font-size:13px}
+        /* Область, где находится картинка */
+        .zoom-area {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: grab;
+        }
 
-/* CURRENCY */
-.won-card{background:var(--card);border:1px solid rgba(29,233,213,.22);border-radius:16px;padding:30px;margin-bottom:24px;position:relative;overflow:hidden}
-.won-card::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:40%;height:1px;background:linear-gradient(90deg,transparent,var(--teal),transparent)}
-.won-top{display:flex;align-items:center;gap:16px;margin-bottom:18px}
-.won-icon{width:52px;height:52px;border-radius:13px;background:rgba(29,233,213,.1);border:1px solid rgba(29,233,213,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.won-icon svg{width:24px;height:24px;stroke:var(--teal);fill:none;stroke-width:1.6}
-.won-name{font-size:20px;font-weight:700}
-.won-sub{font-size:12px;color:var(--muted);margin-top:3px}
-.won-eq{display:flex;align-items:center;gap:12px;background:rgba(29,233,213,.06);border:1px solid rgba(29,233,213,.13);border-radius:10px;padding:13px 16px;margin-bottom:16px;flex-wrap:wrap}
-.won-eq-v{font-size:14px;font-weight:700;color:var(--teal)}
-.won-eq-l{font-size:11px;color:var(--muted2);margin-top:2px}
-.won-eq-sep{font-size:18px;color:var(--muted2)}
-.won-desc{font-size:13px;color:var(--muted);line-height:1.75}
-.cur-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
-.cur-method{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:20px;transition:border-color .2s}
-.cur-method:hover{border-color:rgba(29,233,213,.22)}
-.cur-method-ic{width:36px;height:36px;border-radius:9px;background:rgba(29,233,213,.1);border:1px solid rgba(29,233,213,.25);display:flex;align-items:center;justify-content:center;margin-bottom:11px}
-.cur-method-ic svg{width:16px;height:16px;stroke:var(--teal);fill:none;stroke-width:1.8}
-.cur-method h3{font-size:13px;font-weight:600;margin-bottom:5px}
-.cur-method p{font-size:12px;color:var(--muted);line-height:1.7}
-.cur-tip{background:rgba(29,233,213,.05);border:1px solid rgba(29,233,213,.15);border-radius:11px;padding:14px 18px;display:flex;gap:11px;font-size:12px;color:var(--muted);line-height:1.75}
-.cur-tip-ic{width:26px;height:26px;border-radius:7px;background:rgba(29,233,213,.1);border:1px solid rgba(29,233,213,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.cur-tip-ic svg{width:12px;height:12px;stroke:var(--teal);fill:none;stroke-width:2}
+        .zoom-area:active {
+            cursor: grabbing;
+        }
 
-/* RULES */
-.rs{margin-bottom:36px}
-.rs-title{font-size:15px;font-weight:700;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
-.rs-num{width:26px;height:26px;background:rgba(29,233,213,.1);border:1px solid rgba(29,233,213,.25);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--teal);font-weight:700;flex-shrink:0}
-.ri{margin-bottom:8px;padding:13px 16px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:10px}
-.ri-h{font-size:13px;font-weight:600;margin-bottom:5px}
-.ri-b{font-size:12px;color:var(--muted);line-height:1.75}
-.ban{display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:11px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#f87171;border-radius:6px;padding:3px 10px;font-weight:500}
-.ban svg{width:10px;height:10px;stroke:#f87171;fill:none;stroke-width:2;flex-shrink:0}
-
-/* FINES */
-.info-box{background:rgba(29,233,213,.05);border:1px solid rgba(29,233,213,.15);border-radius:12px;padding:15px 18px;margin-bottom:22px;font-size:12px;color:var(--muted);line-height:1.85}
-.info-box ul{padding-left:16px}
-.info-box ul li{margin-bottom:4px}
-.fi-sec{margin-bottom:28px}
-.fi-sec-title{font-size:14px;font-weight:700;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
-.fi{margin-bottom:7px;padding:11px 14px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:9px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.fi-l{flex:1}
-.fi-name{font-size:13px;font-weight:600;margin-bottom:2px}
-.fi-desc{font-size:12px;color:var(--muted)}
-.fi-amt{font-size:11px;font-weight:700;color:var(--teal);background:rgba(29,233,213,.1);border:1px solid rgba(29,233,213,.22);border-radius:6px;padding:3px 9px;white-space:nowrap;flex-shrink:0}
-.fi-amt.red{color:#f87171;background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.2)}
-.fi-amt.green{color:#4ade80;background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.2)}
-.dl-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.dl-item{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:8px;padding:10px 14px;display:flex;justify-content:space-between;font-size:12px;font-weight:500}
-.dl-range{color:var(--teal)}.dl-days{color:var(--muted)}
-
-/* CTA */
-.cta-section{position:relative;z-index:2;padding:90px 40px;border-top:1px solid var(--border);display:flex;flex-direction:column;align-items:center;text-align:center;background:var(--bg);overflow:hidden}
-.cta-beams-bg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:0;width:900px;height:900px}
-.cta-beams-bg img{position:absolute;top:50%;left:50%;width:100%;max-width:none;animation:spinBeam 22s linear infinite;opacity:.55;display:block}
-.cta-section>*:not(.cta-beams-bg){position:relative;z-index:1}
-.cta-title{font-size:30px;font-weight:700;letter-spacing:-.02em;margin-bottom:36px;color:var(--teal)}
-.cta-card{background:#0f1e1b;border:1px solid rgba(29,233,213,.18);border-radius:16px;padding:36px 44px;width:100%;max-width:420px;position:relative;overflow:hidden}
-.cta-card::before{content:'';position:absolute;inset:0;border-radius:16px;background:radial-gradient(ellipse 75% 55% at 50% 50%,rgba(29,233,213,.07) 0%,transparent 65%);pointer-events:none}
-.cta-card>*{position:relative;z-index:1}
-.cta-card-head{display:flex;align-items:center;justify-content:space-between;font-size:15px;font-weight:600;margin-bottom:28px}
-.cta-card-head img{width:22px;height:22px;border-radius:5px}
-.cta-price{font-size:52px;font-weight:700;color:var(--teal);letter-spacing:-.03em;margin-bottom:6px}
-.cta-price-lbl{font-size:14px;color:rgba(255,255,255,.7);margin-bottom:4px}
-.cta-price-note{font-size:12px;color:var(--muted2);margin-bottom:28px}
-.cta-btn{display:flex;align-items:center;justify-content:center;width:100%;background:var(--teal);color:#000;font-weight:600;font-size:14px;padding:13px;border-radius:9px;margin-bottom:16px;transition:opacity .2s;cursor:pointer;border:none;font-family:'Inter',sans-serif}
-.cta-btn:hover{opacity:.86}
-.cta-link{font-size:12px;color:rgba(255,255,255,.32);text-decoration:underline;text-underline-offset:3px}
-
-/* FOOTER */
-footer{position:relative;z-index:2;background:#0d0d0d;border-top:1px solid var(--border);padding:22px 40px}
-.ft-top{display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--border);margin-bottom:16px}
-.ft-brand{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
-.ft-brand img{width:26px;height:26px;border-radius:6px}
-.ft-social{display:flex;gap:7px}
-.ft-social a{width:30px;height:30px;border-radius:7px;background:rgba(255,255,255,.06);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;transition:background .2s}
-.ft-social a:hover{background:rgba(255,255,255,.1)}
-.ft-mid{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:12px}
-.ft-links{display:flex;gap:5px 18px;flex-wrap:wrap;align-items:center}
-.ft-links a{font-size:12px;color:var(--muted);transition:color .2s;cursor:pointer}
-.ft-links a:hover{color:var(--text)}
-.ft-sep{color:rgba(255,255,255,.15);font-size:11px}
-.ft-soclinks{display:flex;gap:18px}
-.ft-soclinks a{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);transition:color .2s}
-.ft-soclinks a:hover{color:var(--text)}
-.ft-soclinks a svg{width:13px;height:13px;flex-shrink:0}
-.ft-disc{font-size:11px;color:var(--muted2)}
-
-@media(max-width:760px){
-  nav{padding:0 14px}.nav-links{display:none}
-  .hero{padding:80px 16px 0}.hero-title{font-size:28px}
-  .section,.cta-section{padding-left:16px;padding-right:16px}
-  .items-grid{grid-template-columns:repeat(3,1fr)}
-  .cur-grid,.dl-grid{grid-template-columns:1fr}
-  footer{padding:18px 16px}
-  .cta-card{padding:28px 22px}
-}
-</style>
+        /* Сама картинка */
+        #panzoom-element {
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+            transition: transform 0.1s ease-out; /* Плавность при движении */
+            will-change: transform;
+        }
+    </style>
 </head>
 <body>
 
-<div class="toast" id="toast"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Скопировано!</div>
-
-<nav>
-  <div class="nav-logo">
-    <img src="https://minecraftfaces.com/wp-content/bigfaces/big-frog-face.png" alt="">
-    Торговая Федерация
-  </div>
-  <div class="nav-links">
-    <a class="active" onclick="goTab('market',this)">Рынок</a>
-    <a onclick="goTab('currency',this)">Валюта</a>
-    <a onclick="goTab('rules',this)">Правила</a>
-    <a onclick="goTab('fines',this)">Штрафы</a>
-    <a href="https://chanland.vercel.app" target="_blank">SunShield ↗</a>
-  </div>
-  <div class="nav-right">
-    <a href="https://discord.gg/9WsxwGyVkE" target="_blank" class="nav-btn">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      Discord
-    </a>
-  </div>
-</nav>
-
-<section class="hero">
-  <h1 class="hero-title">
-    <img class="hero-logo-img" src="https://minecraftfaces.com/wp-content/bigfaces/big-frog-face.png" alt="">
-    Торговая Федерация
-  </h1>
-  <p class="hero-sub">Официальная торговая площадка сервера SunShield. Все сделки — в вонах, все товары — через ТФ.</p>
-  <div class="hero-actions">
-    <button class="btn-teal" onclick="goTab('market',null)">Смотреть цены</button>
-    <div class="ip-copy" onclick="copyIP()">
-      <div><div class="lbl">IP адрес</div><div class="val">chanland.play-network.io</div></div>
-      <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-    </div>
-  </div>
-  <p class="hero-note">Версия сервера — 1.21.1 • Лицензия не требуется</p>
-  <div class="hero-visual">
-    <div class="hero-visual-inner">
-      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:180%;pointer-events:none;z-index:1">
-        <img src="https://pepeland.net/_next/static/media/beams.380e8673.webp" alt="" style="position:absolute;top:50%;left:50%;width:100%;max-width:none;animation:spinBeam 18s linear infinite;opacity:.6;display:block">
-      </div>
-      <img src="https://pepeland.net/_imgx/w1920/plain/media/render.16f44401.webp" alt="Спавн" loading="lazy" style="position:relative;z-index:2;width:100%;display:block">
-    </div>
-  </div>
-</section>
-
-<section class="section" style="padding-top:0">
-  <div style="width:100%;max-width:980px;padding-top:50px">
-    <div class="about-subnav">
-      <button class="about-tab active" id="nt-market" onclick="goTab('market',this)">Рынок</button>
-      <button class="about-tab" id="nt-currency" onclick="goTab('currency',this)">Валюта</button>
-      <button class="about-tab" id="nt-rules" onclick="goTab('rules',this)">Правила торговли</button>
-      <button class="about-tab" id="nt-fines" onclick="goTab('fines',this)">Штрафы</button>
+    <div class="controls">
+        <button class="btn" id="zoom-in">➕ Приблизить</button>
+        <button class="btn" id="zoom-out">➖ Отдалить</button>
+        <button class="btn" id="reset">🔄 Сбросить</button>
     </div>
 
-    <!-- MARKET -->
-    <div class="about-panel active" id="tab-market">
-      <div class="shop-toolbar">
-        <div class="search-wrap">
-          <svg class="search-ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="searchInput" placeholder="Найти предмет...">
-        </div>
-        <span class="items-lbl" id="itemsCount"></span>
-      </div>
-      <div class="cat-tabs" id="catTabs"></div>
-      <div class="items-grid" id="itemsGrid"></div>
+    <div class="zoom-area" id="wrapper">
+        <img id="panzoom-element" src="https://i.ibb.co/KjnJmbg2/Screenshot-2026-06-08-013310.png" alt="Скриншот">
     </div>
 
-    <!-- CURRENCY -->
-    <div class="about-panel" id="tab-currency">
-      <div style="max-width:680px">
-        <div class="won-card">
-          <div class="won-top">
-            <div class="won-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M8 9l4-4 4 4M8 15l4 4 4-4"/></svg></div>
-            <div><div class="won-name">Вон (₩)</div><div class="won-sub">Официальная валюта Торговой Федерации</div></div>
-          </div>
-          <div class="won-eq">
-            <div><div class="won-eq-v">1 вон</div><div class="won-eq-l">валюта</div></div>
-            <div class="won-eq-sep">=</div>
-            <div><div class="won-eq-v">1 алмазная руда</div><div class="won-eq-l">добытая с шёлковым касанием</div></div>
-          </div>
-          <div class="won-desc">Вон — физическая валюта сервера. Все расчёты ведутся в вонах. Торговля вне ТФ запрещена и карается штрафом <strong style="color:#fff">64 вон</strong>.</div>
-        </div>
-        <div class="cur-grid">
-          <div class="cur-method">
-            <div class="cur-method-ic"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-            <h3>Добыча алмазов</h3>
-            <p>Алмазная руда с шёлковым касанием — 1 вон</p>
-          </div>
-          <div class="cur-method">
-            <div class="cur-method-ic"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-            <h3>Продажа товаров</h3>
-            <p>Продавай ресурсы и предметы другим игрокам на ТФ</p>
-          </div>
-          <div class="cur-method">
-            <div class="cur-method-ic"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-            <h3>Услуги</h3>
-            <p>Строительство, добыча, охрана и другие работы</p>
-          </div>
-          <div class="cur-method">
-            <div class="cur-method-ic"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
-            <h3>Банк</h3>
-            <p><strong style="color:#fff">/bank pay &lt;игрок&gt; &lt;сумма&gt;</strong> — перевод вонов</p>
-          </div>
-        </div>
-        <div class="cur-tip">
-          <div class="cur-tip-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-          <span>Используй <strong style="color:#fff">/bank</strong> для управления счётом и <strong style="color:#fff">/bank balance</strong> — чтобы проверить баланс.</span>
-        </div>
-      </div>
-    </div>
+    <script>
+        // Инициализируем элементы
+        const element = document.getElementById('panzoom-element');
+        const wrapper = document.getElementById('wrapper');
+        
+        const zoomInButton = document.getElementById('zoom-in');
+        const zoomOutButton = document.getElementById('zoom-out');
+        const resetButton = document.getElementById('reset');
 
-    <!-- RULES -->
-    <div class="about-panel" id="tab-rules">
-      <div style="max-width:680px">
-        <div class="rs">
-          <div class="rs-title"><div class="rs-num">1</div>Место торговли</div>
-          <div class="ri"><div class="ri-h">6.1 Торговая зона</div><div class="ri-b">Вся торговля ведётся исключительно в зоне Торговой Федерации. Исключения: внутри города или уникальные предметы.</div></div>
-          <div class="ri"><div class="ri-h">6.2 Живая торговля</div><div class="ri-b">Торговля разрешена только при личном присутствии.<span class="ban"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Товары изымаются</span></div></div>
-        </div>
-        <div class="rs">
-          <div class="rs-title"><div class="rs-num">2</div>Валюта</div>
-          <div class="ri"><div class="ri-h">6.6 Официальная валюта — воны</div><div class="ri-b">Все расчёты в вонах. Торговля за реальные деньги строго запрещена.<span class="ban"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Перманентная блокировка всех участников</span></div></div>
-        </div>
-        <div class="rs">
-          <div class="rs-title"><div class="rs-num">3</div>Честность сделок</div>
-          <div class="ri"><div class="ri-h">Мошенничество</div><div class="ri-b">Обман по количеству, качеству или цене приравнивается к краже.<span class="ban"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Штраф или блокировка</span></div></div>
-          <div class="ri"><div class="ri-h">Споры</div><div class="ri-b">Решаются администрацией в Discord. Решение окончательно.</div></div>
-        </div>
-        <div class="rs">
-          <div class="rs-title"><div class="rs-num">4</div>Цены</div>
-          <div class="ri"><div class="ri-h">Ориентировочные цены</div><div class="ri-b">Цены на сайте примерные. Итоговая стоимость — по договорённости сторон.</div></div>
-          <div class="ri"><div class="ri-h">Монополизация запрещена</div><div class="ri-b">Искусственное завышение цен с целью монополии на рынке преследуется администрацией.</div></div>
-        </div>
-      </div>
-    </div>
+        // Настраиваем Panzoom
+        const panzoom = Panzoom(element, {
+            maxScale: 10,  // Максимальное приближение (в 10 раз)
+            minScale: 0.5, // Максимальное отдаление
+            canvas: true   // Улучшает отзывчивость внутри контейнера
+        });
 
-    <!-- FINES -->
-    <div class="about-panel" id="tab-fines">
-      <div style="max-width:680px">
-        <div class="info-box"><ul><li>Любой штраф можно заменить отработкой, согласованной с полицией.</li><li>Ложный вызов: <strong style="color:#fff">32 вон</strong>. Нападение на полицию: <strong style="color:#fff">256 вон</strong>.</li></ul></div>
-        <div class="fi-sec">
-          <div class="fi-sec-title">Убийство</div>
-          <div class="fi"><div class="fi-l"><div class="fi-name">Убийство игрока</div><div class="fi-desc">Потерянные вещи возмещаются</div></div><span class="fi-amt">64–256 вон</span></div>
-          <div class="fi"><div class="fi-l"><div class="fi-name">Убийство новичка (до 1 часа)</div></div><span class="fi-amt red">256 вон</span></div>
-          <div class="fi"><div class="fi-l"><div class="fi-name">Оправданное убийство</div><div class="fi-desc">Самооборона с видео</div></div><span class="fi-amt green">Без штрафа</span></div>
-        </div>
-        <div class="fi-sec">
-          <div class="fi-sec-title">Гриферство</div>
-          <div class="fi"><div class="fi-l"><div class="fi-name">Взрыв или поломка строений</div></div><span class="fi-amt">32–512 вон</span></div>
-          <div class="fi"><div class="fi-l"><div class="fi-name">Повреждение складов</div></div><span class="fi-amt red">Перм. бан</span></div>
-        </div>
-        <div class="fi-sec">
-          <div class="fi-sec-title">Воровство</div>
-          <div class="fi"><div class="fi-l"><div class="fi-name">Строительные материалы</div></div><span class="fi-amt">16–128 вон</span></div>
-          <div class="fi"><div class="fi-l"><div class="fi-name">Ценные ресурсы (алмазы, незерит)</div></div><span class="fi-amt">32–256 вон</span></div>
-          <div class="fi"><div class="fi-l"><div class="fi-name">Государственное имущество</div></div><span class="fi-amt">128–1024 вон</span></div>
-        </div>
-        <div class="fi-sec">
-          <div class="fi-sec-title">Торговые нарушения</div>
-          <div class="fi"><div class="fi-l"><div class="fi-name">Торговля вне зоны ТФ</div></div><span class="fi-amt">64 вон</span></div>
-          <div class="fi"><div class="fi-l"><div class="fi-name">Торговля за реальные деньги</div></div><span class="fi-amt red">Перм. бан</span></div>
-        </div>
-        <div class="fi-sec">
-          <div class="fi-sec-title">Неуплата штрафов</div>
-          <div class="fi"><div class="fi-l"><div class="fi-name">1 штраф ≤ 512 вон</div></div><span class="fi-amt red">Бан 7 дней</span></div>
-          <div class="fi"><div class="fi-l"><div class="fi-name">4+ штрафа / 2048+ вон</div></div><span class="fi-amt red">Перм. бан</span></div>
-        </div>
-        <div class="fi-sec">
-          <div class="fi-sec-title">Сроки выплат</div>
-          <div class="dl-grid">
-            <div class="dl-item"><span class="dl-range">16–64 вон</span><span class="dl-days">3–5 дней</span></div>
-            <div class="dl-item"><span class="dl-range">64–256 вон</span><span class="dl-days">5–12 дней</span></div>
-            <div class="dl-item"><span class="dl-range">256–1024 вон</span><span class="dl-days">10–22 дня</span></div>
-            <div class="dl-item"><span class="dl-range">1024+ вон</span><span class="dl-days">до 20 дней</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+        // Включаем зум колесиком мыши (с зажатым Ctrl или просто так)
+        wrapper.addEventListener('wheel', (event) => {
+            event.preventDefault();
+            panzoom.zoomWithWheel(event, {
+                animate: true,
+                step: 0.1 // Скорость зума колесиком
+            });
+        });
 
-<section class="cta-section">
-  <div class="cta-beams-bg"><img src="https://pepeland.net/_next/static/media/beams-purchase.1382c9dc.webp" alt=""></div>
-  <h2 class="cta-title">Присоединяйтесь прямо сейчас</h2>
-  <div class="cta-card">
-    <div class="cta-card-head"><span>Доступ на SunShield 4</span><img src="https://minecraftfaces.com/wp-content/bigfaces/big-frog-face.png" alt=""></div>
-    <div class="cta-price">$FREE</div>
-    <div class="cta-price-lbl">на один сезон</div>
-    <div class="cta-price-note">заполните анкету в Discord</div>
-    <a href="https://discord.gg/9WsxwGyVkE" target="_blank" class="cta-btn">Получить доступ</a>
-    <a href="https://discord.gg/9WsxwGyVkE" target="_blank" class="cta-link">Перейти на Discord сервер</a>
-  </div>
-</section>
+        // Привязываем функции к кнопкам
+        zoomInButton.addEventListener('click', () => panzoom.zoomIn({ animate: true }));
+        zoomOutButton.addEventListener('click', () => panzoom.zoomOut({ animate: true }));
+        resetButton.addEventListener('click', () => panzoom.reset({ animate: true }));
+    </script>
 
-<footer>
-  <div class="ft-top">
-    <div class="ft-brand"><img src="https://minecraftfaces.com/wp-content/bigfaces/big-frog-face.png" alt="">Торговая Федерация — SunShield</div>
-    <div class="ft-social">
-      <a href="http://t.me/sunshieldapp" target="_blank"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></a>
-      <a href="https://discord.gg/9WsxwGyVkE" target="_blank"><svg width="13" height="13" viewBox="0 0 24 24" fill="#888"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg></a>
-    </div>
-  </div>
-  <div class="ft-mid">
-    <div class="ft-links">
-      <a href="https://chanland.vercel.app" target="_blank">SunShield</a><span class="ft-sep">·</span>
-      <a href="https://discord.gg/9WsxwGyVkE" target="_blank">Discord</a><span class="ft-sep">·</span>
-      <a href="http://t.me/sunshieldapp" target="_blank">Telegram</a><span class="ft-sep">·</span>
-      <a href="http://t.me/sunshield_support" target="_blank">Поддержка</a>
-    </div>
-    <div class="ft-soclinks">
-      <a href="http://t.me/sunshieldapp" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Telegram</a>
-      <a href="https://discord.gg/9WsxwGyVkE" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>Discord</a>
-    </div>
-  </div>
-  <p class="ft-disc">Not an official Minecraft product. Not affiliated with or endorsed by Mojang Synergies AB.</p>
-</footer>
-
-<script>
-const G='https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21/assets/minecraft/textures/';
-const I=G+'item/',B=G+'block/';
-const T={
-  sword_netherite:I+'netherite_sword.png',axe_netherite:I+'netherite_axe.png',trident:I+'trident.png',mace:I+'mace.png',bow:I+'bow.png',
-  helmet_netherite:I+'netherite_helmet.png',chest_netherite:I+'netherite_chestplate.png',legs_netherite:I+'netherite_leggings.png',boots_netherite:I+'netherite_boots.png',
-  helmet_diamond:I+'diamond_helmet.png',chest_diamond:I+'diamond_chestplate.png',legs_diamond:I+'diamond_leggings.png',boots_diamond:I+'diamond_boots.png',
-  pick_netherite:I+'netherite_pickaxe.png',shovel_netherite:I+'netherite_shovel.png',hoe_netherite:I+'netherite_hoe.png',
-  pick_diamond:I+'diamond_pickaxe.png',fishing_rod:I+'fishing_rod.png',
-  enchanted_book:I+'enchanted_book.png',netherite_ingot:I+'netherite_ingot.png',diamond:I+'diamond.png',
-  iron_ingot:I+'iron_ingot.png',gold_ingot:I+'gold_ingot.png',emerald:I+'emerald.png',lapis:I+'lapis_lazuli.png',amethyst:I+'amethyst_shard.png',copper_ingot:I+'copper_ingot.png',
-  ancient_debris:B+'ancient_debris_top.png',diamond_block:B+'diamond_block.png',iron_block:B+'iron_block.png',gold_block:B+'gold_block.png',emerald_block:B+'emerald_block.png',emerald_ore:B+'emerald_ore.png',
-  copper_block:B+'copper_block.png',quartz_block:B+'quartz_block_side.png',obsidian:B+'obsidian.png',sea_lantern:B+'sea_lantern.png',lapis_block:B+'lapis_block.png',
-  redstone_block:B+'redstone_block.png',slime_block:B+'slime_block.png',honey_block:B+'honey_block_side.png',tnt:B+'tnt_side.png',beacon:B+'beacon.png',
-  potion:I+'potion.png',ominous_bottle:I+'ominous_bottle.png',ender_pearl:I+'ender_pearl.png',
-  golden_apple:I+'golden_apple.png',enchanted_apple:I+'enchanted_golden_apple.png',golden_carrot:I+'golden_carrot.png',
-  exp_bottle:I+'experience_bottle.png',totem:I+'totem_of_undying.png',ghast_tear:I+'ghast_tear.png',
-  slimeball:I+'slimeball.png',blaze_powder:I+'blaze_powder.png',blaze_rod:I+'blaze_rod.png',
-  gunpowder:I+'gunpowder.png',arrow:I+'arrow.png',firework:I+'firework_rocket.png',
-  elytra:I+'elytra.png',shulker_shell:I+'shulker_shell.png',heart_of_sea:I+'heart_of_the_sea.png',
-  book:I+'book.png',leather:I+'leather.png',nether_wart:I+'nether_wart.png',sugar_cane:I+'sugar_cane.png',
-  dragons_breath:I+'dragon_breath.png',trial_key:I+'trial_key.png',ominous_key:I+'ominous_trial_key.png',
-  wither_skull:I+'wither_skeleton_skull.png',apple:I+'apple.png',cooked_cod:I+'cooked_cod.png',
-  cooked_beef:I+'cooked_beef.png',carrot:I+'carrot.png',bread:I+'bread.png',end_crystal:I+'end_crystal.png',
-  music_disc:I+'music_disc_pigstep.png',music_disc_relic:I+'music_disc_relic.png',music_disc_creator:I+'music_disc_creator.png',
-  breeze_rod:I+'breeze_rod.png',netherite_upgrade_tpl:I+'netherite_upgrade_smithing_template.png',
-  tpl_silence:I+'silence_armor_trim_smithing_template.png',tpl_tide:I+'tide_armor_trim_smithing_template.png',
-  oak_log:B+'oak_log.png',oak_planks:B+'oak_planks.png',leaves:B+'oak_leaves.png',bookshelf:B+'bookshelf.png',moss_block:B+'moss_block.png',
-  dirt:B+'dirt.png',clay_block:B+'clay.png',gravel:B+'gravel.png',sand:B+'sand.png',glass:B+'glass.png',cobblestone:B+'cobblestone.png',stone:B+'stone.png',
-  tuff:B+'tuff.png',deepslate:B+'deepslate.png',andesite:B+'andesite.png',diorite:B+'diorite.png',granite:B+'granite.png',terracotta:B+'terracotta.png',
-  concrete:B+'white_concrete.png',prismarine:B+'prismarine.png',mud_bricks:B+'mud_bricks.png',bricks:B+'bricks.png',nether_bricks:B+'nether_bricks.png',
-  packed_ice:B+'packed_ice.png',white_wool:B+'white_wool.png',sculk:B+'sculk.png',netherrack:B+'netherrack.png',blackstone:B+'blackstone.png',
-  crying_obsidian:B+'crying_obsidian.png',end_stone:B+'end_stone.png',amethyst_block:B+'amethyst_block.png',dripstone_block:B+'dripstone_block.png',
-  coral_block:B+'tube_coral_block.png',purpur_block:B+'purpur_block.png',iron_bars:B+'iron_bars.png',vine:B+'vine.png',magma:B+'magma.png',
-  cactus:B+'cactus_side.png',flower:B+'dandelion.png',wither_rose:B+'wither_rose.png',glowstone:B+'glowstone.png',shroomlight:B+'shroomlight.png',
-  sea_lantern2:B+'sea_lantern.png',end_rod:B+'end_rod.png',copper_lamp:B+'copper_bulb_lit.png',copper_grate:B+'copper_grate.png',
-  lantern:B+'lantern.png',soul_lantern:B+'soul_lantern.png',campfire:B+'campfire_fire.png',soul_campfire:B+'soul_campfire_fire.png',
-  ender_chest:B+'ender_chest.png',candle:B+'candle.png',chain:B+'chain.png',
-  item_frame:I+'item_frame.png',glow_item_frame:I+'glow_item_frame.png',white_banner:I+'white_banner.png',bell:I+'bell.png',
-  decorated_pot:I+'decorated_pot.png',torchflower:B+'torchflower_crop_stage1.png',
-  melon_slice:I+'melon_slice.png',raw_beef:I+'raw_beef.png',potato:I+'potato.png',baked_potato:I+'baked_potato.png',
-  cookie:I+'cookie.png',cake:I+'cake.png',sweet_berries:I+'sweet_berries.png',glow_berries:I+'glow_berries.png',chorus_fruit:I+'chorus_fruit.png',
-  shulker:I+'shulker_shell.png',bone_block:B+'bone_block_top.png',
-};
-const PF={potion_invis:'hue-rotate(210deg) saturate(.3)',potion_night:'hue-rotate(38deg) saturate(2.2)',potion_fire:'hue-rotate(345deg) saturate(2.8)',potion_jump:'hue-rotate(92deg) saturate(2.2)',potion_regen:'hue-rotate(288deg) saturate(3)',potion_str:'hue-rotate(2deg) saturate(3)',potion_speed:'hue-rotate(158deg) saturate(2.5)',potion_turtle:'hue-rotate(192deg) saturate(2)'};
-
-const CATS=[
-  {id:'all',label:'Все',img:T.diamond},
-  {id:'weapon',label:'Оружие',img:T.sword_netherite},
-  {id:'armor',label:'Броня',img:T.chest_netherite},
-  {id:'tool',label:'Инструменты',img:T.pick_netherite},
-  {id:'enchant',label:'Зачарования',img:T.enchanted_book},
-  {id:'resource',label:'Ресурсы',img:T.diamond_block},
-  {id:'decor',label:'Декор',img:T.sea_lantern},
-  {id:'build',label:'Механизмы',img:T.redstone_block},
-  {id:'potion',label:'Зелья',img:T.ominous_bottle},
-  {id:'food',label:'Еда',img:T.golden_apple},
-  {id:'misc',label:'Транспорт',img:T.elytra},
-  {id:'other',label:'Прочее',img:T.book},
-];
-
-const ITEMS=[
-  {n:'Незеритовый меч (фулл)',q:'без починки',p:90,c:'weapon',i:'sword_netherite'},
-  {n:'Незеритовый меч',q:'1 шт.',p:24,c:'weapon',i:'sword_netherite'},
-  {n:'Незеритовый топор',q:'1 шт.',p:24,c:'weapon',i:'axe_netherite'},
-  {n:'Трезубец',q:'1 шт.',p:16,c:'weapon',i:'trident'},
-  {n:'Булава',q:'1 шт.',p:16,c:'weapon',i:'mace'},
-  {n:'Лук (фулл зачар)',q:'1 шт.',p:10,c:'weapon',i:'bow'},
-  {n:'Незеритовый шлем (топ)',q:'1 шт.',p:65,c:'armor',i:'helmet_netherite'},
-  {n:'Незеритовый шлем',q:'1 шт.',p:26,c:'armor',i:'helmet_netherite'},
-  {n:'Незеритовый нагрудник (топ)',q:'1 шт.',p:86,c:'armor',i:'chest_netherite'},
-  {n:'Незеритовый нагрудник',q:'1 шт.',p:29,c:'armor',i:'chest_netherite'},
-  {n:'Незеритовые поножи (топ)',q:'1 шт.',p:48,c:'armor',i:'legs_netherite'},
-  {n:'Незеритовые поножи',q:'1 шт.',p:28,c:'armor',i:'legs_netherite'},
-  {n:'Незеритовые ботинки (топ)',q:'1 шт.',p:80,c:'armor',i:'boots_netherite'},
-  {n:'Незеритовые ботинки',q:'1 шт.',p:25,c:'armor',i:'boots_netherite'},
-  {n:'Алмазный шлем',q:'1 шт.',p:2,c:'armor',i:'helmet_diamond'},
-  {n:'Алмазный нагрудник',q:'1 шт.',p:3,c:'armor',i:'chest_diamond'},
-  {n:'Алмазные поножи',q:'1 шт.',p:3,c:'armor',i:'legs_diamond'},
-  {n:'Алмазные ботинки',q:'1 шт.',p:2,c:'armor',i:'boots_diamond'},
-  {n:'Незеритовая кирка (топ)',q:'без починки',p:46,c:'tool',i:'pick_netherite'},
-  {n:'Незеритовая кирка',q:'1 шт.',p:25,c:'tool',i:'pick_netherite'},
-  {n:'Алмазная кирка (фулл)',q:'без починки',p:15,c:'tool',i:'pick_diamond'},
-  {n:'Незеритовая лопата',q:'1 шт.',p:22,c:'tool',i:'shovel_netherite'},
-  {n:'Незеритовая мотыга',q:'1 шт.',p:22,c:'tool',i:'hoe_netherite'},
-  {n:'Удочка (фулл зачар)',q:'1 шт.',p:10,c:'tool',i:'fishing_rod'},
-  {n:'Починка',q:'книга',p:200,c:'enchant',i:'enchanted_book'},
-  {n:'Проворство III',q:'книга',p:500,c:'enchant',i:'enchanted_book'},
-  {n:'Порыв ветра III',q:'книга',p:100,c:'enchant',i:'enchanted_book'},
-  {n:'Шёлковое касание',q:'книга',p:14,c:'enchant',i:'enchanted_book'},
-  {n:'Прочность III',q:'книга',p:16,c:'enchant',i:'enchanted_book'},
-  {n:'Добыча III',q:'книга',p:21,c:'enchant',i:'enchanted_book'},
-  {n:'Острота V',q:'книга',p:22,c:'enchant',i:'enchanted_book'},
-  {n:'Удача III',q:'книга',p:10,c:'enchant',i:'enchanted_book'},
-  {n:'Шипы III',q:'книга',p:25,c:'enchant',i:'enchanted_book'},
-  {n:'Эффективность V',q:'книга',p:15,c:'enchant',i:'enchanted_book'},
-  {n:'Защита IV',q:'книга',p:16,c:'enchant',i:'enchanted_book'},
-  {n:'Бесконечность',q:'книга',p:10,c:'enchant',i:'enchanted_book'},
-  {n:'Невесомость IV',q:'книга',p:25,c:'enchant',i:'enchanted_book'},
-  {n:'Плотность V',q:'книга',p:20,c:'enchant',i:'enchanted_book'},
-  {n:'Пробитие IV',q:'книга',p:18,c:'enchant',i:'enchanted_book'},
-  {n:'Тягун III',q:'книга',p:23,c:'enchant',i:'enchanted_book'},
-  {n:'Разящий клинок III',q:'книга',p:16,c:'enchant',i:'enchanted_book'},
-  {n:'Сила V',q:'книга',p:12,c:'enchant',i:'enchanted_book'},
-  {n:'Верность III',q:'книга',p:11,c:'enchant',i:'enchanted_book'},
-  {n:'Скорость души III',q:'книга',p:15,c:'enchant',i:'enchanted_book'},
-  {n:'Взрывоустойчивость IV',q:'книга',p:10,c:'enchant',i:'enchanted_book'},
-  {n:'Огнеупорность IV',q:'книга',p:10,c:'enchant',i:'enchanted_book'},
-  {n:'Подводная ходьба III',q:'книга',p:14,c:'enchant',i:'enchanted_book'},
-  {n:'Подводное дыхание III',q:'книга',p:10,c:'enchant',i:'enchanted_book'},
-  {n:'Пронзатель V',q:'книга',p:7,c:'enchant',i:'enchanted_book'},
-  {n:'Быстрая перезарядка III',q:'книга',p:6,c:'enchant',i:'enchanted_book'},
-  {n:'Везучий рыбак III',q:'книга',p:8,c:'enchant',i:'enchanted_book'},
-  {n:'Незеритовый слиток',q:'1 шт.',p:23,c:'resource',i:'netherite_ingot'},
-  {n:'Древние обломки',q:'1 шт.',p:5,c:'resource',i:'ancient_debris'},
-  {n:'Алмаз',q:'3 шт.',p:1,c:'resource',i:'diamond'},
-  {n:'Алмазный блок',q:'16 шт.',p:48,c:'resource',i:'diamond_block'},
-  {n:'Железо',q:'64 шт.',p:1,c:'resource',i:'iron_ingot'},
-  {n:'Железный блок',q:'64 шт.',p:8,c:'resource',i:'iron_block'},
-  {n:'Золото',q:'64 шт.',p:3,c:'resource',i:'gold_ingot'},
-  {n:'Золотой блок',q:'64 шт.',p:24,c:'resource',i:'gold_block'},
-  {n:'Изумруд',q:'64 шт.',p:1,c:'resource',i:'emerald'},
-  {n:'Изумрудный блок',q:'64 шт.',p:8,c:'resource',i:'emerald_block'},
-  {n:'Изумрудная руда',q:'1 шт.',p:10,c:'resource',i:'emerald_ore'},
-  {n:'Медь',q:'64 шт.',p:1,c:'resource',i:'copper_ingot'},
-  {n:'Лазурит',q:'64 шт.',p:1,c:'resource',i:'lapis'},
-  {n:'Лазуритовый блок',q:'64 шт.',p:9,c:'resource',i:'lapis_block'},
-  {n:'Осколок аметиста',q:'64 шт.',p:1,c:'resource',i:'amethyst'},
-  {n:'Сердце моря',q:'1 шт.',p:64,c:'resource',i:'heart_of_sea'},
-  {n:'Кварцевый блок',q:'64 шт.',p:2,c:'resource',i:'quartz_block'},
-  {n:'Обсидиан',q:'64 шт.',p:10,c:'resource',i:'obsidian'},
-  {n:'Бревна',q:'64 шт.',p:4,c:'resource',i:'oak_log'},
-  {n:'Доски',q:'64 шт.',p:1,c:'resource',i:'oak_planks'},
-  {n:'Книжная полка',q:'64 шт.',p:13,c:'resource',i:'bookshelf'},
-  {n:'Блок мха',q:'64 шт.',p:1,c:'resource',i:'moss_block'},
-  {n:'Стекло',q:'64 шт.',p:3,c:'resource',i:'glass'},
-  {n:'Камень',q:'64 шт.',p:1,c:'resource',i:'stone'},
-  {n:'Туф',q:'64 шт.',p:1,c:'resource',i:'tuff'},
-  {n:'Глубинный сланец',q:'64 шт.',p:1,c:'resource',i:'deepslate'},
-  {n:'Терракота',q:'64 шт.',p:3,c:'resource',i:'terracotta'},
-  {n:'Бетон',q:'64 шт.',p:4,c:'resource',i:'concrete'},
-  {n:'Призмарин',q:'64 шт.',p:4,c:'resource',i:'prismarine'},
-  {n:'Кирпичи',q:'64 шт.',p:6,c:'resource',i:'bricks'},
-  {n:'Незерские кирпичи',q:'64 шт.',p:6,c:'resource',i:'nether_bricks'},
-  {n:'Плотный лёд',q:'64 шт.',p:3,c:'resource',i:'packed_ice'},
-  {n:'Шерсть',q:'64 шт.',p:3,c:'resource',i:'white_wool'},
-  {n:'Скалк',q:'64 шт.',p:4,c:'resource',i:'sculk'},
-  {n:'Чернит',q:'64 шт.',p:3,c:'resource',i:'blackstone'},
-  {n:'Плачущий обсидиан',q:'64 шт.',p:10,c:'resource',i:'crying_obsidian'},
-  {n:'Блок аметиста',q:'64 шт.',p:6,c:'resource',i:'amethyst_block'},
-  {n:'Блок кораллов',q:'64 шт.',p:7,c:'resource',i:'coral_block'},
-  {n:'Пурпур',q:'64 шт.',p:4,c:'resource',i:'purpur_block'},
-  {n:'Железные прутья',q:'64 шт.',p:4,c:'resource',i:'iron_bars'},
-  {n:'Магма',q:'64 шт.',p:3,c:'resource',i:'magma'},
-  {n:'Светокамень',q:'64 шт.',p:12,c:'resource',i:'glowstone'},
-  {n:'Сахарный тростник',q:'64 шт.',p:1,c:'resource',i:'sugar_cane'},
-  {n:'Морской фонарь',q:'64 шт.',p:5,c:'decor',i:'sea_lantern'},
-  {n:'Блок света',q:'32 шт.',p:6,c:'decor',i:'bone_block'},
-  {n:'Пластинка PigStep',q:'1 шт.',p:150,c:'decor',i:'music_disc'},
-  {n:'Пластинка Relic',q:'1 шт.',p:150,c:'decor',i:'music_disc_relic'},
-  {n:'Пластинка Creator',q:'1 шт.',p:100,c:'decor',i:'music_disc_creator'},
-  {n:'Пластинки (прочие)',q:'1 шт.',p:20,c:'decor',i:'music_disc'},
-  {n:'Стержень энда',q:'16 шт.',p:3,c:'decor',i:'end_rod'},
-  {n:'Медные лампы',q:'64 шт.',p:6,c:'decor',i:'copper_lamp'},
-  {n:'Медные решётки',q:'64 шт.',p:6,c:'decor',i:'copper_grate'},
-  {n:'Рамка',q:'64 шт.',p:3,c:'decor',i:'item_frame'},
-  {n:'Светящаяся рамка',q:'64 шт.',p:4,c:'decor',i:'glow_item_frame'},
-  {n:'Свеча',q:'64 шт.',p:3,c:'decor',i:'candle'},
-  {n:'Фонарь',q:'64 шт.',p:6,c:'decor',i:'lantern'},
-  {n:'Фонарь душ',q:'64 шт.',p:7,c:'decor',i:'soul_lantern'},
-  {n:'Костёр',q:'64 шт.',p:10,c:'decor',i:'campfire'},
-  {n:'Костёр душ',q:'64 шт.',p:12,c:'decor',i:'soul_campfire'},
-  {n:'Флаг',q:'16 шт.',p:3,c:'decor',i:'white_banner'},
-  {n:'Колокол',q:'1 шт.',p:15,c:'decor',i:'bell'},
-  {n:'Эндер-сундук',q:'1 шт.',p:7,c:'decor',i:'ender_chest'},
-  {n:'Грибосвет',q:'64 шт.',p:4,c:'decor',i:'shroomlight'},
-  {n:'Цепи',q:'64 шт.',p:3,c:'decor',i:'chain'},
-  {n:'Узорчатая ваза',q:'64 шт.',p:4,c:'decor',i:'decorated_pot'},
-  {n:'Цветок светоцвет',q:'64 шт.',p:3,c:'decor',i:'torchflower'},
-  {n:'Отделка Тишина',q:'1 шт.',p:10,c:'decor',i:'tpl_silence'},
-  {n:'Отделка Прилив',q:'1 шт.',p:15,c:'decor',i:'tpl_tide'},
-  {n:'Редстоуновый блок',q:'32 шт.',p:4,c:'build',i:'redstone_block'},
-  {n:'Блок слизи',q:'64 шт.',p:9,c:'build',i:'slime_block'},
-  {n:'Блок мёда',q:'16 шт.',p:4,c:'build',i:'honey_block'},
-  {n:'Динамит',q:'64 шт.',p:18,c:'build',i:'tnt'},
-  {n:'Кристалл Края',q:'16 шт.',p:16,c:'build',i:'end_crystal'},
-  {n:'Зелье невидимости',q:'1 шт.',p:3,c:'potion',i:'potion',f:'potion_invis'},
-  {n:'Зелье ночного зрения',q:'1 шт.',p:1,c:'potion',i:'potion',f:'potion_night'},
-  {n:'Зелье огнестойкости',q:'1 шт.',p:1,c:'potion',i:'potion',f:'potion_fire'},
-  {n:'Зелье прыгучести',q:'1 шт.',p:2,c:'potion',i:'potion',f:'potion_jump'},
-  {n:'Зелье регенерации',q:'1 шт.',p:2,c:'potion',i:'potion',f:'potion_regen'},
-  {n:'Зелье силы',q:'1 шт.',p:3,c:'potion',i:'potion',f:'potion_str'},
-  {n:'Зелье стремительности',q:'1 шт.',p:2,c:'potion',i:'potion',f:'potion_speed'},
-  {n:'Зелье черепашьей мощи',q:'1 шт.',p:7,c:'potion',i:'potion',f:'potion_turtle'},
-  {n:'Зловещая бутылочка',q:'1 шт.',p:2,c:'potion',i:'ominous_bottle'},
-  {n:'Зачарованное золотое яблоко',q:'1 шт.',p:9,c:'food',i:'enchanted_apple'},
-  {n:'Золотое яблоко',q:'16 шт.',p:8,c:'food',i:'golden_apple'},
-  {n:'Золотая морковь',q:'64 шт.',p:5,c:'food',i:'golden_carrot'},
-  {n:'Хлеб',q:'64 шт.',p:2,c:'food',i:'bread'},
-  {n:'Жареная рыба',q:'64 шт.',p:2,c:'food',i:'cooked_cod'},
-  {n:'Жареное мясо',q:'64 шт.',p:2,c:'food',i:'cooked_beef'},
-  {n:'Морковь',q:'64 шт.',p:2,c:'food',i:'carrot'},
-  {n:'Яблоко',q:'64 шт.',p:8,c:'food',i:'apple'},
-  {n:'Плод хоруса',q:'64 шт.',p:3,c:'food',i:'chorus_fruit'},
-  {n:'Ломтик арбуза',q:'64 шт.',p:3,c:'food',i:'melon_slice'},
-  {n:'Печёный картофель',q:'64 шт.',p:4,c:'food',i:'baked_potato'},
-  {n:'Печенье',q:'64 шт.',p:6,c:'food',i:'cookie'},
-  {n:'Элитры',q:'1 шт.',p:1500,c:'misc',i:'elytra'},
-  {n:'Незеритовое улучшение',q:'1 шт.',p:7,c:'other',i:'netherite_upgrade_tpl'},
-  {n:'Тотем бессмертия',q:'1 шт.',p:2,c:'other',i:'totem'},
-  {n:'Эндер-жемчуг',q:'16 шт.',p:4,c:'other',i:'ender_pearl'},
-  {n:'Маяк',q:'1 шт.',p:50,c:'other',i:'beacon'},
-  {n:'Зелье опыта',q:'1 шт.',p:1,c:'other',i:'exp_bottle'},
-  {n:'Драконье дыхание',q:'16 шт.',p:8,c:'other',i:'dragons_breath'},
-  {n:'Панцирь шалкера',q:'16 шт.',p:4,c:'other',i:'shulker_shell'},
-  {n:'Порох',q:'64 шт.',p:3,c:'other',i:'gunpowder'},
-  {n:'Слеза гаста',q:'32 шт.',p:12,c:'other',i:'ghast_tear'},
-  {n:'Огненный стержень',q:'32 шт.',p:6,c:'other',i:'blaze_rod'},
-  {n:'Стержень вихря',q:'32 шт.',p:4,c:'other',i:'breeze_rod'},
-  {n:'Стрела',q:'64 шт.',p:2,c:'other',i:'arrow'},
-  {n:'Череп скелета-иссушителя',q:'1 шт.',p:20,c:'other',i:'wither_skull'},
-  {n:'Фейерверк 1 ур.',q:'64 шт.',p:5,c:'other',i:'firework'},
-  {n:'Шалкер',q:'1 шт.',p:7,c:'other',i:'shulker'},
-];
-
-let activeCat='all',search='';
-function renderCats(){
-  document.getElementById('catTabs').innerHTML=CATS.map(c=>`<button class="cat-tab${activeCat===c.id?' active':''}" onclick="setCat('${c.id}')"><img src="${c.img}" alt="">${c.label}</button>`).join('');
-}
-function setCat(id){activeCat=id;renderCats();renderItems();}
-function renderItems(){
-  const q=search.trim().toLowerCase();
-  const list=ITEMS.filter(it=>(activeCat==='all'||it.c===activeCat)&&(!q||it.n.toLowerCase().includes(q)));
-  document.getElementById('itemsCount').textContent=list.length+' товаров';
-  const grid=document.getElementById('itemsGrid');
-  if(!list.length){grid.innerHTML='<div class="no-results">Ничего не найдено</div>';return;}
-  grid.innerHTML=list.map(it=>{
-    const img=T[it.i]||'';
-    const flt=it.f&&PF[it.f]?`style="filter:${PF[it.f]}"` :'';
-    const qty=it.q&&it.q!=='1 шт.'?`<span class="card-qty">${it.q}</span>`:'';
-    return `<div class="item-card"><div class="card-img"><img src="${img}" alt="" ${flt} loading="lazy"></div><div class="card-name">${it.n}${qty}</div><div class="card-price"><span class="card-price-num">${it.p}</span><span class="card-price-cur"> вон</span></div></div>`;
-  }).join('');
-}
-document.getElementById('searchInput').addEventListener('input',function(){search=this.value;renderItems();});
-
-const TABS=['market','currency','rules','fines'];
-function goTab(t,el){
-  TABS.forEach(id=>{
-    document.getElementById('tab-'+id).classList.toggle('active',id===t);
-    document.getElementById('nt-'+id).classList.toggle('active',id===t);
-  });
-  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
-  if(el&&el.tagName==='A')el.classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-function copyIP(){
-  navigator.clipboard.writeText('chanland.play-network.io').then(()=>{
-    var t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);
-  });
-}
-renderCats();renderItems();
-</script>
 </body>
 </html>
