@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToadShield Image Viewer</title>
+    <title>ToadShield Viewer Pro</title>
     <style>
         :root {
-            --bg-color: #0d0e10;
-            --accent-glow: rgba(255, 255, 255, 0.05);
-            --accent-glow-hover: rgba(255, 255, 255, 0.12);
-            --btn-bg: rgba(255, 255, 255, 0.07);
-            --btn-hover: rgba(255, 255, 255, 0.15);
-            --text-color: #e0e0e0;
+            --bg-color: #0c0d0f;
+            --btn-bg: rgba(255, 255, 255, 0.06);
+            --btn-hover: rgba(255, 255, 255, 0.12);
+            --btn-border: rgba(255, 255, 255, 0.08);
+            --text-color: #e5e5e5;
+            --trigger-glow: rgba(255, 255, 255, 0.04);
+            --trigger-glow-hover: rgba(255, 255, 255, 0.1);
         }
 
         * {
@@ -23,7 +24,7 @@
 
         body {
             background-color: var(--bg-color);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             overflow: hidden;
             width: 100vw;
             height: 100vh;
@@ -38,237 +39,239 @@
             width: 100%;
             height: 100%;
             display: none;
-            justify-content: center;
-            align-items: center;
         }
 
         .screen.active {
-            display: flex;
+            display: block;
         }
 
-        /* Контейнер для интерактивного просмотра (Зум и перетаскивание) */
-        .viewer-container {
-            position: absolute;
-            top: 0;
-            left: 0;
+        /* Главная сцена для зума */
+        .scene {
             width: 100%;
             height: 100%;
-            overflow: hidden;
             cursor: grab;
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
         }
 
-        .viewer-container:active {
+        .scene:active {
             cursor: grabbing;
         }
 
-        .viewer-image {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
+        /* Обертка карты, которую мы крутим/двигаем */
+        .map-wrapper {
+            position: relative;
+            display: inline-block;
             transform-origin: center center;
-            transition: transform 0.1s ease-out;
             will-change: transform;
+            transition: transform 0.05s linear;
         }
 
-        /* Интерфейс поверх картинки */
-        .ui-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; /* Пропускает клики сквозь себя на контейнер с зумом */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 30px;
-            z-index: 10;
+        .map-image {
+            display: block;
+            max-width: 90vw;
+            max-height: 85vh;
+            object-fit: contain;
+            pointer-events: none; /* Чтобы мышь не цеплялась за дефолтное перетаскивание картинок браузером */
         }
 
-        /* Кнопки управления (Минимализм) */
-        .nav-buttons {
-            display: flex;
-            gap: 15px;
-            pointer-events: auto;
-        }
-
-        .btn {
-            background: var(--btn-bg);
-            color: var(--text-color);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.1s ease;
-        }
-
-        .btn:hover {
-            background: var(--btn-hover);
-        }
-
-        .btn:active {
-            transform: scale(0.97);
-        }
-
-        /* Подсвеченная центральная зона на первом экране */
-        .center-trigger {
+        /* Интерактивная зона прямо по центру первой карты */
+        .map-trigger {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 40%;
-            height: 40%;
-            background: var(--accent-glow);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
+            width: 25%;
+            height: 25%;
+            background: var(--trigger-glow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
             cursor: pointer;
-            pointer-events: auto;
-            transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: background 0.2s, border-color 0.2s;
+            z-index: 5;
         }
 
-        .center-trigger:hover {
-            background: var(--accent-glow-hover);
-            border-color: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 40px rgba(255, 255, 255, 0.02);
+        .map-trigger:hover {
+            background: var(--trigger-glow-hover);
+            border-color: rgba(255, 255, 255, 0.15);
         }
 
-        .center-trigger .trigger-text {
-            font-size: 12px;
+        .map-trigger span {
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            color: rgba(255, 255, 255, 0.4);
+            opacity: 0.4;
+            transition: opacity 0.2s;
+            text-align: center;
+            padding: 10px;
         }
 
-        .center-trigger:hover .trigger-text {
-            opacity: 1;
+        .map-trigger:hover span {
+            opacity: 0.9;
+        }
+
+        /* Панель интерфейса (кнопки) */
+        .ui-panel {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            z-index: 10;
+            display: flex;
+            gap: 12px;
+            pointer-events: none;
+        }
+
+        .btn {
+            pointer-events: auto;
+            background: var(--btn-bg);
+            color: var(--text-color);
+            border: 1px solid var(--btn-border);
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn:hover {
+            background: var(--btn-hover);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:active {
+            transform: scale(0.96);
         }
     </style>
 </head>
 <body>
 
+    <!-- ЭКРАН 1 -->
     <div id="screen1" class="screen active">
-        <div class="viewer-container" id="container1">
-            <img src="https://i.ibb.co/vbdFNkC/Screenshot-2026-06-08-030536.png" class="viewer-image" id="img1" alt="Screen 1">
+        <div class="ui-panel">
+            <button class="btn" onclick="resetView(1)">Сбросить</button>
         </div>
-
-        <div class="ui-layer">
-            <div class="nav-buttons">
-                <button class="btn" onclick="resetZoom(1)">Сбросить зум</button>
+        
+        <div class="scene" id="scene1">
+            <div class="map-wrapper" id="wrapper1">
+                <img src="https://i.ibb.co/vbdFNkC/Screenshot-2026-06-08-030536.png" class="map-image" alt="Map 1">
+                <!-- Зона перехода привязана к центру картинки -->
+                <div class="map-trigger" onclick="goToScreen2(event)">
+                    <span>Открыть карту 2</span>
+                </div>
             </div>
-            
-            <div class="center-trigger" onclick="switchScreen('screen2')">
-                <span class="trigger-text">Открыть далее</span>
-            </div>
-            <div></div> </div>
+        </div>
     </div>
 
-
+    <!-- ЭКРАН 2 -->
     <div id="screen2" class="screen">
-        <div class="viewer-container" id="container2">
-            <img src="https://i.ibb.co/Xr23n0SQ/Screenshot-2026-06-08-030525.png" class="viewer-image" id="img2" alt="Screen 2">
+        <div class="ui-panel">
+            <button class="btn" onclick="goToScreen1()">Назад</button>
+            <button class="btn" onclick="resetView(2)">Сбросить</button>
         </div>
 
-        <div class="ui-layer">
-            <div class="nav-buttons">
-                <button class="btn" onclick="switchScreen('screen1')">Назад</button>
-                <button class="btn" onclick="resetZoom(2)">Сбросить зум</button>
+        <div class="scene" id="scene2">
+            <div class="map-wrapper" id="wrapper2">
+                <img src="https://i.ibb.co/Xr23n0SQ/Screenshot-2026-06-08-030525.png" class="map-image" alt="Map 2">
             </div>
-            <div></div>
         </div>
     </div>
 
     <script>
-        // Состояние для трансформации картинок (масштаб и смещение)
-        const viewStates = {
+        // Глобальное состояние для трансформаций обеих карт
+        const transforms = {
             1: { scale: 1, x: 0, y: 0 },
             2: { scale: 1, x: 0, y: 0 }
         };
 
-        // Настройка логики зума и перетаскивания для каждого экрана
-        function initViewer(id) {
-            const container = document.getElementById(`container${id}`);
-            const img = document.getElementById(`img${id}`);
-            const state = viewStates[id];
+        function initMapControls(id) {
+            const scene = document.getElementById(`scene${id}`);
+            const wrapper = document.getElementById(`wrapper1`);
+            const target = document.getElementById(`wrapper${id}`);
+            const state = transforms[id];
 
             let isDragging = false;
             let startX, startY;
 
-            // Обновление CSS трансформации
-            function updateTransform() {
-                img.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
+            function applyTransform() {
+                target.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
             }
 
-            // Плавный зум колесиком мыши
-            container.addEventListener('wheel', (e) => {
+            // Плавный зум колесиком мыши (центрируется относительно текущего положения)
+            scene.addEventListener('wheel', (e) => {
                 e.preventDefault();
+                const zoomFactor = 0.12;
                 
-                const zoomFactor = 0.1;
                 if (e.deltaY < 0) {
                     state.scale += zoomFactor;
                 } else {
                     state.scale -= zoomFactor;
                 }
 
-                // Ограничение зума (от 0.5x до 5x)
-                state.scale = Math.max(0.5, Math.min(5, state.scale));
-                updateTransform();
+                // Лимиты приближения: от 0.4x до 6x
+                state.scale = Math.max(0.4, Math.min(6, state.scale));
+                applyTransform();
             }, { passive: false });
 
-            // Начало перетаскивания
-            container.addEventListener('mousedown', (e) => {
-                // Игнорируем клик, если он был по кнопкам или триггеру
-                if (e.target.closest('.nav-buttons') || e.target.closest('.center-trigger')) return;
-                
+            // Начало таскания карты
+            scene.addEventListener('mousedown', (e) => {
+                // Если кликнули по кнопкам верхнего меню, не двигаем карту
+                if (e.target.closest('.ui-panel')) return;
+
                 isDragging = true;
                 startX = e.clientX - state.x;
                 startY = e.clientY - state.y;
             });
 
-            // Процесс перетаскивания
+            // Процесс движения мыши
             window.addEventListener('mousemove', (e) => {
                 if (!isDragging) return;
                 state.x = e.clientX - startX;
                 state.y = e.clientY - startY;
-                updateTransform();
+                applyTransform();
             });
 
-            // Конец перетаскивания
+            // Конец таскания
             window.addEventListener('mouseup', () => {
                 isDragging = false;
             });
         }
 
-        // Переключение между экранами
-        function switchScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
+        // Переключение экранов
+        function goToScreen2(event) {
+            // Останавливаем всплытие события, чтобы клик по зоне не засчитался как клик для перетаскивания
+            event.stopPropagation(); 
+            
+            document.getElementById('screen1').classList.remove('active');
+            document.getElementById('screen2').classList.add('active');
+            resetView(2); // центрируем вторую при открытии
         }
 
-        // Функция сброса зума в исходное положение
-        function resetZoom(id) {
-            const state = viewStates[id];
-            const img = document.getElementById(`img${id}`);
+        function goToScreen1() {
+            document.getElementById('screen2').classList.remove('active');
+            document.getElementById('screen1').classList.add('active');
+        }
+
+        // Сброс в центр экрана
+        function resetView(id) {
+            const state = transforms[id];
+            const target = document.getElementById(`wrapper${id}`);
             state.scale = 1;
             state.x = 0;
             state.y = 0;
-            img.style.transform = `translate(0px, 0px) scale(1)`;
+            target.style.transform = `translate(0px, 0px) scale(1)`;
         }
 
-        // Инициализируем оба контейнера при загрузке
-        initViewer(1);
-        initViewer(2);
+        // Инициализация логики для обоих окон
+        initMapControls(1);
+        initMapControls(2);
     </script>
 </body>
 </html>
