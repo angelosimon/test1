@@ -66,7 +66,6 @@
             display: inline-block;
             transform-origin: center center;
             will-change: transform;
-            transition: transform 0.05s linear;
         }
 
         .map-image {
@@ -74,7 +73,7 @@
             max-width: 90vw;
             max-height: 85vh;
             object-fit: contain;
-            pointer-events: none; /* Чтобы мышь не цеплялась за дефолтное перетаскивание картинок браузером */
+            pointer-events: none; /* Отключаем дефолтный drag браузера */
         }
 
         /* Интерактивная зона прямо по центру первой карты */
@@ -153,7 +152,6 @@
 </head>
 <body>
 
-    <!-- ЭКРАН 1 -->
     <div id="screen1" class="screen active">
         <div class="ui-panel">
             <button class="btn" onclick="resetView(1)">Сбросить</button>
@@ -161,16 +159,14 @@
         
         <div class="scene" id="scene1">
             <div class="map-wrapper" id="wrapper1">
-                <img src="https://i.ibb.co/vbdFNkC/Screenshot-2026-06-08-030536.png" class="map-image" alt="Map 1">
-                <!-- Зона перехода привязана к центру картинки -->
+                <img src="https://i.ibb.co/ymxKyXFF/Screenshot-2026-06-08-031207.png" class="map-image" alt="Map 1">
                 <div class="map-trigger" onclick="goToScreen2(event)">
-                    <span>Открыть карту 2</span>
+                    <span>Открыть карту спавна</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ЭКРАН 2 -->
     <div id="screen2" class="screen">
         <div class="ui-panel">
             <button class="btn" onclick="goToScreen1()">Назад</button>
@@ -185,7 +181,7 @@
     </div>
 
     <script>
-        // Глобальное состояние для трансформаций обеих карт
+        // Состояние трансформаций для каждого экрана по отдельности
         const transforms = {
             1: { scale: 1, x: 0, y: 0 },
             2: { scale: 1, x: 0, y: 0 }
@@ -193,8 +189,7 @@
 
         function initMapControls(id) {
             const scene = document.getElementById(`scene${id}`);
-            const wrapper = document.getElementById(`wrapper1`);
-            const target = document.getElementById(`wrapper${id}`);
+            const target = document.getElementById(`wrapper${id}`); // Исправлено: теперь строго свой wrapper для каждого экрана
             const state = transforms[id];
 
             let isDragging = false;
@@ -204,10 +199,10 @@
                 target.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
             }
 
-            // Плавный зум колесиком мыши (центрируется относительно текущего положения)
+            // Плавный зум
             scene.addEventListener('wheel', (e) => {
                 e.preventDefault();
-                const zoomFactor = 0.12;
+                const zoomFactor = 0.15;
                 
                 if (e.deltaY < 0) {
                     state.scale += zoomFactor;
@@ -215,14 +210,12 @@
                     state.scale -= zoomFactor;
                 }
 
-                // Лимиты приближения: от 0.4x до 6x
                 state.scale = Math.max(0.4, Math.min(6, state.scale));
                 applyTransform();
             }, { passive: false });
 
-            // Начало таскания карты
+            // Клик мыши (начало движения)
             scene.addEventListener('mousedown', (e) => {
-                // Если кликнули по кнопкам верхнего меню, не двигаем карту
                 if (e.target.closest('.ui-panel')) return;
 
                 isDragging = true;
@@ -230,7 +223,7 @@
                 startY = e.clientY - state.y;
             });
 
-            // Процесс движения мыши
+            // Перетаскивание
             window.addEventListener('mousemove', (e) => {
                 if (!isDragging) return;
                 state.x = e.clientX - startX;
@@ -238,28 +231,28 @@
                 applyTransform();
             });
 
-            // Конец таскания
+            // Отпуск мыши
             window.addEventListener('mouseup', () => {
                 isDragging = false;
             });
         }
 
-        // Переключение экранов
+        // Переключение на экран 2
         function goToScreen2(event) {
-            // Останавливаем всплытие события, чтобы клик по зоне не засчитался как клик для перетаскивания
-            event.stopPropagation(); 
+            event.stopPropagation(); // Предотвращаем срабатывание drag при клике на кнопку
             
             document.getElementById('screen1').classList.remove('active');
             document.getElementById('screen2').classList.add('active');
-            resetView(2); // центрируем вторую при открытии
+            resetView(2); 
         }
 
+        // Возврат на экран 1
         function goToScreen1() {
             document.getElementById('screen2').classList.remove('active');
             document.getElementById('screen1').classList.add('active');
         }
 
-        // Сброс в центр экрана
+        // Сброс позиции в дефолт
         function resetView(id) {
             const state = transforms[id];
             const target = document.getElementById(`wrapper${id}`);
@@ -269,7 +262,7 @@
             target.style.transform = `translate(0px, 0px) scale(1)`;
         }
 
-        // Инициализация логики для обоих окон
+        // Инициализируем управление раздельно
         initMapControls(1);
         initMapControls(2);
     </script>
