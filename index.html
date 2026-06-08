@@ -3,129 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Плавное приближение картинки</title>
-    
-    <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
-
+    <title>ToadShield Image Viewer</title>
     <style>
+        :root {
+            --bg-color: #0d0e10;
+            --accent-glow: rgba(255, 255, 255, 0.05);
+            --accent-glow-hover: rgba(255, 255, 255, 0.12);
+            --btn-bg: rgba(255, 255, 255, 0.07);
+            --btn-hover: rgba(255, 255, 255, 0.15);
+            --text-color: #e0e0e0;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            user-select: none;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1a1a1a;
-            color: #fff;
-            overflow: hidden; /* Скрываем прокрутку страницы */
+            background-color: var(--bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+            width: 100vw;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
+            color: var(--text-color);
         }
 
-        /* Контейнер для кнопок управления */
-        .controls {
+        /* Экраны */
+        .screen {
             position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px 20px;
-            border-radius: 30px;
-            display: flex;
-            gap: 15px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .btn {
-            background: #333;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s, transform 0.1s;
-        }
-
-        .btn:hover {
-            background: #555;
-        }
-
-        .btn:active {
-            transform: scale(0.95);
-        }
-
-        /* Область, где находится картинка */
-        .zoom-area {
-            flex: 1;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* Контейнер для интерактивного просмотра (Зум и перетаскивание) */
+        .viewer-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            cursor: grab;
             display: flex;
             justify-content: center;
             align-items: center;
-            cursor: grab;
         }
 
-        .zoom-area:active {
+        .viewer-container:active {
             cursor: grabbing;
         }
 
-        /* Сама картинка */
-        #panzoom-element {
+        .viewer-image {
             max-width: 90%;
-            max-height: 90vh;
+            max-height: 90%;
             object-fit: contain;
-            transition: transform 0.1s ease-out; /* Плавность при движении */
+            transform-origin: center center;
+            transition: transform 0.1s ease-out;
             will-change: transform;
+        }
+
+        /* Интерфейс поверх картинки */
+        .ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Пропускает клики сквозь себя на контейнер с зумом */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 30px;
+            z-index: 10;
+        }
+
+        /* Кнопки управления (Минимализм) */
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            pointer-events: auto;
+        }
+
+        .btn {
+            background: var(--btn-bg);
+            color: var(--text-color);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn:hover {
+            background: var(--btn-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        /* Подсвеченная центральная зона на первом экране */
+        .center-trigger {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40%;
+            height: 40%;
+            background: var(--accent-glow);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .center-trigger:hover {
+            background: var(--accent-glow-hover);
+            border-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.02);
+        }
+
+        .center-trigger .trigger-text {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .center-trigger:hover .trigger-text {
+            opacity: 1;
         }
     </style>
 </head>
 <body>
 
-    <div class="controls">
-        <button class="btn" id="zoom-in">➕ Приблизить</button>
-        <button class="btn" id="zoom-out">➖ Отдалить</button>
-        <button class="btn" id="reset">🔄 Сбросить</button>
+    <div id="screen1" class="screen active">
+        <div class="viewer-container" id="container1">
+            <img src="https://i.ibb.co/vbdFNkC/Screenshot-2026-06-08-030536.png" class="viewer-image" id="img1" alt="Screen 1">
+        </div>
+
+        <div class="ui-layer">
+            <div class="nav-buttons">
+                <button class="btn" onclick="resetZoom(1)">Сбросить зум</button>
+            </div>
+            
+            <div class="center-trigger" onclick="switchScreen('screen2')">
+                <span class="trigger-text">Открыть далее</span>
+            </div>
+            <div></div> </div>
     </div>
 
-    <div class="zoom-area" id="wrapper">
-        <img id="panzoom-element" src="https://i.ibb.co/KjnJmbg2/Screenshot-2026-06-08-013310.png" alt="Скриншот">
+
+    <div id="screen2" class="screen">
+        <div class="viewer-container" id="container2">
+            <img src="https://i.ibb.co/Xr23n0SQ/Screenshot-2026-06-08-030525.png" class="viewer-image" id="img2" alt="Screen 2">
+        </div>
+
+        <div class="ui-layer">
+            <div class="nav-buttons">
+                <button class="btn" onclick="switchScreen('screen1')">Назад</button>
+                <button class="btn" onclick="resetZoom(2)">Сбросить зум</button>
+            </div>
+            <div></div>
+        </div>
     </div>
 
     <script>
-        // Инициализируем элементы
-        const element = document.getElementById('panzoom-element');
-        const wrapper = document.getElementById('wrapper');
-        
-        const zoomInButton = document.getElementById('zoom-in');
-        const zoomOutButton = document.getElementById('zoom-out');
-        const resetButton = document.getElementById('reset');
+        // Состояние для трансформации картинок (масштаб и смещение)
+        const viewStates = {
+            1: { scale: 1, x: 0, y: 0 },
+            2: { scale: 1, x: 0, y: 0 }
+        };
 
-        // Настраиваем Panzoom
-        const panzoom = Panzoom(element, {
-            maxScale: 10,  // Максимальное приближение (в 10 раз)
-            minScale: 0.5, // Максимальное отдаление
-            canvas: true   // Улучшает отзывчивость внутри контейнера
-        });
+        // Настройка логики зума и перетаскивания для каждого экрана
+        function initViewer(id) {
+            const container = document.getElementById(`container${id}`);
+            const img = document.getElementById(`img${id}`);
+            const state = viewStates[id];
 
-        // Включаем зум колесиком мыши (с зажатым Ctrl или просто так)
-        wrapper.addEventListener('wheel', (event) => {
-            event.preventDefault();
-            panzoom.zoomWithWheel(event, {
-                animate: true,
-                step: 0.1 // Скорость зума колесиком
+            let isDragging = false;
+            let startX, startY;
+
+            // Обновление CSS трансформации
+            function updateTransform() {
+                img.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
+            }
+
+            // Плавный зум колесиком мыши
+            container.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                
+                const zoomFactor = 0.1;
+                if (e.deltaY < 0) {
+                    state.scale += zoomFactor;
+                } else {
+                    state.scale -= zoomFactor;
+                }
+
+                // Ограничение зума (от 0.5x до 5x)
+                state.scale = Math.max(0.5, Math.min(5, state.scale));
+                updateTransform();
+            }, { passive: false });
+
+            // Начало перетаскивания
+            container.addEventListener('mousedown', (e) => {
+                // Игнорируем клик, если он был по кнопкам или триггеру
+                if (e.target.closest('.nav-buttons') || e.target.closest('.center-trigger')) return;
+                
+                isDragging = true;
+                startX = e.clientX - state.x;
+                startY = e.clientY - state.y;
             });
-        });
 
-        // Привязываем функции к кнопкам
-        zoomInButton.addEventListener('click', () => panzoom.zoomIn({ animate: true }));
-        zoomOutButton.addEventListener('click', () => panzoom.zoomOut({ animate: true }));
-        resetButton.addEventListener('click', () => panzoom.reset({ animate: true }));
+            // Процесс перетаскивания
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                state.x = e.clientX - startX;
+                state.y = e.clientY - startY;
+                updateTransform();
+            });
+
+            // Конец перетаскивания
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+        }
+
+        // Переключение между экранами
+        function switchScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // Функция сброса зума в исходное положение
+        function resetZoom(id) {
+            const state = viewStates[id];
+            const img = document.getElementById(`img${id}`);
+            state.scale = 1;
+            state.x = 0;
+            state.y = 0;
+            img.style.transform = `translate(0px, 0px) scale(1)`;
+        }
+
+        // Инициализируем оба контейнера при загрузке
+        initViewer(1);
+        initViewer(2);
     </script>
-
 </body>
 </html>
