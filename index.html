@@ -1,2071 +1,270 @@
-
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shieldom — ToadShield Вики</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:#1e1a19;background-image:radial-gradient(#2d2522 1px,transparent 0),radial-gradient(#2d2522 1px,transparent 0);background-size:8px 8px;background-position:0 0,4px 4px;font-family:'Nunito Sans',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:#202122;min-height:100vh;}
-a{color:#0a6cff;text-decoration:none;cursor:pointer;}
-a:hover{text-decoration:underline;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToadShield Viewer Pro</title>
+    <style>
+        :root {
+            --bg-color: #0c0d0f;
+            --btn-bg: rgba(255, 255, 255, 0.06);
+            --btn-hover: rgba(255, 255, 255, 0.12);
+            --btn-border: rgba(255, 255, 255, 0.08);
+            --text-color: #e5e5e5;
+            --trigger-glow: rgba(255, 255, 255, 0.04);
+            --trigger-glow-hover: rgba(255, 255, 255, 0.1);
+        }
 
-/* TOP NAV */
-.top-nav{position:fixed;top:0;left:0;right:0;height:48px;background:#fff;border-bottom:1px solid #e5e5e5;display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:1000;gap:10px;}
-.logo{font-size:20px;font-weight:800;color:#000;display:flex;align-items:center;gap:2px;text-decoration:none;flex-shrink:0;}
-.logo .o{color:#ff0055;}
-.search-box{position:relative;width:260px;flex-shrink:0;}
-.search-box input{width:100%;padding:6px 12px 6px 30px;border:1px solid #ccc;border-radius:4px;font-size:13px;background:#f5f5f5;outline:none;}
-.search-box input:focus{background:#fff;border-color:#0a6cff;}
-.search-icon{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:#888;font-size:13px;}
-.top-right{display:flex;align-items:center;gap:10px;}
-.top-icon{cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:4px;font-size:17px;}
-.top-icon:hover{background:#f0f0f0;}
-.btn{background:#f5f5f5;border:1px solid #ccc;padding:5px 14px;border-radius:20px;font-size:12.5px;font-weight:600;cursor:pointer;color:#333;display:inline-flex;align-items:center;gap:5px;transition:all .15s;font-family:inherit;text-decoration:none;}
-.btn:hover{background:#e9e9e9;text-decoration:none;}
-.btn-blue{background:#0a6cff;color:#fff;border-color:#0a6cff;}
-.btn-blue:hover{background:#0056cc;color:#fff;}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
 
-/* LEFT SIDEBAR */
-.left-bar{position:fixed;top:48px;left:0;bottom:0;width:66px;background:#fff;border-right:1px solid #e5e5e5;display:flex;flex-direction:column;align-items:center;padding-top:12px;z-index:999;overflow-y:auto;}
-.lb-item{width:48px;height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;margin-bottom:6px;cursor:pointer;color:#54595d;font-size:9px;font-weight:700;text-align:center;text-decoration:none;transition:all .15s;gap:3px;}
-.lb-item svg{width:20px;height:20px;fill:currentColor;}
-.lb-item:hover,.lb-item.active{background:#f5f5f5;color:#000;text-decoration:none;}
-.lb-divider{width:32px;height:1px;background:#e5e5e5;margin:4px 0 8px;}
+        body {
+            background-color: var(--bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            color: var(--text-color);
+        }
 
-/* MAIN WRAP */
-.main-wrap{margin-top:48px;margin-left:66px;display:flex;flex-direction:column;min-height:calc(100vh - 48px);}
+        /* Экраны */
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
 
-/* WIKI BANNER */
-.wiki-banner{background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)),url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="%234a3b32"/><rect width="20" height="20" fill="%233d3029"/><rect x="20" y="20" width="20" height="20" fill="%233d3029"/></svg>');color:#fff;padding:20px 28px;display:flex;justify-content:space-between;align-items:flex-end;border-bottom:4px solid #111;}
-.wiki-left{display:flex;align-items:center;gap:16px;}
-.wiki-logo{width:60px;height:60px;background:#e08040;border:3px solid #fff;border-radius:8px;overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,.4);flex-shrink:0;}
-.wiki-logo img{width:100%;height:100%;object-fit:cover;}
-.wiki-title h1{font-size:21px;font-weight:800;text-shadow:1px 2px 4px rgba(0,0,0,.7);margin-bottom:8px;}
-.wiki-subnav{display:flex;gap:16px;font-size:11.5px;font-weight:700;text-transform:uppercase;flex-wrap:wrap;}
-.wiki-subnav a{color:#fff;text-shadow:1px 1px 2px rgba(0,0,0,.7);cursor:pointer;}
-.wiki-subnav a:hover{color:#ffcc00;text-decoration:none;}
-.wiki-pages{text-align:right;flex-shrink:0;}
-.wiki-pages .num{font-size:22px;font-weight:800;line-height:1;}
-.wiki-pages .lbl{font-size:10px;color:#ddd;text-transform:uppercase;letter-spacing:.07em;}
+        .screen.active {
+            display: block;
+        }
 
-/* PAGE BODY */
-.page-body{display:flex;gap:20px;padding:20px 24px;max-width:1400px;margin:0 auto;width:100%;}
-.article{flex:1;background:#fff;border-radius:4px;padding:26px 30px;min-width:0;box-shadow:0 2px 8px rgba(0,0,0,.12);}
-.right-rail{width:290px;flex-shrink:0;display:flex;flex-direction:column;gap:14px;}
+        /* Главная сцена для зума */
+        .scene {
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
 
-/* PAGE SYSTEM */
-.page{display:none;}
-.page.active{display:block;}
+        .scene:active {
+            cursor: grabbing;
+        }
 
-/* ART HEAD */
-.art-head{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:14px;margin-bottom:18px;border-bottom:1px solid #a2a9b1;gap:10px;}
-.art-head h2{font-size:28px;font-weight:600;line-height:1.1;}
-.art-actions{display:flex;gap:8px;align-items:center;flex-shrink:0;flex-wrap:wrap;}
+        /* Обертка карты, которую мы крутим/двигаем */
+        .map-wrapper {
+            position: relative;
+            display: inline-block;
+            transform-origin: center center;
+            will-change: transform;
+        }
 
-/* WELCOME */
-.welcome{background:#e8f2ff;border-left:4px solid #0a6cff;padding:14px 16px;border-radius:0 6px 6px 0;margin-bottom:16px;}
-.welcome h3{color:#0a6cff;font-size:15px;margin-bottom:6px;}
-.welcome p{font-size:13px;line-height:1.6;color:#333;}
-.welcome .stats{font-size:11px;color:#666;margin-top:8px;}
+        .map-image {
+            display: block;
+            max-width: 90vw;
+            max-height: 85vh;
+            object-fit: contain;
+            pointer-events: none; /* Отключаем дефолтный drag браузера */
+        }
 
-/* QUICK GRID */
-.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px;}
-.quick-box{background:#f5f5f5;border:1px solid #ddd;padding:10px;text-align:center;font-weight:700;font-size:12.5px;border-radius:4px;cursor:pointer;transition:all .15s;}
-.quick-box:hover{background:#e9e9e9;}
+        /* Интерактивная зона прямо по центру первой карты */
+        .map-trigger {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 25%;
+            height: 25%;
+            background: var(--trigger-glow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.2s, border-color 0.2s;
+            z-index: 5;
+        }
 
-/* TBL BOX */
-.tbl-box{border:1px solid #a2a9b1;border-radius:4px;overflow:hidden;margin-bottom:18px;}
-.tbl-hdr{background:#eaecf0;padding:9px 14px;font-size:13px;font-weight:700;display:flex;justify-content:space-between;border-bottom:1px solid #a2a9b1;}
-.tbl-tabs{display:flex;background:#eaecf0;border-bottom:1px solid #a2a9b1;}
-.tbl-tab{flex:1;text-align:center;padding:9px;font-size:13px;font-weight:700;cursor:pointer;border-right:1px solid #a2a9b1;transition:background .15s;}
-.tbl-tab:last-child{border-right:none;}
-.tbl-tab.active{background:#fff;}
+        .map-trigger:hover {
+            background: var(--trigger-glow-hover);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
 
-/* CAT GRID */
-.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px;}
-.cat-item{border:1px solid #a2a9b1;background:#fff;border-radius:4px;overflow:hidden;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;}
-.cat-item:hover{transform:translateY(-3px);box-shadow:0 5px 12px rgba(0,0,0,.12);border-color:#0a6cff;}
-.cat-thumb{width:100%;height:80px;background:#eaeaea;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.cat-thumb img{width:100%;height:100%;object-fit:cover;}
-.cat-name{padding:7px;font-size:12px;font-weight:700;text-align:center;background:#f8f9fa;border-top:1px solid #a2a9b1;width:100%;}
+        .map-trigger span {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.4;
+            transition: opacity 0.2s;
+            text-align: center;
+            padding: 10px;
+        }
 
-/* ASSOC GRID */
-.assoc-section-title{padding:14px 14px 6px;font-size:15px;font-weight:700;}
-.assoc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:8px 14px 14px;}
-.assoc-card{border:1px solid #a2a9b1;border-radius:3px;background:#fff;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;overflow:hidden;}
-.assoc-card:hover{transform:scale(1.025);box-shadow:0 4px 10px rgba(0,0,0,.12);border-color:#0a6cff;}
-.assoc-banner{height:90px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.assoc-banner img{width:100%;height:100%;object-fit:cover;}
-.assoc-grey{height:65px;background:#dcdcdc;}
-.assoc-name{background:#eaecf0;padding:6px;font-size:11.5px;font-weight:700;text-align:center;border-top:1px solid #a2a9b1;}
+        .map-trigger:hover span {
+            opacity: 0.9;
+        }
 
-/* INFOBOX */
-.infobox{float:right;width:262px;border:1px solid #a2a9b1;background:#f8f9fa;margin:0 0 18px 18px;font-size:13px;border-radius:3px;overflow:hidden;}
-.infobox-title{background:#eaecf0;padding:9px;font-weight:700;text-align:center;font-size:14px;border-bottom:1px solid #a2a9b1;}
-.infobox-img-body{height:130px;display:flex;align-items:center;justify-content:center;background:#fff;border-bottom:1px solid #a2a9b1;}
-.infobox-img-body img{max-width:100%;max-height:100%;}
-.infobox-row{display:flex;border-bottom:1px solid #e1e4e8;padding:6px 9px;}
-.infobox-row:last-child{border-bottom:none;}
-.ib-lbl{width:42%;font-weight:700;color:#54595d;font-size:12px;}
-.ib-val{width:58%;font-size:12px;}
+        /* Панель интерфейса (кнопки) */
+        .ui-panel {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            z-index: 10;
+            display: flex;
+            gap: 12px;
+            pointer-events: none;
+        }
 
-/* MC HEADS */
-.mc-heads-row{display:flex;gap:5px;flex-wrap:wrap;}
-.mc-head{position:relative;width:32px;height:32px;border-radius:4px;overflow:visible;cursor:default;}
-.mc-head img{width:32px;height:32px;border-radius:4px;display:block;}
-.mc-head .tip{position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px;white-space:nowrap;opacity:0;visibility:hidden;transition:.15s;pointer-events:none;z-index:200;}
-.mc-head:hover .tip{opacity:1;visibility:visible;}
+        .btn {
+            pointer-events: auto;
+            background: var(--btn-bg);
+            color: var(--text-color);
+            border: 1px solid var(--btn-border);
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
 
-/* TOC */
-.toc{border:1px solid #a2a9b1;background:#f8f9fa;padding:14px 18px;display:inline-block;border-radius:4px;margin-bottom:18px;min-width:220px;max-width:100%;}
-.toc-head{font-weight:700;font-size:13px;margin-bottom:8px;display:flex;justify-content:space-between;}
-.toc ol{padding-left:20px;font-size:13px;line-height:1.8;}
-.toc ol li a{color:#0a6cff;}
+        .btn:hover {
+            background: var(--btn-hover);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
 
-/* ART CONTENT */
-.art-h2{font-size:19px;font-weight:700;border-bottom:1px solid #a2a9b1;padding-bottom:5px;margin:20px 0 10px;}
-.art-h3{font-size:15px;font-weight:700;margin:12px 0 6px;}
-.art-p{font-size:14px;line-height:1.75;color:#333;margin-bottom:10px;}
-.art-ul{padding-left:20px;margin-bottom:10px;}
-.art-ul li{font-size:14px;line-height:1.75;color:#333;margin-bottom:4px;}
-code{font-family:monospace;font-size:12px;background:#f0f0f0;border:1px solid #ddd;border-radius:3px;padding:1px 5px;color:#333;}
-
-/* CMD TABLE */
-.cmd-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:14px;}
-.cmd-table th{background:#eaecf0;padding:7px 10px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.06em;border:1px solid #a2a9b1;}
-.cmd-table td{padding:7px 10px;border:1px solid #e5e5e5;color:#333;}
-.cmd-table tr:nth-child(even) td{background:#f8f9fa;}
-
-/* WARN/INFO BOXES */
-.warn-box{background:rgba(240,100,0,.04);border:1px solid rgba(240,100,0,.2);border-radius:4px;padding:11px 14px;font-size:12.5px;color:#444;line-height:1.7;margin-bottom:14px;}
-.warn-box strong{color:#c05000;}
-.info-box{background:#e8f2ff;border:1px solid rgba(10,108,255,.2);border-radius:4px;padding:11px 14px;font-size:12.5px;color:#444;line-height:1.7;margin-bottom:14px;}
-
-/* CRAFT CARDS */
-.craft-card{border:1px solid #a2a9b1;border-radius:4px;overflow:hidden;margin-bottom:16px;background:#fff;}
-.craft-head{background:#eaecf0;padding:9px 14px;font-size:13px;font-weight:700;border-bottom:1px solid #a2a9b1;display:flex;align-items:center;gap:8px;}
-.craft-body{display:flex;gap:0;}
-.craft-desc{flex:1;padding:14px;font-size:13px;color:#333;line-height:1.7;border-right:1px solid #a2a9b1;}
-.craft-desc ul{padding-left:16px;margin-top:6px;}
-.craft-desc li{margin-bottom:3px;}
-.craft-img{width:210px;padding:12px;flex-shrink:0;}
-.craft-img img{width:100%;border-radius:4px;border:1px solid #ddd;display:block;}
-
-/* RULE TABS */
-.rule-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:16px;}
-.rule-tab{padding:5px 12px;border-radius:16px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid #a2a9b1;background:#f5f5f5;color:#333;transition:all .15s;font-family:inherit;}
-.rule-tab:hover{background:#e9e9e9;}
-.rule-tab.active{background:#0a6cff;color:#fff;border-color:#0a6cff;}
-.rule-sec{margin-bottom:20px;}
-.rule-item{padding:9px 0;border-bottom:1px solid #f0f0f0;}
-.rule-item:last-child{border-bottom:none;}
-.rule-item-title{font-size:13.5px;font-weight:700;margin-bottom:4px;}
-.rule-item-body{font-size:12.5px;color:#444;line-height:1.75;}
-.rule-item-body ul,.rule-item-body ol{padding-left:18px;margin-top:5px;}
-.rule-item-body li{margin-bottom:3px;}
-.rule-item-body strong{color:#222;}
-.rule-item.danger{padding-left:11px;border-left:3px solid #c00;}
-.rule-item.warn{padding-left:11px;border-left:3px solid #e8a000;}
-.rule-item.good{padding-left:11px;border-left:3px solid #21a121;}
-.rule-item.info{padding-left:11px;border-left:3px solid #0a6cff;}
-.rule-badge{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:4px;margin-top:6px;}
-.rb-ban{color:#c00;background:rgba(200,0,0,.05);border:1px solid rgba(200,0,0,.2);}
-.rb-warn{color:#996000;background:rgba(230,160,0,.07);border:1px solid rgba(230,160,0,.25);}
-.rb-ok{color:#1a7d1a;background:rgba(33,161,33,.06);border:1px solid rgba(33,161,33,.2);}
-.rule-note{background:#f8f9fa;border:1px solid #a2a9b1;border-left:3px solid #0a6cff;padding:10px 14px;border-radius:0 4px 4px 0;font-size:13px;margin-bottom:14px;line-height:1.7;}
-
-/* STATES */
-.states-list-box{border:1px solid #a2a9b1;border-radius:4px;overflow:hidden;margin-bottom:14px;}
-.state-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid #a2a9b1;cursor:pointer;transition:background .12s;}
-.state-row:last-child{border-bottom:none;}
-.state-row:hover{background:#f0f5ff;}
-.state-flag{width:52px;height:35px;border-radius:3px;border:1px solid #a2a9b1;object-fit:cover;flex-shrink:0;background:#eaeaea;display:flex;align-items:center;justify-content:center;}
-.state-row-ab{font-size:10px;font-weight:700;color:#0a6cff;margin-bottom:1px;}
-.state-row-name{font-size:13px;font-weight:700;}
-.state-row-sub{font-size:11px;color:#666;}
-.state-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:auto;flex-shrink:0;}
-.sb-open{color:#1a7d1a;background:rgba(33,161,33,.07);border:1px solid rgba(33,161,33,.25);}
-.sb-closed{color:#996000;background:rgba(230,160,0,.07);border:1px solid rgba(230,160,0,.25);}
-.state-back-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid #a2a9b1;border-radius:4px;font-size:12.5px;font-weight:700;cursor:pointer;margin-bottom:14px;background:#f5f5f5;transition:all .12s;font-family:inherit;}
-.state-back-btn:hover{background:#e9e9e9;}
-.buildings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px;}
-.building{border:1px solid #a2a9b1;border-radius:4px;overflow:hidden;background:#f8f9fa;text-decoration:none;color:inherit;display:block;transition:all .15s;}
-.building:hover{border-color:#0a6cff;transform:translateY(-2px);text-decoration:none;}
-.building-img{height:80px;overflow:hidden;background:#eaeaea;}
-.building-img img{width:100%;height:100%;object-fit:cover;display:block;}
-.building-body{padding:8px;}
-.building-name{font-size:12px;font-weight:700;margin-bottom:2px;}
-.building-desc{font-size:11px;color:#666;line-height:1.45;}
-.state-section{border-top:1px solid #a2a9b1;padding:14px 0;}
-.state-section:first-child{border-top:none;padding-top:0;}
-.state-section-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#54595d;margin-bottom:10px;}
-.state-rules-list{list-style:none;padding:0;}
-.state-rules-list li{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px;color:#333;line-height:1.6;}
-.state-rules-list li:last-child{border-bottom:none;}
-.state-rules-list .icon{flex-shrink:0;margin-top:2px;}
-.create-block{background:#f8f9fa;border:1px solid #a2a9b1;border-radius:4px;padding:16px;margin-top:10px;}
-.create-steps{list-style:decimal;padding-left:18px;font-size:13px;color:#333;line-height:1.9;margin:8px 0 12px;}
-
-/* WIKI */
-.wiki-wrap{display:flex;gap:0;border:1px solid #a2a9b1;border-radius:4px;overflow:hidden;}
-.wiki-nav{width:180px;flex-shrink:0;background:#f8f9fa;border-right:1px solid #a2a9b1;padding:8px 0;}
-.wiki-nav-h{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#54595d;padding:10px 14px 4px;}
-.wl{display:flex;align-items:center;gap:7px;padding:7px 14px;font-size:12.5px;font-weight:600;color:#54595d;border-left:2px solid transparent;transition:all .12s;cursor:pointer;}
-.wl:hover{color:#202122;background:rgba(0,0,0,.03);}
-.wl.active{color:#202122;background:#fff;border-left-color:#0a6cff;}
-.wiki-area{flex:1;padding:20px 24px;min-width:0;}
-.wiki-area h1{font-size:22px;font-weight:700;margin-bottom:6px;border-bottom:1px solid #a2a9b1;padding-bottom:10px;}
-.wiki-area h2{font-size:16px;font-weight:700;margin:18px 0 8px;border-bottom:1px solid #eee;padding-bottom:4px;}
-.wiki-area p{font-size:13.5px;color:#333;line-height:1.8;margin-bottom:8px;}
-.wiki-area ul,.wiki-area ol{padding-left:18px;margin-bottom:10px;}
-.wiki-area li{font-size:13.5px;color:#333;line-height:1.8;margin-bottom:4px;}
-.wiki-note{background:#e8f2ff;border-left:3px solid #0a6cff;padding:10px 14px;border-radius:0 4px 4px 0;font-size:12.5px;color:#333;margin-bottom:12px;line-height:1.7;}
-.wiki-warn{background:#fff8e1;border-left:3px solid #e8a000;padding:10px 14px;border-radius:0 4px 4px 0;font-size:12.5px;color:#333;margin-bottom:12px;line-height:1.7;}
-.wiki-area .fuel-tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:12px;}
-.fuel-tbl th{background:#eaecf0;padding:7px 10px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.06em;border:1px solid #a2a9b1;}
-.fuel-tbl td{padding:8px 10px;border:1px solid #e5e5e5;color:#333;}
-.fuel-tbl tr:nth-child(even) td{background:#f8f9fa;}
-.wiki-sec{display:none;}
-.wiki-sec.active{display:block;}
-
-/* POLICE TABLE */
-.police-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px;}
-.police-table th{background:#eaecf0;padding:7px 10px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.06em;border:1px solid #a2a9b1;}
-.police-table td{padding:9px 10px;border:1px solid #e5e5e5;color:#333;vertical-align:middle;}
-.police-table tr:nth-child(even) td{background:#f8f9fa;}
-.rank-badge{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
-.rank-chief{color:#1a7d1a;background:rgba(33,161,33,.07);border:1px solid rgba(33,161,33,.25);}
-.rank-deputy{color:#996000;background:rgba(230,160,0,.07);border:1px solid rgba(230,160,0,.25);}
-.rank-off{color:#555;background:#eee;border:1px solid #ccc;}
-
-/* ABOUT TABS */
-.about-tabs{display:flex;border-bottom:1px solid #a2a9b1;margin-bottom:18px;}
-.about-tab{padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;color:#54595d;transition:all .12s;}
-.about-tab.active{color:#202122;border-bottom-color:#0a6cff;}
-.about-tab:hover{color:#202122;}
-.apanel{display:none;}
-.apanel.active{display:block;}
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:14px;}
-.stat-b{background:#f8f9fa;border:1px solid #a2a9b1;border-radius:4px;padding:12px;text-align:center;}
-.stat-v{font-size:22px;font-weight:800;color:#0a6cff;margin-bottom:2px;}
-.stat-l{font-size:10px;color:#666;text-transform:uppercase;letter-spacing:.06em;}
-.season-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
-.season-b{background:#f8f9fa;border:1px solid #a2a9b1;border-radius:4px;padding:12px;}
-.season-b.current{border-color:#0a6cff;background:#e8f2ff;}
-.season-name{font-size:14px;font-weight:700;margin-bottom:3px;}
-.season-dates{font-size:11px;color:#666;}
-.current-badge{display:inline-block;font-size:9px;font-weight:700;color:#0a6cff;background:rgba(10,108,255,.08);border:1px solid rgba(10,108,255,.2);border-radius:3px;padding:1px 7px;margin-top:5px;}
-
-/* PROMO */
-.promo-card{border:1px solid #a2a9b1;border-radius:4px;padding:14px;margin-bottom:10px;background:#f8f9fa;}
-.promo-tag{font-size:10px;font-weight:700;color:#0a6cff;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;}
-.promo-name{font-size:15px;font-weight:700;margin-bottom:3px;}
-.promo-date{font-size:11px;color:#666;margin-bottom:10px;}
-.promo-code-row{background:#fff;border:1px solid #a2a9b1;border-radius:4px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:border-color .15s;}
-.promo-code-row:hover{border-color:#0a6cff;}
-.promo-code{font-family:monospace;font-size:15px;font-weight:700;}
-.promo-copy{font-size:11px;font-weight:700;color:#0a6cff;border:1px solid #0a6cff;border-radius:12px;padding:3px 10px;}
-.promo-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px;}
-.promo-item{background:#f8f9fa;border:1px solid #a2a9b1;border-radius:4px;padding:8px 10px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:space-between;}
-.promo-item:hover{border-color:#0a6cff;}
-.promo-item-code{font-family:monospace;font-size:12px;font-weight:700;}
-.promo-item-tag{font-size:10px;color:#666;margin-bottom:2px;}
-.promo-expired{opacity:.45;}
-.expired-lbl{font-size:9.5px;color:#c00;background:rgba(200,0,0,.06);border:1px solid rgba(200,0,0,.2);border-radius:4px;padding:1px 6px;}
-
-/* FORMS */
-.form-card{border:1px solid #a2a9b1;border-radius:4px;padding:14px;margin-bottom:10px;background:#fff;display:block;text-decoration:none;color:inherit;transition:all .15s;}
-.form-card:hover{border-color:#0a6cff;transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,.1);text-decoration:none;}
-.form-icon{width:34px;height:34px;border-radius:8px;background:#e8f2ff;display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:17px;}
-.form-title{font-size:14px;font-weight:700;margin-bottom:4px;color:#202122;}
-.form-desc{font-size:12.5px;color:#444;line-height:1.6;}
-.form-go{font-size:12px;font-weight:700;color:#0a6cff;margin-top:8px;}
-
-/* ACT GRID */
-.act-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
-.act-b{text-align:center;padding:12px;border-radius:6px;}
-.act-b.g{background:#f0fff0;border:1px solid rgba(33,161,33,.2);}
-.act-b.y{background:#fffbe8;border:1px solid rgba(230,160,0,.2);}
-.act-b.r{background:#fff0f0;border:1px solid rgba(200,0,0,.2);}
-.act-v{font-size:14px;font-weight:800;}
-.act-b.g .act-v{color:#1a7d1a;}
-.act-b.y .act-v{color:#996000;}
-.act-b.r .act-v{color:#c00;}
-.act-l{font-size:10px;color:#666;margin-top:2px;}
-
-/* BADGE NAV */
-.badge-nav{display:inline-block;background:#eaecf0;border:1px solid #a2a9b1;border-radius:12px;padding:2px 10px;font-size:11px;color:#54595d;margin-bottom:10px;}
-
-/* NEWS ITEMS */
-.news-list{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
-.n-item{display:flex;gap:12px;background:#f8f9fa;border:1px solid #e5e5e5;border-radius:4px;padding:10px 12px;align-items:flex-start;}
-.n-thumb{width:80px;height:52px;border-radius:4px;overflow:hidden;flex-shrink:0;background:#eee;}
-.n-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
-.n-meta{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;}
-.n-badge{font-size:8.5px;font-weight:700;padding:2px 7px;border-radius:5px;letter-spacing:.03em;}
-.nb-red{background:rgba(220,0,0,.1);color:#c00;border:1px solid rgba(200,0,0,.2);}
-.nb-green{background:rgba(33,161,33,.08);color:#1a7d1a;border:1px solid rgba(33,161,33,.2);}
-.nb-orange{background:rgba(230,160,0,.1);color:#996000;border:1px solid rgba(230,160,0,.25);}
-.nb-purple{background:rgba(100,50,200,.08);color:#6432c8;border:1px solid rgba(100,50,200,.2);}
-.nb-blue{background:rgba(10,108,255,.08);color:#0a6cff;border:1px solid rgba(10,108,255,.2);}
-.n-date{font-size:9px;color:#888;margin-left:auto;}
-.n-title{font-size:13px;font-weight:700;color:#202122;margin-bottom:2px;}
-.n-desc{font-size:11.5px;color:#54595d;line-height:1.5;}
-
-/* RAIL WIDGETS */
-.rail-widget{background:#fff;border-radius:4px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.12);}
-.rail-widget h3{font-size:13.5px;font-weight:700;border-bottom:2px solid #f0f0f0;padding-bottom:8px;margin-bottom:10px;}
-.rail-links{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;}
-.activity-item{margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #f0f0f0;font-size:12.5px;}
-.activity-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
-.activity-name{font-weight:700;color:#0a6cff;}
-.activity-meta{font-size:10.5px;color:#888;margin-top:1px;}
-.laser-box{width:100%;height:90px;background:#000;border-radius:4px;overflow:hidden;position:relative;margin-top:10px;}
-.laser-line{position:absolute;top:50%;left:-50%;width:200%;height:2px;background:#00ff66;transform:rotate(-15deg);box-shadow:0 0 8px #00ff66;animation:lz 3s infinite linear;}
-@keyframes lz{0%{transform:translateY(-18px) rotate(-15deg);}50%{transform:translateY(18px) rotate(-15deg);}100%{transform:translateY(-18px) rotate(-15deg);}}
-
-/* BOTTOM BAR */
-.bottom-bar{position:fixed;bottom:0;left:0;right:0;height:30px;background:#fff;border-top:1px solid #e5e5e5;display:flex;align-items:center;justify-content:flex-end;padding:0 18px;font-size:11.5px;color:#555;gap:14px;z-index:1000;}
-
-/* TOAST */
-.toast{position:fixed;bottom:46px;left:50%;transform:translateX(-50%) translateY(20px);background:#0a6cff;color:#fff;font-size:12px;font-weight:700;padding:8px 18px;border-radius:20px;z-index:9999;opacity:0;transition:all .2s;pointer-events:none;}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-/* ===== HOME FANDOM-STYLE ===== */
-.home-welcome-box{background:#fff;border:1px solid #a2a9b1;border-radius:4px;padding:16px 20px;margin-bottom:16px;}
-.home-welcome-box h3{font-size:18px;font-weight:700;color:#0a6cff;margin-bottom:6px;}
-.home-welcome-box p{font-size:13.5px;color:#333;line-height:1.7;}
-.home-welcome-box .hw-stats{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid #eee;font-size:12px;color:#555;}
-.home-welcome-box .hw-stat{display:flex;align-items:center;gap:5px;}
-.hw-stat strong{color:#0a6cff;}
-
-/* Quick links table (Fandom style) */
-.quick-table{width:100%;border-collapse:collapse;border:1px solid #a2a9b1;margin-bottom:16px;}
-.quick-table td{border:1px solid #a2a9b1;padding:8px 14px;font-size:13px;font-weight:700;text-align:center;cursor:pointer;transition:background .15s;color:#0a6cff;}
-.quick-table td:hover{background:#e8f2ff;text-decoration:underline;}
-
-/* Category tabs */
-.cat-tabs{display:flex;background:#eaecf0;border:1px solid #a2a9b1;border-bottom:none;}
-.cat-tab{flex:1;text-align:center;padding:9px;font-size:13px;font-weight:700;cursor:pointer;border-right:1px solid #a2a9b1;transition:background .15s;}
-.cat-tab:last-child{border-right:none;}
-.cat-tab.active{background:#fff;}
-
-/* Fandom-style big cat grid */
-.fandom-cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid #a2a9b1;margin-bottom:16px;}
-.fandom-cat{border-right:1px solid #a2a9b1;border-bottom:1px solid #a2a9b1;background:#fff;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;overflow:hidden;position:relative;}
-.fandom-cat:nth-child(4n){border-right:none;}
-.fandom-cat:nth-last-child(-n+4){border-bottom:none;}
-.fandom-cat:hover{background:#f0f5ff;}
-.fandom-cat:hover .fcat-img{transform:scale(1.07);}
-.fcat-img-wrap{width:100%;height:100px;overflow:hidden;background:#eaecf0;}
-.fcat-img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease;}
-.fcat-emoji{width:100%;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px;background:inherit;}
-.fcat-name{padding:8px;font-size:12.5px;font-weight:700;text-align:center;color:#202122;width:100%;border-top:1px solid #e5e5e5;background:#f8f9fa;}
-
-/* Section header Fandom */
-.sec-hdr{font-size:17px;font-weight:700;color:#202122;border-bottom:1px solid #a2a9b1;padding-bottom:6px;margin:20px 0 12px;display:flex;align-items:center;gap:8px;}
-.sec-hdr-blue{color:#0a6cff;}
-
-/* World info banner */
-.world-banner{background:linear-gradient(135deg,#1a3a6b 0%,#2255a4 60%,#1a3a6b 100%);border-radius:4px;padding:18px 20px;margin-bottom:16px;color:#fff;position:relative;overflow:hidden;}
-.world-banner::before{content:'';position:absolute;top:-30px;right:-30px;width:140px;height:140px;background:rgba(255,255,255,.04);border-radius:50%;}
-.world-banner::after{content:'';position:absolute;bottom:-20px;left:60px;width:80px;height:80px;background:rgba(255,255,255,.03);border-radius:50%;}
-.world-banner h3{font-size:16px;font-weight:800;margin-bottom:6px;position:relative;z-index:1;}
-.world-banner p{font-size:13px;line-height:1.7;color:rgba(255,255,255,.85);position:relative;z-index:1;}
-.world-banner .wb-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:3px 12px;font-size:11.5px;font-weight:700;margin-top:10px;position:relative;z-index:1;}
-
-/* Unique items preview */
-.items-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
-.item-card{border:1px solid #a2a9b1;border-radius:6px;background:#fff;overflow:hidden;cursor:pointer;transition:all .22s;position:relative;}
-.item-card:hover{transform:translateY(-4px);box-shadow:0 6px 18px rgba(0,0,0,.13);border-color:#0a6cff;}
-.item-card:hover .item-card-overlay{opacity:1;}
-.item-card-img{width:100%;height:90px;background:#f0f4ff;display:flex;align-items:center;justify-content:center;font-size:38px;overflow:hidden;}
-.item-card-img img{width:100%;height:100%;object-fit:contain;padding:6px;}
-.item-card-body{padding:8px 10px;}
-.item-card-name{font-size:12.5px;font-weight:700;color:#202122;margin-bottom:3px;}
-.item-card-tag{font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;display:inline-block;}
-.tag-unique{background:rgba(100,50,200,.08);color:#6432c8;border:1px solid rgba(100,50,200,.2);}
-.tag-build{background:rgba(230,160,0,.1);color:#996000;border:1px solid rgba(230,160,0,.2);}
-.tag-pvp{background:rgba(200,0,0,.08);color:#c00;border:1px solid rgba(200,0,0,.2);}
-.item-card-overlay{position:absolute;inset:0;background:rgba(10,108,255,.06);opacity:0;transition:opacity .2s;}
-
-/* Members grid (Fandom skin style) */
-.members-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:0;border:1px solid #a2a9b1;margin-bottom:16px;}
-.member-card{border-right:1px solid #a2a9b1;border-bottom:1px solid #a2a9b1;background:#fff;cursor:pointer;transition:background .15s;overflow:hidden;display:flex;flex-direction:column;align-items:center;}
-.members-grid .member-card:nth-child(7n){border-right:none;}
-.member-card:hover{background:#f0f5ff;}
-.member-card-img{width:100%;aspect-ratio:1;background:#eaecf0;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.member-card-img img{width:100%;height:100%;object-fit:cover;display:block;image-rendering:pixelated;}
-.member-card-name{padding:6px 4px;font-size:11px;font-weight:700;text-align:center;color:#202122;width:100%;border-top:1px solid #e5e5e5;background:#f8f9fa;}
-
-/* Animated join button */
-@keyframes pulse-btn{0%,100%{box-shadow:0 0 0 0 rgba(10,108,255,.4);}70%{box-shadow:0 0 0 8px rgba(10,108,255,0);}}
-.btn-join-anim{display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:20px;font-size:14px;font-weight:700;background:#0a6cff;color:#fff;border:none;cursor:pointer;font-family:inherit;text-decoration:none;animation:pulse-btn 2s infinite;transition:transform .15s,background .15s;}
-.btn-join-anim:hover{background:#0056cc;color:#fff;transform:scale(1.04);text-decoration:none;}
-
-/* Shimmer animation for section headers */
-@keyframes shimmer{0%{background-position:-200px 0;}100%{background-position:200px 0;}}
-.shimmer-badge{background:linear-gradient(90deg,#eaecf0 25%,#fff 50%,#eaecf0 75%);background-size:400px 100%;animation:shimmer 2s infinite;border-radius:3px;height:2px;margin-bottom:14px;}
-
-/* Building cards on home */
-.home-buildings{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
-.hbuild{border:1px solid #a2a9b1;border-radius:4px;overflow:hidden;cursor:pointer;transition:all .2s;background:#fff;}
-.hbuild:hover{border-color:#0a6cff;transform:translateY(-3px);box-shadow:0 5px 14px rgba(0,0,0,.1);}
-.hbuild-img{height:90px;overflow:hidden;background:#eaeaea;}
-.hbuild-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s;}
-.hbuild:hover .hbuild-img img{transform:scale(1.06);}
-.hbuild-body{padding:9px 11px;}
-.hbuild-name{font-size:13px;font-weight:700;margin-bottom:2px;}
-.hbuild-desc{font-size:11.5px;color:#666;}
-
-/* ===== MEMBERS PAGE ===== */
-.members-page-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:0;border:1px solid #a2a9b1;margin-bottom:20px;}
-.mpc{border-right:1px solid #a2a9b1;border-bottom:1px solid #a2a9b1;background:#fff;display:flex;flex-direction:column;align-items:center;overflow:hidden;transition:background .15s;cursor:default;}
-.members-page-grid .mpc:nth-child(7n){border-right:none;}
-.mpc-img{width:100%;aspect-ratio:9/16;background:#eaecf0;overflow:hidden;display:flex;align-items:center;justify-content:center;}
-.mpc-img img{width:100%;height:100%;object-fit:cover;display:block;image-rendering:pixelated;}
-.mpc-name{padding:7px 4px;font-size:12px;font-weight:700;text-align:center;color:#0a6cff;width:100%;border-top:1px solid #e5e5e5;background:#f8f9fa;}
-.add-member-hint{background:#f8f9fa;border:1px dashed #a2a9b1;border-radius:4px;padding:12px 16px;font-size:12.5px;color:#54595d;line-height:1.7;margin-bottom:14px;}
-.add-member-hint code{background:#eaecf0;border:1px solid #ccc;border-radius:3px;padding:1px 6px;font-size:11.5px;}
-
-/* ===== BUILDINGS PAGE ===== */
-.buildings-page-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
-.bp-card{border:1px solid #a2a9b1;border-radius:4px;overflow:hidden;background:#fff;transition:all .2s;cursor:pointer;}
-.bp-card:hover{border-color:#0a6cff;transform:translateY(-3px);box-shadow:0 6px 16px rgba(0,0,0,.1);}
-.bp-card-img{height:120px;overflow:hidden;background:#eaeaea;}
-.bp-card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s;}
-.bp-card:hover .bp-card-img img{transform:scale(1.06);}
-.bp-card-body{padding:10px 12px;}
-.bp-card-name{font-size:13.5px;font-weight:700;margin-bottom:4px;}
-.bp-card-meta{font-size:11.5px;color:#54595d;line-height:1.6;}
-.bp-card-meta a{color:#0a6cff;}
-
-/* Floating animation for special items */
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
-.float-anim{animation:float 3s ease-in-out infinite;}
-
-/* Hover glow for item cards */
-.item-card::after{content:'';position:absolute;inset:0;border-radius:6px;box-shadow:0 0 0 2px #0a6cff;opacity:0;transition:opacity .2s;}
-.item-card:hover::after{opacity:1;}
-
-/* CHAT PREFIX ROWS */
-.pfx-row{display:flex;align-items:flex-start;gap:11px;background:#f8f9fa;border:1px solid #e5e5e5;border-radius:6px;padding:10px 12px;margin-bottom:6px;}
-.pfx-sym{font-family:monospace;font-size:18px;font-weight:700;min-width:22px;text-align:center;margin-top:1px;}
-.pfx-at{color:#0a6cff;}
-.pfx-ex{color:#e8a000;}
-.pfx-title{font-size:13px;font-weight:700;margin-bottom:2px;}
-.pfx-desc{font-size:12px;color:#54595d;line-height:1.55;}
-
-@media(max-width:900px){
-  .left-bar{display:none;}
-  .main-wrap{margin-left:0;}
-  .page-body{flex-direction:column;padding:12px;}
-  .right-rail{width:100%;}
-  .infobox{float:none;width:100%;margin:0 0 16px 0;}
-  .assoc-grid{grid-template-columns:repeat(3,1fr);}
-  .cat-grid{grid-template-columns:repeat(2,1fr);}
-  .craft-body{flex-direction:column;}
-  .craft-img{width:100%;}
-  .wiki-wrap{flex-direction:column;}
-  .wiki-nav{width:100%;border-right:none;border-bottom:1px solid #a2a9b1;display:flex;flex-wrap:wrap;padding:6px;}
-  .wl{padding:5px 10px;font-size:11.5px;}
-  .wiki-nav-h{display:none;}
-  .buildings-grid{grid-template-columns:1fr 1fr;}
-  .stat-grid{grid-template-columns:1fr 1fr;}
-  .act-grid{grid-template-columns:1fr;}
-  .fandom-cat-grid{grid-template-columns:repeat(2,1fr);}
-  .members-grid{grid-template-columns:repeat(4,1fr);}
-  .members-page-grid{grid-template-columns:repeat(3,1fr);}
-  .items-grid{grid-template-columns:1fr 1fr;}
-  .home-buildings{grid-template-columns:1fr;}
-  .buildings-page-grid{grid-template-columns:1fr 1fr;}
-}
-</style>
+        .btn:active {
+            transform: scale(0.96);
+        }
+    </style>
 </head>
 <body>
 
-<div class="toast" id="toast"></div>
-
-<!-- TOP NAV -->
-<nav class="top-nav">
-  <div style="display:flex;align-items:center;gap:12px;">
-    <span class="logo" onclick="pg('home')">Shield<span class="o">o</span>m</span>
-    <div class="search-box">
-      <span class="search-icon">🔍</span>
-      <input type="text" placeholder="Поиск ToadShield...">
-    </div>
-  </div>
-  <div class="top-right">
-    <span class="top-icon">🔔</span>
-    <span class="top-icon">👤</span>
-    <a href="https://discord.gg/6pAg48UMmh" target="_blank" class="btn btn-blue">Вступить</a>
-    <button class="btn" onclick="copyIP('chanland.play-network.io')">📋 IP</button>
-  </div>
-</nav>
-
-<!-- LEFT SIDEBAR -->
-<aside class="left-bar">
-  <a class="lb-item active" id="lb-home" onclick="pg('home')">
-    <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home
-  </a>
-  <a class="lb-item" id="lb-states" onclick="pg('states')">
-    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>Объединения
-  </a>
-  <a class="lb-item" id="lb-rules" onclick="pg('rules')">
-    <svg viewBox="0 0 24 24"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>Правила
-  </a>
-  <a class="lb-item" id="lb-wiki" onclick="pg('wiki')">
-    <svg viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>Вики
-  </a>
-  <a class="lb-item" id="lb-members" onclick="pg('members')">
-    <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>Игроки
-  </a>
-  <a class="lb-item" id="lb-buildings" onclick="pg('buildings')">
-    <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/><path d="M0 0h24v24H0z" fill="none"/></svg>Стройки
-  </a>
-  <div class="lb-divider"></div>
-  <a class="lb-item" href="https://discord.gg/6pAg48UMmh" target="_blank">
-    <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.032.054a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>Discord
-  </a>
-</aside>
-
-<!-- MAIN -->
-<div class="main-wrap">
-
-<!-- BANNER -->
-<header class="wiki-banner">
-  <div class="wiki-left">
-    <div class="wiki-logo">
-      <img src="https://i.ibb.co/HTTTqfzx/Chat-GPT-Image-29-2026-17-06-33.png" alt="" onerror="this.style.display='none'">
-    </div>
-    <div class="wiki-title">
-      <h1>ToadShield Вики — Сезон 5</h1>
-      <div class="wiki-subnav">
-        <a onclick="pg('home')">ГЛАВНАЯ</a>
-        <a onclick="pg('members')">УЧАСТНИКИ</a>
-        <a onclick="pg('states')">ОБЪЕДИНЕНИЯ</a>
-        <a onclick="pg('buildings')">ПОСТРОЙКИ</a>
-        <a onclick="pg('wiki')">ВИКИ</a>
-        <a onclick="pg('rules')">ПРАВИЛА</a>
-        <a onclick="pg('crafts')">КРАФТЫ</a>
-        <a onclick="pg('promo')">ПРОМОКОДЫ</a>
-      </div>
-    </div>
-  </div>
-  <div class="wiki-pages">
-    <div class="num">S5</div>
-    <div class="lbl">СЕЗОН</div>
-  </div>
-</header>
-
-<!-- PAGE BODY -->
-<div class="page-body">
-<main class="article">
-
-<!-- ===== HOME ===== -->
-<div id="page-home" class="page active">
-  <div class="art-head">
-    <h2>Home</h2>
-    <div class="art-actions">
-      <button class="btn" onclick="copyIP('chanland.play-network.io')">Скопировать IP</button>
-      <a href="https://discord.gg/6pAg48UMmh" target="_blank" class="btn btn-blue">Вступить на сервер</a>
-    </div>
-  </div>
-
-  <div style="background:#f8f9fa;border:1px solid #a2a9b1;border-radius:4px;padding:14px 18px;margin-bottom:14px;">
-    <h3 style="font-size:17px;font-weight:700;margin-bottom:6px;">Добро пожаловать на <a onclick="pg('about')">ВикиШилд</a></h3>
-    <p style="font-size:13.5px;color:#333;line-height:1.7;">Наша цель — сбор и сохранение информации о приватном Minecraft-сервере <strong>ToadShield</strong>. Здесь ты найдёшь всё об Объединениях, постройках, предметах и правилах.</p>
-    <div style="display:flex;gap:0;margin-top:10px;padding-top:10px;border-top:1px solid #e0e0e0;flex-wrap:wrap;">
-      <span style="font-size:12px;color:#54595d;padding-right:14px;margin-right:14px;border-right:1px solid #e0e0e0;">Сезон <strong>5</strong></span>
-      <span style="font-size:12px;color:#54595d;padding-right:14px;margin-right:14px;border-right:1px solid #e0e0e0;">Java <strong>1.21</strong></span>
-      <span style="font-size:12px;color:#54595d;padding-right:14px;margin-right:14px;border-right:1px solid #e0e0e0;"><strong>7</strong> участников</span>
-      <span style="font-size:12px;color:#54595d;cursor:pointer;" onclick="copyIP('chanland.play-network.io')">IP: <strong style="color:#3366cc;">chanland.play-network.io</strong></span>
-    </div>
-  </div>
-
-  <table class="quick-table">
-    <tr>
-      <td onclick="pg('wiki')">Вики</td>
-      <td onclick="pg('rules')">Правила</td>
-      <td onclick="pg('crafts')">Крафты</td>
-      <td onclick="window.open('https://toadshieldimap.vercel.app','_blank')">Карта мира</td>
-    </tr>
-  </table>
-
-  <!-- КАТЕГОРИИ -->
-  <div style="display:flex;background:#eaecf0;border:1px solid #a2a9b1;border-bottom:none;">
-    <div style="flex:1;text-align:center;padding:9px;font-size:13px;font-weight:700;background:#fff;border-right:1px solid #a2a9b1;">ToadShield</div>
-    <div style="flex:1;text-align:center;padding:9px;font-size:13px;font-weight:700;color:#aaa;">ToadShield S5</div>
-  </div>
-  <div class="fandom-cat-grid">
-    <div class="fandom-cat" onclick="pg('members')">
-      <div class="fcat-img-wrap"><img src="https://static.wikia.nocookie.net/mineshield/images/4/45/%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F%D0%98%D0%B3%D1%80%D0%BE%D0%BA%D0%B8.png/revision/latest?cb=20250927144834&path-prefix=ru" class="fcat-img" alt="Участники" onerror="this.parentElement.style.background='#d8dde6'"></div>
-      <div class="fcat-name">Участники</div>
-    </div>
-    <div class="fandom-cat" onclick="pg('states')">
-      <div class="fcat-img-wrap"><img src="https://static.wikia.nocookie.net/mineshield/images/7/75/%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F%D0%9E%D1%80%D0%B3%D0%B0%D0%BD%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8.png/revision/latest?cb=20250707054207&path-prefix=ru" class="fcat-img" alt="Объединения" onerror="this.parentElement.style.background='#d8dde6'"></div>
-      <div class="fcat-name">Объединения</div>
-    </div>
-    <div class="fandom-cat" onclick="pg('buildings')">
-      <div class="fcat-img-wrap"><img src="https://static.wikia.nocookie.net/mineshield/images/8/8f/%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F%D0%9F%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B8.png/revision/latest?cb=20250927114508&path-prefix=ru" class="fcat-img" alt="Постройки" onerror="this.parentElement.style.background='#d8dde6'"></div>
-      <div class="fcat-name">Постройки</div>
-    </div>
-    <div class="fandom-cat" onclick="pg('crafts')">
-      <div class="fcat-img-wrap"><img src="https://minecraft.wiki/images/Bundle_JE2_BE2.png?0aba5" class="fcat-img" alt="Предметы" onerror="this.parentElement.style.background='#d8dde6'"></div>
-      <div class="fcat-name">Предметы</div>
-    </div>
-    <div class="fandom-cat" onclick="pg('rules');switchRule('r-events')">
-      <div class="fcat-img-wrap"><img src="https://i.ibb.co/LyfwRy0/Screenshot-2026-05-29-231401.png" class="fcat-img" alt="Ивенты" onerror="this.parentElement.style.background='#d8dde6'"></div>
-      <div class="fcat-name">Ивенты</div>
-    </div>
-    <div class="fandom-cat" onclick="pg('about');setTimeout(function(){showAbout('ab-seasons',null)},80)">
-      <div class="fcat-img-wrap"><img src="https://i.ibb.co/2R6mXWP/2026-04-25-21-24-57.png" class="fcat-img" alt="Сезоны" onerror="this.parentElement.style.background='#d8dde6'"></div>
-      <div class="fcat-name">Сезоны</div>
-    </div>
-    <div class="fandom-cat" onclick="pg('rules')">
-      <div class="fcat-img-wrap" style="background:#e8eff8;display:flex;align-items:center;justify-content:center;font-size:42px;color:#54595d;">&#128218;</div>
-      <div class="fcat-name">Правила</div>
-    </div>
-    <div class="fandom-cat" onclick="pg('wiki')">
-      <div class="fcat-img-wrap" style="background:#eef5ee;display:flex;align-items:center;justify-content:center;font-size:42px;color:#54595d;">&#128366;</div>
-      <div class="fcat-name">Вики</div>
-    </div>
-  </div>
-
-  <!-- ОСТРОВ -->
-  <div class="sec-hdr">Пятый сезон ToadShield</div>
-  <div class="island-box">
-    <div class="island-box-title">Мир пятого сезона &mdash; остров</div>
-    <div class="island-body">
-      <div class="island-img">
-        <img src="https://i.ibb.co/jkwT7FRW/Screenshot-2026-06-09-214641.png" alt="Карта острова" onerror="this.style.opacity=0">
-      </div>
-      <div class="island-text">
-        <p>Все игроки ToadShield находятся <strong>на закрытом острове</strong>. Мир ограничен &mdash; выйти за пределы острова невозможно.</p>
-        <p>Остров окружён так называемым <strong>барьером</strong> &mdash; непреодолимой областью, которая убивает любого, кто попытается выйти за его пределы.</p>
-        <p>На острове расположены все биомы, ресурсы и территории Объединений. Каждый игрок строит здесь свою базу, торгует и взаимодействует с другими в рамках одного острова. Из-за ограниченного пространства территории и ресурсы особенно ценятся.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- КОМПАС -->
-  <div class="sec-hdr">Предметы мира</div>
-  <div class="compass-box">
-    <div class="compass-box-title">Компас и координаты</div>
-    <div class="compass-row">
-      <div class="compass-icon">
-        <img src="https://minecraft.wiki/images/Compass_JE3_BE3.gif?0043f" alt="Компас">
-      </div>
-      <div class="compass-text">
-        <strong>Обычный компас &mdash; координаты</strong>
-        <p>Если взять компас в <strong>левую руку</strong>, на экране появятся текущие координаты игрока. Удобно для навигации по острову и обозначения территорий.</p>
-      </div>
-    </div>
-    <div class="compass-row">
-      <div class="compass-icon">
-        <img src="https://minecraft.wiki/images/Recovery_Compass_JE1_BE1.gif?c0c26" alt="Компас возврата">
-      </div>
-      <div class="compass-text">
-        <strong>Возвратный компас &mdash; информация о небесных телах</strong>
-        <p>Если взять возвратный компас в <strong>левую руку</strong>, появится информация о небесных объектах &mdash; данные об инопланетных лучах и телах, попадающих на остров.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- УНИКАЛЬНЫЕ ПРЕДМЕТЫ -->
-  <div class="sec-hdr">Уникальные предметы сезона</div>
-  <div class="items-grid">
-    <div class="item-card" onclick="pg('crafts')">
-      <div class="item-card-img"><img src="https://i.ibb.co/9k9dJVcb/Screenshot-2026-06-08-225428.png" alt="Ловец душ"></div>
-      <div class="item-card-body">
-        <div class="item-card-name">Ловец душ</div>
-        <span class="item-card-tag tag-unique">Уникальный</span>
-        <div style="font-size:11px;color:#666;margin-top:3px;">До 3 мобов в мешок</div>
-      </div>
-    </div>
-    <div class="item-card" onclick="pg('crafts')">
-      <div class="item-card-img"><img src="https://i.ibb.co/LzRVNmdc/Screenshot-2026-06-08-225725.png" alt="Блок света"></div>
-      <div class="item-card-body">
-        <div class="item-card-name">Блок света</div>
-        <span class="item-card-tag tag-build">Строительство</span>
-        <div style="font-size:11px;color:#666;margin-top:3px;">Невидимый свет уровня 15</div>
-      </div>
-    </div>
-    <div class="item-card" onclick="pg('crafts')">
-      <div class="item-card-img"><img src="https://i.ibb.co/27pnw6Th/Screenshot-2026-06-08-230254.png" alt="Ловец игроков"></div>
-      <div class="item-card-body">
-        <div class="item-card-name">Ловец игроков</div>
-        <span class="item-card-tag tag-pvp">PvP</span>
-        <div style="font-size:11px;color:#666;margin-top:3px;">До 3 игроков в мешок</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- УЧАСТНИКИ -->
-  <div class="sec-hdr" style="display:flex;align-items:center;justify-content:space-between;">
-    <span>Участники ToadShield S5</span>
-    <a onclick="pg('members')" style="font-size:12px;font-weight:700;color:#3366cc;">Все участники &rarr;</a>
-  </div>
-  <div style="display:grid;grid-template-columns:repeat(7,1fr);border:1px solid #a2a9b1;margin-bottom:6px;" id="home-members-grid"></div>
-  <div style="margin-bottom:14px;"></div>
-
-  <!-- ПОСТРОЙКИ -->
-  <div class="sec-hdr" style="display:flex;align-items:center;justify-content:space-between;">
-    <span>Постройки сезона</span>
-    <a onclick="pg('buildings')" style="font-size:12px;font-weight:700;color:#3366cc;">Все постройки &rarr;</a>
-  </div>
-  <div class="home-buildings">
-    <div class="hbuild" onclick="openBuilding('ban6')">
-      <div class="hbuild-img"><img src="https://i.ibb.co/N2QbyyZy/Screenshot-2026-06-09-212103.png" alt="Магазин БАН6" onerror="this.parentElement.style.background='#ddd'"></div>
-      <div class="hbuild-body"><div class="hbuild-name">Магазин &laquo;БАН6&raquo;</div><div class="hbuild-desc">Магазин DUhovka</div></div>
-    </div>
-    <div class="hbuild" onclick="openBuilding('factory')">
-      <div class="hbuild-img"><img src="https://i.ibb.co/6092dMt3/Screenshot-2026-06-09-212250.png" alt="Завод сладостей" onerror="this.parentElement.style.background='#ddd'"></div>
-      <div class="hbuild-body"><div class="hbuild-name">Завод сладостей</div><div class="hbuild-desc">Производственная фабрика DUhovka</div></div>
-    </div>
-    <div class="hbuild" onclick="openBuilding('soda')">
-      <div class="hbuild-img"><img src="https://i.ibb.co/Z66xXMwV/Screenshot-2026-06-09-212816.png" alt="СОДА" onerror="this.parentElement.style.background='#ddd'"></div>
-      <div class="hbuild-body"><div class="hbuild-name">Дороги СОДА</div><div class="hbuild-desc">Дороги от спавна к Объединениям</div></div>
-    </div>
-    <div class="hbuild" onclick="openBuilding('lava')">
-      <div class="hbuild-img"><img src="https://i.ibb.co/yFbF1T74/Screenshot-2026-06-07-043506.png" alt="Лавовый Комплекс" onerror="this.parentElement.style.background='#ddd'"></div>
-      <div class="hbuild-body"><div class="hbuild-name">Лавовый Комплекс</div><div class="hbuild-desc">Промышленное сооружение УРПА</div></div>
-    </div>
-  </div>
-
-  <!-- НОВОСТИ -->
-  <div class="sec-hdr">Новости сервера</div>
-  <div class="news-list">
-    <div class="n-item">
-      <div class="n-thumb"><img src="https://images-ext-1.discordapp.net/external/5aZ3qAPpguO0my0Z41N8IwCUQI0RVcSoh6KfDsduYdQ/https/i.ibb.co/MyzGGs6J/Screenshot-2026-06-08-010709.png?format=webp&quality=lossless" alt="" onerror="this.parentElement.style.background='#ddd'"></div>
-      <div>
-        <div class="n-meta"><span class="n-badge nb-green">Победа</span><span class="n-date">08 июня 2026</span></div>
-        <div class="n-title">УРПА завершила войну с ГБСТ</div>
-        <div class="n-desc">Все территории возвращены, УРПА забрала территорию Леса в качестве компенсации.</div>
-      </div>
-    </div>
-    <div class="n-item" onclick="pg('states')" style="cursor:pointer;">
-      <div class="n-thumb"><img src="https://images-ext-1.discordapp.net/external/sFaPX5VqzAGvmwgb7Tayec0iAROCu19bK_YcVhV-THY/https/i.ibb.co/Y62nszD/Screenshot-2026-06-07-033838.png?format=webp&quality=lossless" alt="" onerror="this.parentElement.style.background='#ddd'"></div>
-      <div>
-        <div class="n-meta"><span class="n-badge nb-red">Война</span><span class="n-date">07 июня 2026</span></div>
-        <div class="n-title">УРПА объявил войну ГБСТ</div>
-        <div class="n-desc">Официально объявлена война новому Объединению.</div>
-      </div>
-    </div>
-    <div class="n-item">
-      <div class="n-thumb"><img src="https://i.ibb.co/mV0nVZWt/Screenshot-2026-05-30-121949.png" alt="" onerror="this.parentElement.style.background='#ddd'"></div>
-      <div>
-        <div class="n-meta"><span class="n-badge nb-red">Срочно</span><span class="n-date">29 мая 2026</span></div>
-        <div class="n-title">Взрыв ракеты в Верхнедуховске</div>
-        <div class="n-desc">Мощный взрыв в промышленном районе.</div>
-      </div>
-    </div>
-    <div class="n-item" onclick="pg('states')" style="cursor:pointer;">
-      <div class="n-thumb"><img src="https://i.ibb.co/wZ7sqTPt/Screenshot-2026-05-29-230534.png" alt="" onerror="this.parentElement.style.background='#ddd'"></div>
-      <div>
-        <div class="n-meta"><span class="n-badge nb-purple">Объединение</span><span class="n-date">20 мая 2026</span></div>
-        <div class="n-title">УРПА &mdash; первое Объединение сезона</div>
-        <div class="n-desc">Посольство на спавне. Паспортная система запущена.</div>
-      </div>
-    </div>
-    <div class="n-item" onclick="pg('promo')" style="cursor:pointer;">
-      <div class="n-thumb" style="background:#eaecf0;"></div>
-      <div>
-        <div class="n-meta"><span class="n-badge nb-green">Промокод</span><span class="n-date">25 апр 2026</span></div>
-        <div class="n-title">День рождения DUhovka!</div>
-        <div class="n-desc">Промокод DUHOVKADAY2026 &mdash; получи бонус АР.</div>
-      </div>
-    </div>
-    <div class="n-item" onclick="pg('about')" style="cursor:pointer;">
-      <div class="n-thumb"><img src="https://i.ibb.co/2R6mXWP/2026-04-25-21-24-57.png" alt="" onerror="this.parentElement.style.background='#ddd'"></div>
-      <div>
-        <div class="n-meta"><span class="n-badge nb-green">Сервер</span><span class="n-date">05 апр 2026</span></div>
-        <div class="n-title">Сезон 5 стартовал!</div>
-        <div class="n-desc">Новый мир, чистая экономика. Начни с нуля.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ВАГОНЕТКА -->
-  <div class="sec-hdr">Вагонетка без рельс</div>
-  <div style="background:#f8f9fa;border:1px solid #a2a9b1;border-radius:4px;padding:14px 16px;margin-bottom:14px;">
-    <p style="font-size:13.5px;color:#333;line-height:1.75;margin-bottom:8px;">Поставь вагонетку на землю, возьми <strong>топливо в руку</strong> и нажми ПКМ &mdash; поедешь без рельсов. <strong>Блок угля = 20 минут езды.</strong></p>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <span style="background:#eaecf0;border:1px solid #a2a9b1;border-radius:3px;padding:3px 10px;font-size:12px;font-weight:700;">Уголь &mdash; 2 мин</span>
-      <span style="background:#eaecf0;border:1px solid #a2a9b1;border-radius:3px;padding:3px 10px;font-size:12px;font-weight:700;">Лава &mdash; 10 мин</span>
-      <span style="background:#e8f2ff;border:1px solid rgba(51,102,204,.25);border-radius:3px;padding:3px 10px;font-size:12px;font-weight:700;color:#3366cc;">Блок угля &mdash; 20 мин</span>
-    </div>
-  </div>
-</div>
-<!-- ===== MEMBERS ===== -->
-<div id="page-members" class="page">
-  <div class="badge-nav"># Навигационные статьи</div>
-  <div class="art-head"><h2>Участники</h2></div>
-
-  <div class="cat-tabs" style="margin-bottom:0;">
-    <div class="cat-tab active">ToadShield S5</div>
-  </div>
-  <div style="background:#eaecf0;border:1px solid #a2a9b1;border-top:none;padding:10px 14px;font-size:14px;font-weight:700;border-bottom:1px solid #a2a9b1;margin-bottom:0;">ToadShield S5</div>
-
-  <!-- Members grid — easy to add: copy a .mpc block and change the nick -->
-  <div class="members-page-grid" id="members-page-grid">
-    <!-- Populated by JS from MEMBERS array -->
-  </div>
-
-  <div class="add-member-hint">
-    <strong>🛠️ Как добавить нового участника:</strong> В JS-коде найди массив <code>MEMBERS</code> и добавь строку:<br>
-    <code>{ nick: 'НикИгрока', skin: 'body' }</code> — для скина в полный рост<br>
-    <code>{ nick: 'НикИгрока', skin: 'head' }</code> — только голова<br>
-    Скины загружаются автоматически с mc-heads.net по нику.
-  </div>
-
-  <h2 class="art-h2">О системе участия</h2>
-  <p class="art-p">Каждый игрок, прошедший вступительную анкету и получивший одобрение, становится <strong>Участником ToadShield</strong>. Участники могут создавать Объединения, участвовать в ивентах и торговать.</p>
-  <a href="https://discord.gg/6pAg48UMmh" target="_blank" class="btn btn-blue" style="border-radius:4px;">Подать заявку на вступление</a>
-</div>
-
-<!-- ===== BUILDINGS ===== -->
-<div id="page-buildings" class="page">
-  <div class="badge-nav"># Постройки ToadShield S5</div>
-  <div class="art-head"><h2>Постройки</h2></div>
-
-  <!-- LIST -->
-  <div id="buildings-list">
-    <p class="art-p">Все значимые постройки пятого сезона &mdash; магазины, заводы, дороги и сооружения Объединений. Нажми на постройку, чтобы узнать подробнее.</p>
-
-    <h2 class="art-h2">Постройки УРПА</h2>
-    <div class="bpage-grid">
-      <div class="bpcard" onclick="openBuilding('embassy')">
-        <div class="bpcard-img"><img src="https://i.ibb.co/KxxVnY6v/Screenshot-2026-06-08-033814.png" alt="Посольство" onerror="this.parentElement.style.background='#ddd'"></div>
-        <div class="bpcard-body">
-          <div class="bpcard-name">Посольство на спавне</div>
-          <div class="bpcard-meta">Создатель: <a onclick="event.stopPropagation();pg('states');setTimeout(function(){openState('urpa')},80)">УРПА</a> &mdash; Выдача паспортов</div>
+    <div id="screen1" class="screen active">
+        <div class="ui-panel">
+            <button class="btn" onclick="resetView(1)">Сбросить</button>
         </div>
-      </div>
-      <div class="bpcard" onclick="openBuilding('antenna')">
-        <div class="bpcard-img"><img src="https://i.ibb.co/LyfwRy0/Screenshot-2026-05-29-231401.png" alt="Антенна" onerror="this.parentElement.style.background='#ddd'"></div>
-        <div class="bpcard-body">
-          <div class="bpcard-name">Антенна</div>
-          <div class="bpcard-meta">Создатель: <a onclick="event.stopPropagation();pg('states');setTimeout(function(){openState('urpa')},80)">УРПА</a> &mdash; Небесные объекты</div>
-        </div>
-      </div>
-      <div class="bpcard" onclick="openBuilding('lava')">
-        <div class="bpcard-img"><img src="https://i.ibb.co/yFbF1T74/Screenshot-2026-06-07-043506.png" alt="Лавовый Комплекс" onerror="this.parentElement.style.background='#ddd'"></div>
-        <div class="bpcard-body">
-          <div class="bpcard-name">Лавовый Комплекс</div>
-          <div class="bpcard-meta">Создатель: <a onclick="event.stopPropagation();pg('states');setTimeout(function(){openState('urpa')},80)">УРПА</a> &mdash; Промышленность</div>
-        </div>
-      </div>
-      <div class="bpcard" onclick="openBuilding('ironfactory')">
-        <div class="bpcard-img"><img src="https://i.ibb.co/QjX0h3d7/Screenshot-2026-06-10-025042.png" alt="Завод железа" onerror="this.parentElement.style.background='#ddd'"></div>
-        <div class="bpcard-body">
-          <div class="bpcard-name">Завод железа</div>
-          <div class="bpcard-meta">Создатель: <a onclick="event.stopPropagation();pg('states');setTimeout(function(){openState('urpa')},80)">DUhovka</a> &mdash; Производство железа</div>
-        </div>
-      </div>
-      <div class="bpcard" onclick="openBuilding('statue')">
-        <div class="bpcard-img"><img src="https://i.ibb.co/PG2R3NQP/Screenshot-2026-06-10-023904.png" alt="Статуя лавомерки" onerror="this.parentElement.style.background='#ddd'"></div>
-        <div class="bpcard-body">
-          <div class="bpcard-name">Статуя лавомерки</div>
-          <div class="bpcard-meta">Создатель: <a onclick="event.stopPropagation();pg('states');setTimeout(function(){openState('urpa')},80)">УРПА</a> &mdash; Символ государства</div>
-        </div>
-      </div>
-      <div class="bpcard" onclick="openBuilding('territory')">
-        <div class="bpcard-img"><img src="https://i.ibb.co/mVZyrCS5/Screenshot-2026-06-08-034029.png" alt="Территория" onerror="this.parentElement.style.background='#ddd'"></div>
-        <div class="bpcard-body">
-          <div class="bpcard-name">Территория УРПА</div>
-          <div class="bpcard-meta">Создатель: <a onclick="event.stopPropagation();pg('states');setTimeout(function(){openState('urpa')},80)">УРПА</a> &mdash; Закрытые координаты</div>
-        </div>
-      </div>
-    </div>
-
-    <h2 class="art-h2">Общая инфраструктура</h2>
-    <div class="bpage-grid">
-      <div class="bpcard" onclick="openBuilding('ban6')">
-        <div class="bpcard-img"><img src="https://i.ibb.co/N2QbyyZy/Screenshot-2026-06-09-212103.png" alt="Магазин БАН6" onerror="this.parentElement.style.background='#ddd'"></div>
-        <div class="bpcard-body">
-          <div class="bpcard-name">Магазин &laquo;БАН6&raquo;</div>
-          <div class="bpcard-meta">Создатель: <strong>DUhovka</strong> &mdash; Торговля</div>
-        </div>
-      </div>
-      <div class="bpcard" onclick="openBuilding('factory')">
-        <div class="bpcard-img"><img src="https://i.ibb.co/6092dMt3/Screenshot-2026-06-09-212250.png" alt="Завод сладостей" onerror="this.parentElement.style.background='#ddd'"></div>
-        <div class="bpcard-body">
-          <div class="bpcard-name">Завод сладостей</div>
-          <div class="bpcard-meta">Создатель: <strong>DUhovka</strong> &mdash; Производство</div>
-        </div>
-      </div>
-      <div class="bpcard" onclick="openBuilding('soda')">
-        <div class="bpcard-img"><img src="https://i.ibb.co/Z66xXMwV/Screenshot-2026-06-09-212816.png" alt="СОДА" onerror="this.parentElement.style.background='#ddd'"></div>
-        <div class="bpcard-body">
-          <div class="bpcard-name">СОДА</div>
-          <div class="bpcard-meta">Создатель: <a onclick="event.stopPropagation();pg('states');setTimeout(function(){openState('urpa')},80)">УРПА</a> &mdash; Дороги</div>
-        </div>
-      </div>
-    </div>
-
-    <div style="background:#e8f2ff;border:1px solid rgba(51,102,204,.2);border-radius:4px;padding:11px 14px;font-size:12.5px;color:#333;line-height:1.7;">
-      Хочешь добавить свою постройку в вики? Напиши в <a href="https://discord.gg/6pAg48UMmh" target="_blank">Discord</a> или <a href="https://t.me/ToadShield_support" target="_blank">Telegram поддержку</a>.
-    </div>
-  </div>
-
-  <!-- ===== BUILDING DETAIL PAGES ===== -->
-
-  <!-- Посольство -->
-  <div id="bdetail-embassy" style="display:none;">
-    <button class="bdetail-back" onclick="closeBuilding()">&larr; Назад к постройкам</button>
-    <div class="bdetail-infobox">
-      <div class="bdetail-infobox-title">Посольство на спавне</div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Сезон</div><div class="bdetail-ib-val">ToadShield S5</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Тип</div><div class="bdetail-ib-val">Административное здание</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Объединение</div><div class="bdetail-ib-val"><a onclick="pg('states');setTimeout(function(){openState('urpa')},80)">УРПА</a></div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Создатель</div><div class="bdetail-ib-val"><div class="mc-head" style="position:relative;width:32px;height:32px;"><img src="https://mc-heads.net/avatar/DUhovka/32" onerror="this.src='https://mc-heads.net/avatar/Steve/32'" style="width:32px;height:32px;border-radius:4px;"><div class="tip">DUhovka</div></div></div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Местоположение</div><div class="bdetail-ib-val">Спавн</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Доступ</div><div class="bdetail-ib-val">Открыт для всех</div></div>
-    </div>
-    <h2 class="art-h2" style="margin-top:0;">Посольство УРПА на спавне</h2>
-    <p class="art-p">Посольство УРПА расположено прямо на спавне и является первой постройкой, которую видят новые игроки. Здесь можно получить <strong>паспорт УРПА</strong> &mdash; основной документ для въезда на закрытую территорию Объединения.</p>
-    <p class="art-p">Процедура получения паспорта включает короткое собеседование. Без паспорта въезд на территорию УРПА запрещён &mdash; это нарушение правил сервера.</p>
-    <div class="bdetail-hero"><img src="https://i.ibb.co/KxxVnY6v/Screenshot-2026-06-08-033814.png" alt="Посольство" onerror="this.style.opacity=0"></div>
-  </div>
-
-  <!-- Антенна -->
-  <div id="bdetail-antenna" style="display:none;">
-    <button class="bdetail-back" onclick="closeBuilding()">&larr; Назад к постройкам</button>
-    <div class="bdetail-infobox">
-      <div class="bdetail-infobox-title">Антенна</div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Сезон</div><div class="bdetail-ib-val">ToadShield S5</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Тип</div><div class="bdetail-ib-val">Научное сооружение</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Объединение</div><div class="bdetail-ib-val"><a onclick="pg('states');setTimeout(function(){openState('urpa')},80)">УРПА</a></div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Создатель</div><div class="bdetail-ib-val"><div class="mc-head" style="position:relative;width:32px;height:32px;"><img src="https://mc-heads.net/avatar/DUhovka/32" onerror="this.src='https://mc-heads.net/avatar/Steve/32'" style="width:32px;height:32px;border-radius:4px;"><div class="tip">DUhovka</div></div></div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Связана с</div><div class="bdetail-ib-val">Инопланетные лучи</div></div>
-    </div>
-    <h2 class="art-h2" style="margin-top:0;">Антенна УРПА</h2>
-    <p class="art-p">Большая антенна &mdash; одна из главных построек УРПА. Предназначена для отслеживания <strong>небесных объектов</strong> и <strong>инопланетных лучей</strong>, которые периодически падают на остров.</p>
-    <p class="art-p">Именно в эту антенну часто попадают инопланетные лучи &mdash; это серверный ивент, не управляемый игроками. Данные с антенны позволяют УРПА заранее узнавать о падающих метеоритах и небесных телах.</p>
-    <div class="bdetail-hero"><img src="https://i.ibb.co/LyfwRy0/Screenshot-2026-05-29-231401.png" alt="Антенна" onerror="this.style.opacity=0"></div>
-  </div>
-
-  <!-- Лавовый Комплекс -->
-  <div id="bdetail-lava" style="display:none;">
-    <button class="bdetail-back" onclick="closeBuilding()">&larr; Назад к постройкам</button>
-    <div class="bdetail-infobox">
-      <div class="bdetail-infobox-title">Лавовый Комплекс</div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Сезон</div><div class="bdetail-ib-val">ToadShield S5</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Тип</div><div class="bdetail-ib-val">Промышленное сооружение</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Объединение</div><div class="bdetail-ib-val"><a onclick="pg('states');setTimeout(function(){openState('urpa')},80)">УРПА</a></div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Создатель</div><div class="bdetail-ib-val"><div class="mc-head" style="position:relative;width:32px;height:32px;"><img src="https://mc-heads.net/avatar/DUhovka/32" onerror="this.src='https://mc-heads.net/avatar/Steve/32'" style="width:32px;height:32px;border-radius:4px;"><div class="tip">DUhovka</div></div></div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Особенности</div><div class="bdetail-ib-val">Гигантские вентиляторы, ёмкость лавы</div></div>
-    </div>
-    <h2 class="art-h2" style="margin-top:0;">Лавовый Комплекс</h2>
-    <p class="art-p">Масштабное промышленное сооружение УРПА с <strong>гигантскими вентиляторами</strong> и большой ёмкостью лавы. Одна из самых зрелищных построек сезона.</p>
-    <p class="art-p">Комплекс расположен на закрытой территории УРПА и доступен только по паспорту. Лава здесь используется как производственный ресурс и как утилизатор ненужных предметов (правило УРПА: мусор &mdash; в лаву).</p>
-    <div class="bdetail-hero"><img src="https://i.ibb.co/yFbF1T74/Screenshot-2026-06-07-043506.png" alt="Лавовый Комплекс" onerror="this.style.opacity=0"></div>
-  </div>
-
-  <!-- Завод железа -->
-  <div id="bdetail-ironfactory" style="display:none;">
-    <button class="bdetail-back" onclick="closeBuilding()">&larr; Назад к постройкам</button>
-    <div class="bdetail-infobox">
-      <div class="bdetail-infobox-title">Завод железа</div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Сезон</div><div class="bdetail-ib-val">ToadShield S5</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Тип</div><div class="bdetail-ib-val">Производственный завод</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Объединение</div><div class="bdetail-ib-val"><a onclick="pg('states');setTimeout(function(){openState('urpa')},80)">УРПА</a></div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Создатель</div><div class="bdetail-ib-val"><div class="mc-head" style="position:relative;width:32px;height:32px;"><img src="https://mc-heads.net/avatar/DUhovka/32" onerror="this.src='https://mc-heads.net/avatar/Steve/32'" style="width:32px;height:32px;border-radius:4px;"><div class="tip">DUhovka</div></div></div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Продукт</div><div class="bdetail-ib-val">Железные слитки</div></div>
-    </div>
-    <h2 class="art-h2" style="margin-top:0;">Завод железа DUhovka</h2>
-    <p class="art-p">Производственный завод для добычи и переработки <strong>железа</strong>. Обеспечивает УРПА и союзников стабильными поставками одного из ключевых ресурсов для строительства и крафта.</p>
-    <p class="art-p">Завод расположен на закрытой территории УРПА. Доступ &mdash; по паспорту или личному приглашению лидера.</p>
-    <div class="bdetail-hero"><img src="https://i.ibb.co/QjX0h3d7/Screenshot-2026-06-10-025042.png" alt="Завод железа" onerror="this.style.opacity=0"></div>
-  </div>
-
-  <!-- Статуя лавомерки -->
-  <div id="bdetail-statue" style="display:none;">
-    <button class="bdetail-back" onclick="closeBuilding()">&larr; Назад к постройкам</button>
-    <div class="bdetail-infobox">
-      <div class="bdetail-infobox-title">Статуя лавомерки</div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Сезон</div><div class="bdetail-ib-val">ToadShield S5</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Тип</div><div class="bdetail-ib-val">Монумент</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Объединение</div><div class="bdetail-ib-val"><a onclick="pg('states');setTimeout(function(){openState('urpa')},80)">УРПА</a></div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Создатель</div><div class="bdetail-ib-val"><div class="mc-head" style="position:relative;width:32px;height:32px;"><img src="https://mc-heads.net/avatar/DUhovka/32" onerror="this.src='https://mc-heads.net/avatar/Steve/32'" style="width:32px;height:32px;border-radius:4px;"><div class="tip">DUhovka</div></div></div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Символ</div><div class="bdetail-ib-val">Священный символ УРПА</div></div>
-    </div>
-    <h2 class="art-h2" style="margin-top:0;">Статуя лавомерки</h2>
-    <p class="art-p">Монументальная статуя <strong>лавомерки</strong> &mdash; священного символа государства УРПА. Лавомерка почитается как живое воплощение духа Объединения.</p>
-    <p class="art-p">По законам УРПА <strong>убийство лавомерки строго запрещено</strong> и является одним из самых серьёзных нарушений внутреннего устава. Статуя служит напоминанием об этом символе для всех посетителей территории.</p>
-    <div style="background:#fff8e1;border:1px solid rgba(230,160,0,.25);border-radius:4px;padding:10px 14px;font-size:12.5px;color:#444;line-height:1.7;margin-bottom:14px;">
-      <strong style="color:#7a5000;">Правило УРПА:</strong> Убийство лавомерки запрещено. Нарушение карается по внутреннему уставу Объединения.
-    </div>
-    <div class="bdetail-hero"><img src="https://i.ibb.co/PG2R3NQP/Screenshot-2026-06-10-023904.png" alt="Статуя лавомерки" onerror="this.style.opacity=0"></div>
-  </div>
-
-  <!-- Территория УРПА -->
-  <div id="bdetail-territory" style="display:none;">
-    <button class="bdetail-back" onclick="closeBuilding()">&larr; Назад к постройкам</button>
-    <div class="bdetail-infobox">
-      <div class="bdetail-infobox-title">Территория УРПА</div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Сезон</div><div class="bdetail-ib-val">ToadShield S5</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Тип</div><div class="bdetail-ib-val">Закрытая территория</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Объединение</div><div class="bdetail-ib-val"><a onclick="pg('states');setTimeout(function(){openState('urpa')},80)">УРПА</a></div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Координаты</div><div class="bdetail-ib-val">Засекречены</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Доступ</div><div class="bdetail-ib-val">Только по паспорту</div></div>
-    </div>
-    <h2 class="art-h2" style="margin-top:0;">Закрытая территория УРПА</h2>
-    <p class="art-p">Основная территория УРПА с засекреченными координатами. Въезд возможен только при наличии <strong>паспорта УРПА</strong> или личного приглашения от лидера. Несанкционированное проникновение является нарушением правил сервера.</p>
-    <p class="art-p">На территории расположены основные производственные объекты, склады и жилые постройки участников УРПА.</p>
-    <div class="bdetail-hero"><img src="https://i.ibb.co/mVZyrCS5/Screenshot-2026-06-08-034029.png" alt="Территория" onerror="this.style.opacity=0"></div>
-  </div>
-
-  <!-- Магазин БАН6 -->
-  <div id="bdetail-ban6" style="display:none;">
-    <button class="bdetail-back" onclick="closeBuilding()">&larr; Назад к постройкам</button>
-    <div class="bdetail-infobox">
-      <div class="bdetail-infobox-title">Магазин &laquo;БАН6&raquo;</div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Сезон</div><div class="bdetail-ib-val">ToadShield S5</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Тип</div><div class="bdetail-ib-val">Торговая точка</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Создатель</div><div class="bdetail-ib-val"><div class="mc-head" style="position:relative;width:32px;height:32px;"><img src="https://mc-heads.net/avatar/DUhovka/32" onerror="this.src='https://mc-heads.net/avatar/Steve/32'" style="width:32px;height:32px;border-radius:4px;"><div class="tip">DUhovka</div></div></div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Доступ</div><div class="bdetail-ib-val">По договорённости</div></div>
-    </div>
-    <h2 class="art-h2" style="margin-top:0;">Магазин &laquo;БАН6&raquo;</h2>
-    <p class="art-p">Магазин DUhovka &mdash; одна из крупнейших торговых точек сервера. Здесь есть почти всё: ресурсы, блоки, материалы для крафта. Название говорит само за себя.</p>
-    <p class="art-p">Магазин работает по системе бочек: возьми товар, положи оплату в АР в бочку оплаты. Торговля честная &mdash; воровство карается по правилам сервера (штраф 16&ndash;128 АР + возмещение).</p>
-    <div class="bdetail-hero"><img src="https://i.ibb.co/N2QbyyZy/Screenshot-2026-06-09-212103.png" alt="Магазин БАН6" onerror="this.style.opacity=0"></div>
-  </div>
-
-  <!-- Завод сладостей -->
-  <div id="bdetail-factory" style="display:none;">
-    <button class="bdetail-back" onclick="closeBuilding()">&larr; Назад к постройкам</button>
-    <div class="bdetail-infobox">
-      <div class="bdetail-infobox-title">Завод сладостей</div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Сезон</div><div class="bdetail-ib-val">ToadShield S5</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Тип</div><div class="bdetail-ib-val">Производственная фабрика</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Создатель</div><div class="bdetail-ib-val"><div class="mc-head" style="position:relative;width:32px;height:32px;"><img src="https://mc-heads.net/avatar/DUhovka/32" onerror="this.src='https://mc-heads.net/avatar/Steve/32'" style="width:32px;height:32px;border-radius:4px;"><div class="tip">DUhovka</div></div></div></div>
-    </div>
-    <h2 class="art-h2" style="margin-top:0;">Завод сладостей DUhovka</h2>
-    <p class="art-p">Производственная фабрика DUhovka. Специализируется на <strong>переработке ресурсов</strong> и производстве различных материалов.</p>
-    <p class="art-p">Одно из ключевых производственных сооружений сезона &mdash; обеспечивает стабильные поставки ресурсов для торговли и строительства.</p>
-    <div class="bdetail-hero"><img src="https://i.ibb.co/6092dMt3/Screenshot-2026-06-09-212250.png" alt="Завод сладостей" onerror="this.style.opacity=0"></div>
-  </div>
-
-  <!-- СОДА -->
-  <div id="bdetail-soda" style="display:none;">
-    <button class="bdetail-back" onclick="closeBuilding()">&larr; Назад к постройкам</button>
-    <div class="bdetail-infobox">
-      <div class="bdetail-infobox-title">СОДА</div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Полное название</div><div class="bdetail-ib-val">Сеть Объединённых Дорожных Автомагистралей</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Сезон</div><div class="bdetail-ib-val">ToadShield S5</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Тип</div><div class="bdetail-ib-val">Дорожная инфраструктура</div></div>
-      <div class="bdetail-infobox-row"><div class="bdetail-ib-lbl">Создатель</div><div class="bdetail-ib-val"><a onclick="pg('states');setTimeout(function(){openState('urpa')},80)">УРПА</a></div></div>
-    </div>
-    <h2 class="art-h2" style="margin-top:0;">СОДА &mdash; Сеть Объединённых Дорожных Автомагистралей</h2>
-    <p class="art-p"><strong>СОДА</strong> &mdash; система дорог, созданная УРПА для соединения спавна с Объединениями и территориями острова. Дороги связывают ключевые точки острова, делая перемещение быстрым и удобным.</p>
-    <p class="art-p">Строительство СОДА &mdash; один из важных вкладов УРПА в общую инфраструктуру сервера. Дороги открыты для всех игроков.</p>
-    <div class="bdetail-hero"><img src="https://i.ibb.co/Z66xXMwV/Screenshot-2026-06-09-212816.png" alt="СОДА" onerror="this.style.opacity=0"></div>
-  </div>
-</div>
-<!-- ===== STATES ===== -->
-<div id="page-states" class="page">
-  <div class="badge-nav"># Навигационные статьи</div>
-  <div class="art-head">
-    <h2>Объединения</h2>
-  </div>
-
-  <div id="states-list-view">
-    <div style="background:rgba(230,160,0,.06);border:1px solid rgba(230,160,0,.25);border-radius:4px;padding:12px 14px;margin-bottom:14px;font-size:13px;color:#333;line-height:1.7;">
-      <strong style="color:#996000;">⚠ Верхнедуховск — критическое состояние:</strong> Инопланетные лучи, 2 метеорита, взрыв ракеты. Жителям рекомендована эвакуация.
-    </div>
-
-    <div class="tbl-box">
-      <div class="tbl-hdr"><span>ToadShield S5 — Объединения</span></div>
-      <div class="assoc-grid">
-        <div class="assoc-card" onclick="openState('urpa')">
-          <div class="assoc-banner"><img src="https://i.ibb.co/7J531T6h/Chat-GPT-Image-8-2026-02-09-37.png" onerror="this.parentElement.style.background='#eee';this.style.display='none'"></div>
-          <div class="assoc-name">УРПА</div>
-          <div class="assoc-grey"></div>
-        </div>
-        <div class="assoc-card" onclick="openState('gbst')">
-          <div class="assoc-banner" style="background:#dcdcdc;color:#888;font-size:12px;font-weight:700;">Нет флага</div>
-          <div class="assoc-name">ГБСТ</div>
-          <div class="assoc-grey"></div>
-        </div>
-        <div class="assoc-card" onclick="pg('forms')">
-          <div class="assoc-banner" style="background:#f5f5f5;color:#aaa;font-size:32px;">+</div>
-          <div class="assoc-name" style="color:#0a6cff;">Создать</div>
-          <div class="assoc-grey"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="create-block">
-      <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Как создать Объединение</div>
-      <div style="font-size:12.5px;color:#54595d;margin-bottom:8px;line-height:1.6;">Любое название, любая форма правления — Республика, монархия, федерация. Без ограничений.</div>
-      <ol class="create-steps">
-        <li>Найди место и построй хотя бы базу.</li>
-        <li>Скриншот территории сверху — <strong>F2</strong> или <strong>Xaero's Minimap</strong>.</li>
-        <li>Открой <strong>Paint</strong> и обведи свою территорию на скриншоте.</li>
-        <li>Заполни анкету — название, тип, описание, скриншот.</li>
-      </ol>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSep3NP1NJnbRknxHZTuwau1g2HVP5P7vX3_a9PmH7AoqW2eQA/viewform" target="_blank" class="btn btn-blue">Открыть анкету</a>
-    </div>
-  </div>
-
-  <!-- DETAIL: УРПА -->
-  <div id="state-urpa" style="display:none;">
-    <button class="state-back-btn" onclick="closeState()">← Назад к списку</button>
-    <div class="infobox">
-      <div class="infobox-title">УРПА</div>
-      <div class="infobox-img-body">
-        <img src="https://i.ibb.co/7J531T6h/Chat-GPT-Image-8-2026-02-09-37.png" style="max-height:120px;" onerror="this.style.display='none'">
-      </div>
-      <div class="infobox-row"><div class="ib-lbl">Сезон</div><div class="ib-val">ToadShield S5</div></div>
-      <div class="infobox-row"><div class="ib-lbl">Тип</div><div class="ib-val">Народная Республика</div></div>
-      <div class="infobox-row"><div class="ib-lbl">Статус</div><div class="ib-val"><span class="state-badge sb-closed">🔒 Закрытое</span></div></div>
-      <div class="infobox-row">
-        <div class="ib-lbl">Лидер</div>
-        <div class="ib-val">
-          <div class="mc-heads-row">
-            <div class="mc-head">
-              <img src="https://mc-heads.net/avatar/DUhovka/32" alt="DUhovka">
-              <div class="tip">DUhovka (Лидер)</div>
+        
+        <div class="scene" id="scene1">
+            <div class="map-wrapper" id="wrapper1">
+                <img src="https://i.ibb.co/NdkdGBMm/Chat-GPT-Image-10-2026-17-00-55.png" class="map-image" alt="Map 1">
+                <div class="map-trigger" onclick="goToScreen2(event)">
+                    <span>Открыть карту спавна</span>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-      <div class="infobox-row">
-        <div class="ib-lbl">Участники</div>
-        <div class="ib-val">
-          <div class="mc-heads-row">
-            <div class="mc-head">
-              <img src="https://mc-heads.net/avatar/Demkos8224/32" alt="Demkos8224" onerror="this.src='https://mc-heads.net/avatar/Steve/32'">
-              <div class="tip">Demkos8224</div>
+    </div>
+
+    <div id="screen2" class="screen">
+        <div class="ui-panel">
+            <button class="btn" onclick="goToScreen1()">Назад</button>
+            <button class="btn" onclick="resetView(2)">Сбросить</button>
+        </div>
+
+        <div class="scene" id="scene2">
+            <div class="map-wrapper" id="wrapper2">
+                <img src="https://i.ibb.co/9mXkZ97p/Screenshot-2026-06-09-214119.png" class="map-image" alt="Map 2">
             </div>
-            <div class="mc-head">
-              <img src="https://mc-heads.net/avatar/tillzzzz/32" alt="tillzzzz" onerror="this.src='https://mc-heads.net/avatar/Steve/32'">
-              <div class="tip">tillzzzz</div>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
 
-    <h2 class="art-h2" style="margin-top:0;">Укреплённый Район Промышленного Альянса</h2>
-    <p class="art-p"><strong>УРПА</strong> — закрытое объединение ToadShield Сезона 5, основанное <strong>DUhovka</strong>. Территория с паспортной системой и промышленной инфраструктурой.</p>
-
-    <div class="state-section">
-      <div class="state-section-lbl">Постройки</div>
-      <div class="buildings-grid">
-        <a href="https://i.ibb.co/KxxVnY6v/Screenshot-2026-06-08-033814.png" target="_blank" class="building">
-          <div class="building-img"><img src="https://i.ibb.co/KxxVnY6v/Screenshot-2026-06-08-033814.png" alt="" onerror="this.parentElement.style.background='#ddd'"></div>
-          <div class="building-body">
-            <div class="building-name">Посольство на спавне</div>
-            <div class="building-desc">Выдают паспорта и проводят собеседование на въезд.</div>
-          </div>
-        </a>
-        <a href="https://i.ibb.co/LyfwRy0/Screenshot-2026-05-29-231401.png" target="_blank" class="building">
-          <div class="building-img"><img src="https://i.ibb.co/LyfwRy0/Screenshot-2026-05-29-231401.png" alt="" onerror="this.parentElement.style.background='#ddd'"></div>
-          <div class="building-body">
-            <div class="building-name">Антенна</div>
-            <div class="building-desc">Отображает данные о небесных объектах и инопланетных лучах.</div>
-          </div>
-        </a>
-        <a href="https://i.ibb.co/yFbF1T74/Screenshot-2026-06-07-043506.png" target="_blank" class="building">
-          <div class="building-img"><img src="https://i.ibb.co/yFbF1T74/Screenshot-2026-06-07-043506.png" alt="" onerror="this.parentElement.style.background='#ddd'"></div>
-          <div class="building-body">
-            <div class="building-name">Лавовый Комплекс</div>
-            <div class="building-desc">Огромное промышленное сооружение с гигантскими вентиляторами и ёмкостью лавы.</div>
-          </div>
-        </a>
-        <a href="https://i.ibb.co/mVZyrCS5/Screenshot-2026-06-08-034029.png" target="_blank" class="building">
-          <div class="building-img"><img src="https://i.ibb.co/mVZyrCS5/Screenshot-2026-06-08-034029.png" alt="" onerror="this.parentElement.style.background='#ddd'"></div>
-          <div class="building-body">
-            <div class="building-name">Территория</div>
-            <div class="building-desc">Скрытые координаты. Доступ только по паспорту.</div>
-          </div>
-        </a>
-      </div>
-    </div>
-
-    <div class="state-section">
-      <div class="state-section-lbl">Правила объединения</div>
-      <ul class="state-rules-list">
-        <li><span class="icon">⚠️</span><span><strong>Въезд запрещён</strong> без паспорта УРПА или личного приглашения.</span></li>
-        <li><span class="icon">⚠️</span><span><strong>Закрытая территория</strong> — несанкционированное проникновение нарушает правила сервера.</span></li>
-        <li><span class="icon">ℹ️</span><span>Паспорт выдают в <strong>Посольстве УРПА на спавне</strong> после собеседования.</span></li>
-        <li><span class="icon">🗑️</span><span><strong>Запрещено мусорить</strong> — все ненужные вещи в LAVA или в специальные мусорки.</span></li>
-        <li><span class="icon">❤️</span><span><strong>Запрещено убивать лавомерку</strong> — священный символ государства. Убийство строго карается.</span></li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- DETAIL: ГБСТ -->
-  <div id="state-gbst" style="display:none;">
-    <button class="state-back-btn" onclick="closeState()">← Назад к списку</button>
-    <div class="infobox">
-      <div class="infobox-title">ГБСТ</div>
-      <div class="infobox-img-body" style="background:#f0f0f0;color:#aaa;font-size:12px;font-weight:700;">Флаг отсутствует</div>
-      <div class="infobox-row"><div class="ib-lbl">Сезон</div><div class="ib-val">ToadShield S5</div></div>
-      <div class="infobox-row"><div class="ib-lbl">Статус</div><div class="ib-val"><span class="state-badge sb-open">✅ Открытое</span></div></div>
-      <div class="infobox-row">
-        <div class="ib-lbl">Лидер</div>
-        <div class="ib-val">
-          <div class="mc-heads-row">
-            <div class="mc-head">
-              <img src="https://mc-heads.net/avatar/DETKIVPODVALE/32" alt="DETKIVPODVALE" onerror="this.src='https://mc-heads.net/avatar/Steve/32'">
-              <div class="tip">DETKIVPODVALE (Лидер)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="infobox-row">
-        <div class="ib-lbl">Участники</div>
-        <div class="ib-val">
-          <div class="mc-heads-row">
-            <div class="mc-head">
-              <img src="https://mc-heads.net/avatar/Cocat112/32" alt="Cocat112" onerror="this.src='https://mc-heads.net/avatar/Steve/32'">
-              <div class="tip">Cocat112</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <h2 class="art-h2" style="margin-top:0;">Объединение Бумбумских Скибиди Туалетов</h2>
-    <p class="art-p"><strong>ГБСТ</strong> — открытое объединение ToadShield Сезона 5. Основатель и лидер: <strong>DETKIVPODVALE</strong>.</p>
-  </div>
-</div>
-
-<!-- ===== RULES ===== -->
-<div id="page-rules" class="page">
-  <div class="art-head"><h2>Правила</h2></div>
-  <p class="art-p">Зашёл на сервер — принял правила. Незнание не освобождает от ответственности.</p>
-  <div class="rule-tabs">
-    <button class="rule-tab active" onclick="showRule('r-main',this)">Основное</button>
-    <button class="rule-tab" onclick="showRule('r-grief',this)">Грифинг и имущество</button>
-    <button class="rule-tab" onclick="showRule('r-pvp',this)">PvP</button>
-    <button class="rule-tab" onclick="showRule('r-events',this)">Ивенты</button>
-    <button class="rule-tab" onclick="showRule('r-territory',this)">Территории</button>
-    <button class="rule-tab" onclick="showRule('r-chat',this)">Чат</button>
-    <button class="rule-tab" onclick="showRule('r-activity',this)">Активность</button>
-    <button class="rule-tab" onclick="showRule('r-police',this)">Полиция</button>
-    <button class="rule-tab" onclick="showRule('r-fines',this)">Штрафы</button>
-  </div>
-
-  <div id="r-main" class="rule-sec">
-    <div class="rule-note">ToadShield — свободный сервер. Без доната и привата. Единственное условие — <strong>не порти жизнь другим</strong>.</div>
-    <div class="rule-item good">
-      <div class="rule-item-title">Что разрешено</div>
-      <div class="rule-item-body">Создавать Объединения с любым названием и формой правления, объявлять войны по взаимному согласию, торговать, строить где угодно (кроме зон рядом с чужими без договорённости), проводить ивенты, турниры, аукционы, лотереи.</div>
-    </div>
-    <div class="rule-item good">
-      <div class="rule-item-title">Покупки в магазине</div>
-      <div class="rule-item-body">Открытые магазины используют бочки: возьми товар, положи оплату АР в бочку оплаты.</div>
-    </div>
-    <div class="rule-item warn">
-      <div class="rule-item-title">Уважай других игроков</div>
-      <div class="rule-item-body">Без оскорблений, провокаций и токсичности. Конфликты — через диалог.<div class="rule-badge rb-warn">⚠ Предупреждение, затем мут</div></div>
-    </div>
-    <div class="rule-item danger">
-      <div class="rule-item-title">Читы и нечестные моды запрещены</div>
-      <div class="rule-item-body">X-Ray, SpeedHack, AutoClicker, нечестный полёт — всё запрещено. Разрешены: minimap-моды, OptiFine, Sodium, шейдеры.<div class="rule-badge rb-ban">🚫 Перманентная блокировка</div></div>
-    </div>
-    <div class="rule-item danger">
-      <div class="rule-item-title">Торговля за реальные деньги запрещена</div>
-      <div class="rule-item-body"><div class="rule-badge rb-ban">🚫 Бан для всех участников</div></div>
-    </div>
-    <div class="rule-item danger">
-      <div class="rule-item-title">Грубые нарушения</div>
-      <div class="rule-item-body">Доксинг, обход бана через другой аккаунт, дискриминация, реклама других серверов.<div class="rule-badge rb-ban">🚫 Перманентная блокировка</div></div>
-    </div>
-    <div class="rule-item warn">
-      <div class="rule-item-title">Ответственность за аккаунт</div>
-      <div class="rule-item-body">Всё, что происходит на твоём аккаунте — твоя ответственность, даже если играл кто-то другой.</div>
-    </div>
-  </div>
-
-  <div id="r-grief" class="rule-sec" style="display:none;">
-    <div class="rule-note">Любой способ намеренно навредить чужому имуществу — нарушение. Кирка, ТНТ, огонь, лава — неважно. «Я не бил по блокам, я просто взорвал рядом» — не оправдание.</div>
-    <div class="rule-item danger"><div class="rule-item-title">Нельзя ломать чужие постройки</div><div class="rule-item-body">Любым методом: кирка, взрывы, огонь, лава, потоп, редстоун-ловушки.<div class="rule-badge rb-ban">🚫 Возмещение + штраф 32–512 АР</div></div></div>
-    <div class="rule-item danger"><div class="rule-item-title">Поджог чужих построек</div><div class="rule-item-body"><div class="rule-badge rb-ban">🚫 Возмещение + штраф 64–256 АР</div></div></div>
-    <div class="rule-item warn"><div class="rule-item-title">Хранение ТНТ</div><div class="rule-item-body">Только в защищённом месте с табличкой «ТНТ ХРАНИЛИЩЕ».<div class="rule-badge rb-warn">⚠ Штраф 32 АР + ответственность за урон</div></div></div>
-    <div class="rule-item danger"><div class="rule-item-title">Кража из хранилищ и дропа</div><div class="rule-item-body">Брать что-либо из чужих сундуков, бочек, шалкер-боксов.<div class="rule-badge rb-ban">🚫 Возмещение + штраф 16–128 АР</div></div></div>
-    <div class="rule-item danger"><div class="rule-item-title">Убийство прирученных животных</div><div class="rule-item-body">Нельзя убивать чужих прирученных животных: собак, кошек, лошадей, попугаев, лам.<div class="rule-badge rb-ban">🚫 64–128 АР за каждое животное</div></div></div>
-    <div class="rule-item danger"><div class="rule-item-title">Лагмашины</div><div class="rule-item-body"><div class="rule-badge rb-ban">🚫 Перманентная блокировка</div></div></div>
-  </div>
-
-  <div id="r-pvp" class="rule-sec" style="display:none;">
-    <div class="rule-item warn"><div class="rule-item-title">PvP только по согласию</div><div class="rule-item-body">Убивать игроков без согласия запрещено. Для дуэли используй <code>/дуэль &lt;ник&gt;</code>.<div class="rule-badge rb-warn">⚠ 32–128 АР</div></div></div>
-    <div class="rule-item danger"><div class="rule-item-title">Новичков убивать нельзя</div><div class="rule-item-body">Игроки менее 24 часов на сервере полностью защищены.<div class="rule-badge rb-ban">🚫 128 АР — фиксированный штраф</div></div></div>
-    <div class="rule-item warn"><div class="rule-item-title">Война между Объединениями</div><div class="rule-item-body">PvP-войны разрешены при взаимном объявлении войны через чат объявлений (@).</div></div>
-    <div class="rule-item warn"><div class="rule-item-title">Систематическое преследование</div><div class="rule-item-body">Целенаправленное повторное убийство одного игрока — харассмент.<div class="rule-badge rb-warn">⚠ 128–256 АР + возможный бан</div></div></div>
-  </div>
-
-  <div id="r-events" class="rule-sec" style="display:none;">
-    <div class="rule-item info"><div class="rule-item-title">Инопланетный луч</div><div class="rule-item-body">Случайный серверный луч по карте. Обычно целится в <strong>радары, антенны или магнитные установки</strong>. Не управляется игроками.</div></div>
-    <div class="rule-item good">
-      <div class="rule-item-title">Кому принадлежит лут с метеорита</div>
-      <div class="rule-item-body">
-        <ul>
-          <li>Упало на <strong>твоей земле</strong> — твоё, лутай спокойно</li>
-          <li>Упало на <strong>чужой земле</strong> — спроси разрешения</li>
-          <li>Упало на <strong>нейтральной территории</strong> — свободно для всех</li>
-        </ul>
-        <div class="rule-badge rb-warn">⚠ Лут без разрешения = кража, штраф 32–128 АР</div>
-      </div>
-    </div>
-  </div>
-
-  <div id="r-territory" class="rule-sec" style="display:none;">
-    <div class="rule-item good"><div class="rule-item-title">Свои законы на своей территории</div><div class="rule-item-body">Запрет входить с животными, дресс-код, визовый режим — любые правила внутри своего Объединения.</div></div>
-    <div class="rule-item danger"><div class="rule-item-title">Нельзя занимать территорию без строительства</div><div class="rule-item-body"><div class="rule-badge rb-ban">🚫 Штраф или конфискация</div></div></div>
-    <div class="rule-item warn"><div class="rule-item-title">Закрытые территории</div><div class="rule-item-body">Входить без разрешения запрещено.<div class="rule-badge rb-warn">⚠ 32–64 АР</div></div></div>
-    <div class="rule-item"><div class="rule-item-title">Строить рядом с чужой территорией</div><div class="rule-item-body">В пределах <strong>300 блоков</strong> от чужой территории — договорись с владельцем заранее.</div></div>
-  </div>
-
-  <div id="r-chat" class="rule-sec" style="display:none;">
-    <div class="rule-note"><strong style="color:#0a6cff;">@</strong> — чат объявлений (виден всем) &nbsp;&nbsp; <strong style="color:#e8a000;">!</strong> — глобальный чат &nbsp;&nbsp; без префикса — локальный</div>
-    <div class="rule-item warn"><div class="rule-item-title">Спам и флуд запрещены</div><div class="rule-item-body">Повторяющиеся сообщения, капслок, засор чата.<div class="rule-badge rb-warn">⚠ Мут от 15 минут</div></div></div>
-  </div>
-
-  <div id="r-activity" class="rule-sec" style="display:none;">
-    <div class="warn-box"><strong>7 дней без входа без предупреждения = конфискация!</strong> Уходишь надолго — предупреди: <a href="https://t.me/ToadShield_support" target="_blank">@ToadShield_support</a></div>
-    <div class="act-grid">
-      <div class="act-b g"><div class="act-v">1–6 дней</div><div class="act-l">Всё нормально</div></div>
-      <div class="act-b y"><div class="act-v">7-й день</div><div class="act-l">Напиши поддержке</div></div>
-      <div class="act-b r"><div class="act-v">7+ дней</div><div class="act-l">Конфискация</div></div>
-    </div>
-    <p class="art-p">За каждый <strong>1 час игры</strong> начисляется <strong>5 АР</strong>.</p>
-  </div>
-
-  <div id="r-police" class="rule-sec" style="display:none;">
-    <div class="info-box">Полиция следит за правилами, разбирает конфликты, выписывает штрафы.</div>
-    <table class="police-table">
-      <tr><th>Ник</th><th>Должность</th></tr>
-      <tr>
-        <td style="display:flex;align-items:center;gap:8px;">
-          <div class="mc-head" style="position:relative;">
-            <img src="https://mc-heads.net/avatar/tillzzzz/32" alt="tillzzzz" onerror="this.src='https://mc-heads.net/avatar/Steve/32'">
-            <div class="tip">tillzzzz</div>
-          </div>
-          <strong>tillzzzz</strong>
-        </td>
-        <td><span class="rank-badge rank-chief">Глава Полиции</span></td>
-      </tr>
-      <tr>
-        <td style="display:flex;align-items:center;gap:8px;">
-          <div class="mc-head" style="position:relative;">
-            <img src="https://mc-heads.net/avatar/demkos8224/32" alt="demkos8224" onerror="this.src='https://mc-heads.net/avatar/Steve/32'">
-            <div class="tip">demkos8224</div>
-          </div>
-          <strong>demkos8224</strong>
-        </td>
-        <td><span class="rank-badge rank-deputy">Заместитель главы</span></td>
-      </tr>
-      <tr>
-        <td style="color:#888;font-style:italic;">Ты можешь быть здесь</td>
-        <td><span class="rank-badge rank-off">Полицейский</span></td>
-      </tr>
-    </table>
-    <div class="rule-item danger"><div class="rule-item-title">7 дней без входа = снятие с должности</div><div class="rule-item-body"></div></div>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLScB7DR1HOExsfmURCZBCH1-_MSZS6-H5rIGq4Z-zRBbvyYfjQ/viewform" target="_blank" class="btn btn-blue" style="display:inline-flex;margin-top:12px;">Подать анкету в полицию</a>
-  </div>
-
-  <div id="r-fines" class="rule-sec" style="display:none;">
-    <div class="info-box"><code>/myfineinfo</code> — посмотреть штрафы &nbsp;&nbsp; <code>/payfine</code> — оплатить</div>
-    <p class="art-p" style="font-size:12.5px;color:#54595d;">Полицейский обязан указать статью и причину. Штраф без них может быть аннулирован.</p>
-    <table class="cmd-table">
-      <tr><th>Статья</th><th>Нарушение</th><th>Штраф</th></tr>
-      <tr><td colspan="3" style="background:#eaecf0;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#54595d;">Убийства и PvP</td></tr>
-      <tr><td>§3.1</td><td>Убийство без согласия</td><td>32–128 АР</td></tr>
-      <tr><td>§3.1</td><td>Убийство новичка (первые 24 ч)</td><td><strong>128 АР</strong></td></tr>
-      <tr><td>§3.1</td><td>Систематическое преследование</td><td><strong>128–256 АР</strong></td></tr>
-      <tr><td colspan="3" style="background:#eaecf0;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#54595d;">Постройки и поджоги</td></tr>
-      <tr><td>§2.1</td><td>Повреждение постройки</td><td>32–128 АР + возмещение</td></tr>
-      <tr><td>§2.1</td><td>Полное уничтожение постройки</td><td><strong>128–512 АР + возмещение</strong></td></tr>
-      <tr><td>§2.2</td><td>Поджог чужой постройки</td><td><strong>64–256 АР + возмещение</strong></td></tr>
-      <tr><td colspan="3" style="background:#eaecf0;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#54595d;">Кража</td></tr>
-      <tr><td>§2.3</td><td>Кража из сундука/хранилища</td><td>16–128 АР + возмещение</td></tr>
-      <tr><td>§2.3</td><td>Лут метеорита/луча без разрешения</td><td>32–128 АР</td></tr>
-      <tr><td colspan="3" style="background:#eaecf0;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#54595d;">Животные и территории</td></tr>
-      <tr><td>§2.4</td><td>Убийство прирученного животного</td><td><strong>64–128 АР за каждое</strong></td></tr>
-      <tr><td>§5.2</td><td>Проникновение на закрытую территорию</td><td>32–64 АР</td></tr>
-      <tr><td colspan="3" style="background:#eaecf0;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#54595d;">Чат и прочее</td></tr>
-      <tr><td>§6.2</td><td>Спам / флуд</td><td>8–32 АР</td></tr>
-      <tr><td>§6.1</td><td>Оскорбления и провокации</td><td>16–64 АР</td></tr>
-      <tr><td>—</td><td>Повторное нарушение в течение 7 дней</td><td><strong>Штраф × 2</strong></td></tr>
-      <tr><td>—</td><td>Отказ платить штраф</td><td><strong>Заморозка баланса</strong></td></tr>
-    </table>
-  </div>
-</div>
-
-<!-- ===== WIKI ===== -->
-<div id="page-wiki" class="page">
-  <div class="art-head"><h2>Вики</h2></div>
-  <div class="wiki-wrap">
-    <nav class="wiki-nav">
-      <div class="wiki-nav-h">Введение</div>
-      <a class="wl active" id="wl-intro" onclick="sw('intro')">🏠 Введение</a>
-      <a class="wl" id="wl-faq" onclick="sw('faq')">❓ FAQ</a>
-      <a class="wl" id="wl-commands" onclick="sw('commands')">⌨️ Команды</a>
-      <a class="wl" id="wl-chat" onclick="sw('chat')">💬 Чат</a>
-      <div class="wiki-nav-h">Игра</div>
-      <a class="wl" id="wl-events" onclick="sw('events')">✨ Ивенты</a>
-      <a class="wl" id="wl-police" onclick="sw('police')">🛡️ Полиция</a>
-      <a class="wl" id="wl-activity" onclick="sw('activity')">🕐 Активность</a>
-      <a class="wl" id="wl-fines" onclick="sw('fines')">⚠️ Штрафы</a>
-      <div class="wiki-nav-h">Справка</div>
-      <a class="wl" id="wl-currency" onclick="sw('currency')">💰 Валюта АР</a>
-      <a class="wl" id="wl-frames" onclick="sw('frames')">🖼️ Рамки</a>
-      <a class="wl" id="wl-minecart" onclick="sw('minecart')">🚃 Вагонетка</a>
-      <a class="wl" id="wl-dev" onclick="sw('dev')">👤 Разработчики</a>
-    </nav>
-    <div class="wiki-area">
-
-      <div id="wc-intro" class="wiki-sec active">
-        <h1>Введение</h1>
-        <p><strong>ToadShield</strong> — приватный <strong>около-ванильный</strong> Minecraft-сервер. Версия <strong>1.21 Java Edition</strong>. Лицензия не нужна. Без доната и привата.</p>
-        <p>IP: <code>chanland.play-network.io</code></p>
-        <h2>Как попасть на сервер</h2>
-        <ol>
-          <li>Вступи в <a href="https://discord.gg/6pAg48UMmh" target="_blank">Discord-сервер</a></li>
-          <li>Заполни анкету и дождись одобрения</li>
-          <li>Добавь IP <code>chanland.play-network.io</code> вручную в стандартном лаунчере</li>
-          <li>Заходи и играй!</li>
-        </ol>
-        <h2>Награда за онлайн</h2>
-        <p>За каждый <strong>1 час игры</strong> автоматически начисляется <strong>5 АР</strong>.</p>
-        <div class="wiki-warn">⚠️ <strong>7+ дней без входа без предупреждения?</strong> Конфискация! Предупреди: <a href="https://t.me/ToadShield_support" target="_blank">@ToadShield_support</a></div>
-      </div>
-
-      <div id="wc-faq" class="wiki-sec">
-        <h1>FAQ</h1>
-        <h2>Как зайти?</h2>
-        <p>Discord → анкета → одобрение → IP <code>chanland.play-network.io</code></p>
-        <h2>Нужна ли лицензия?</h2>
-        <p><strong>Нет.</strong> Сервер принимает пиратские аккаунты.</p>
-        <h2>Как написать всем?</h2>
-        <p><strong style="color:#e8a000;">!</strong> — глобальный чат. <strong style="color:#0a6cff;">@</strong> — чат объявлений.</p>
-        <h2>Что если не зайти неделю?</h2>
-        <p>7+ дней без предупреждения — конфискация. Предупреди заранее — и всё сохранится!</p>
-        <h2>Что делать с метеоритом на чужой земле?</h2>
-        <p>Спроси разрешения у владельца. Без разрешения = кража (32–128 АР).</p>
-        <h2>Как создать Объединение?</h2>
-        <p>Место → скриншот → обведи в Paint → заполни анкету. Подробнее в разделе <span onclick="pg('states')" style="color:#0a6cff;cursor:pointer;">Объединения</span>.</p>
-      </div>
-
-      <div id="wc-commands" class="wiki-sec">
-        <h1>Команды</h1>
-        <h2>Экономика и баланс</h2>
-        <table class="cmd-table">
-          <tr><th>Команда</th><th>Что делает</th></tr>
-          <tr><td><code>/банк</code></td><td>Показать баланс АР</td></tr>
-          <tr><td><code>/заплатить &lt;ник&gt; &lt;сумма&gt;</code></td><td>Отправить АР игроку</td></tr>
-          <tr><td><code>/топбаланс</code></td><td>Рейтинг по балансу</td></tr>
-          <tr><td><code>/скрытьбаланс</code></td><td>Скрыть свой баланс</td></tr>
-        </table>
-        <h2>Штрафы</h2>
-        <table class="cmd-table">
-          <tr><th>Команда</th><th>Что делает</th></tr>
-          <tr><td><code>/payfine</code></td><td>Оплатить штраф</td></tr>
-          <tr><td><code>/myfineinfo</code></td><td>Посмотреть мои штрафы</td></tr>
-        </table>
-        <h2>Дуэли</h2>
-        <table class="cmd-table">
-          <tr><th>Команда</th><th>Что делает</th></tr>
-          <tr><td><code>/дуэль &lt;ник&gt;</code></td><td>Вызвать на дуэль</td></tr>
-          <tr><td><code>/дуэльстат</code></td><td>Статистика дуэлей</td></tr>
-        </table>
-        <h2>Перемещение</h2>
-        <table class="cmd-table">
-          <tr><th>Команда</th><th>Что делает</th></tr>
-          <tr><td><code>/spawn</code></td><td>На спавн (только из лобби)</td></tr>
-          <tr><td><code>/back</code></td><td>Назад</td></tr>
-          <tr><td><code>/sit · /lay · /spin · /dance</code></td><td>Позы персонажа</td></tr>
-        </table>
-      </div>
-
-      <div id="wc-chat" class="wiki-sec">
-        <h1>Чат сервера</h1>
-        <p>На сервере три канала чата:</p>
-        <div class="pfx-row">
-          <span class="pfx-sym pfx-at">@</span>
-          <div><div class="pfx-title">Чат объявлений</div><div class="pfx-desc">Начни сообщение с <strong style="color:#0a6cff;">@</strong> — увидят все. Для торговли, анонсов, событий.</div></div>
-        </div>
-        <div class="pfx-row">
-          <span class="pfx-sym pfx-ex">!</span>
-          <div><div class="pfx-title">Глобальный чат</div><div class="pfx-desc">Начни с <strong style="color:#e8a000;">!</strong> — виден всем на сервере независимо от расстояния.</div></div>
-        </div>
-        <div style="font-size:12.5px;color:#54595d;padding:8px 12px;background:#f8f9fa;border:1px solid #e5e5e5;border-radius:4px;margin-top:6px;">Без префикса — локальный чат (виден только рядом стоящим).</div>
-      </div>
-
-      <div id="wc-events" class="wiki-sec">
-        <h1>Ивенты</h1>
-        <h2>Метеорит</h2>
-        <p>Падают случайно по карте. Принадлежат <strong>владельцу территории</strong>, куда упал.</p>
-        <ul>
-          <li>На <strong>твоей земле</strong> — твоё, лутай спокойно.</li>
-          <li>На <strong>чужой земле</strong> — спроси разрешения.</li>
-          <li>На <strong>нейтральной территории</strong> — свободно для всех.</li>
-        </ul>
-        <div class="wiki-warn">⚠️ <strong>Взять лут без разрешения = кража.</strong> Штраф 32–128 АР.</div>
-        <h2>Инопланетный луч</h2>
-        <p>Случайный серверный луч по карте. Обычно целится в <strong>радары, антенны или магнитные установки</strong>. Не управляется игроками.</p>
-      </div>
-
-      <div id="wc-police" class="wiki-sec">
-        <h1>Полиция</h1>
-        <p>Следит за порядком, разбирает конфликты, выписывает штрафы.</p>
-        <h2>Состав</h2>
-        <table class="police-table">
-          <tr><th>Ник</th><th>Должность</th></tr>
-          <tr>
-            <td style="display:flex;align-items:center;gap:8px;">
-              <div class="mc-head" style="position:relative;">
-                <img src="https://mc-heads.net/avatar/tillzzzz/32" alt="tillzzzz" onerror="this.src='https://mc-heads.net/avatar/Steve/32'">
-                <div class="tip">tillzzzz</div>
-              </div>
-              <strong>tillzzzz</strong>
-            </td>
-            <td><span class="rank-badge rank-chief">Глава Полиции</span></td>
-          </tr>
-          <tr>
-            <td style="display:flex;align-items:center;gap:8px;">
-              <div class="mc-head" style="position:relative;">
-                <img src="https://mc-heads.net/avatar/demkos8224/32" alt="demkos8224" onerror="this.src='https://mc-heads.net/avatar/Steve/32'">
-                <div class="tip">demkos8224</div>
-              </div>
-              <strong>demkos8224</strong>
-            </td>
-            <td><span class="rank-badge rank-deputy">Заместитель главы</span></td>
-          </tr>
-          <tr>
-            <td style="color:#888;font-style:italic;">Ты можешь быть здесь</td>
-            <td><span class="rank-badge rank-off">Полицейский</span></td>
-          </tr>
-        </table>
-        <div class="wiki-warn">⚠️ 7 дней без входа без предупреждения = снятие с должности!</div>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLScB7DR1HOExsfmURCZBCH1-_MSZS6-H5rIGq4Z-zRBbvyYfjQ/viewform" target="_blank" class="btn btn-blue" style="display:inline-flex;margin-top:12px;">Подать анкету в полицию</a>
-      </div>
-
-      <div id="wc-activity" class="wiki-sec">
-        <h1>Активность</h1>
-        <div class="wiki-warn">⚠️ <strong>7+ дней без входа → конфискация!</strong> Предупреди: <a href="https://t.me/ToadShield_support" target="_blank">@ToadShield_support</a></div>
-        <div class="act-grid">
-          <div class="act-b g"><div class="act-v">1–6 дней</div><div class="act-l">Всё нормально</div></div>
-          <div class="act-b y"><div class="act-v">7-й день</div><div class="act-l">Напиши поддержке!</div></div>
-          <div class="act-b r"><div class="act-v">7+ дней</div><div class="act-l">Конфискация</div></div>
-        </div>
-      </div>
-
-      <div id="wc-fines" class="wiki-sec">
-        <h1>Штрафы</h1>
-        <p><code>/myfineinfo</code> — посмотреть &nbsp;·&nbsp; <code>/payfine</code> — оплатить</p>
-        <div class="wiki-note">ℹ️ Полицейский обязан указать статью и причину. Штраф без них может быть аннулирован.</div>
-        <table class="cmd-table">
-          <tr><th>Ст.</th><th>Нарушение</th><th>Штраф</th></tr>
-          <tr><td>§3.1</td><td>Убийство без согласия</td><td>32–128 АР</td></tr>
-          <tr><td>§3.1</td><td>Убийство новичка (первые 24 ч)</td><td>128 АР</td></tr>
-          <tr><td>§3.1</td><td>Систематическое преследование</td><td>128–256 АР</td></tr>
-          <tr><td>§2.1</td><td>Повреждение постройки</td><td>32–128 АР + возмещение</td></tr>
-          <tr><td>§2.1</td><td>Полное уничтожение постройки</td><td>128–512 АР + возмещение</td></tr>
-          <tr><td>§2.2</td><td>Поджог чужой постройки</td><td>64–256 АР + возмещение</td></tr>
-          <tr><td>§2.3</td><td>Кража из сундука/хранилища</td><td>16–128 АР + возмещение</td></tr>
-          <tr><td>§2.3</td><td>Лут метеорита/луча без разрешения</td><td>32–128 АР</td></tr>
-          <tr><td>§2.4</td><td>Убийство прирученного животного</td><td>64–128 АР за каждое</td></tr>
-          <tr><td>§5.2</td><td>Проникновение на закрытую территорию</td><td>32–64 АР</td></tr>
-          <tr><td>§6.2</td><td>Спам / флуд</td><td>8–32 АР</td></tr>
-          <tr><td>§6.1</td><td>Оскорбления и провокации</td><td>16–64 АР</td></tr>
-          <tr><td>—</td><td>Повторное нарушение в течение 7 дней</td><td>Штраф × 2</td></tr>
-          <tr><td>—</td><td>Отказ платить штраф</td><td>Заморозка баланса</td></tr>
-        </table>
-      </div>
-
-      <div id="wc-currency" class="wiki-sec">
-        <h1>Валюта — АР</h1>
-        <p>АР (Алмазные Ресурсы / Шёлковое касание) — основная валюта сервера. 1 АР = ресурс, добытый инструментом с Silk Touch.</p>
-        <h2>Как получить АР</h2>
-        <ul>
-          <li><strong>Онлайн</strong> — 5 АР/час автоматически</li>
-          <li><strong>Торговля</strong> — продавай ресурсы и вещи другим игрокам</li>
-          <li><strong>Промокоды</strong> — <span onclick="pg('promo')" style="color:#0a6cff;cursor:pointer;">раздел «Промокоды»</span></li>
-        </ul>
-        <h2>Команды</h2>
-        <table class="cmd-table">
-          <tr><th>Команда</th><th>Что делает</th></tr>
-          <tr><td><code>/банк</code></td><td>Показать баланс</td></tr>
-          <tr><td><code>/заплатить &lt;ник&gt; &lt;сумма&gt;</code></td><td>Отправить АР</td></tr>
-          <tr><td><code>/топбаланс</code></td><td>Рейтинг богачей</td></tr>
-        </table>
-      </div>
-
-      <div id="wc-frames" class="wiki-sec">
-        <h1>Невидимые рамки</h1>
-        <p>Как сделать предметную рамку невидимой:</p>
-        <ol>
-          <li>Поставь обычную рамку на стену.</li>
-          <li>Положи нужный предмет внутрь.</li>
-          <li><strong>Ножницы + Shift + ПКМ</strong> по рамке — она станет невидимой.</li>
-        </ol>
-        <div class="wiki-note">ℹ️ Рамка всё ещё кликабельна. Невидимость только визуальная.</div>
-      </div>
-
-      <div id="wc-minecart" class="wiki-sec">
-        <h1>Вагонетка без рельс</h1>
-        <p>Езди куда угодно без рельсов — нужно только топливо в руке!</p>
-        <h2>Как ехать</h2>
-        <ol>
-          <li>Поставь <strong>вагонетку</strong> на землю.</li>
-          <li>Возьми <strong>топливо в руку</strong>.</li>
-          <li>Нажми <strong>ПКМ</strong> по вагонетке — садись и едешь.</li>
-        </ol>
-        <h2>Топливо и время горения</h2>
-        <table class="fuel-tbl">
-          <tr><th>Топливо</th><th>Время</th><th>Примечание</th></tr>
-          <tr><td>Доски / палки</td><td>60 сек</td><td style="color:#888;">Очень мало</td></tr>
-          <tr><td>Уголь / древесный уголь</td><td>120 сек</td><td>Хорошо</td></tr>
-          <tr><td>Стержень ифрита</td><td>180 сек</td><td>Нижний мир</td></tr>
-          <tr><td>Ведро лавы</td><td>600 сек</td><td>Долго</td></tr>
-          <tr><td><strong>Блок угля</strong></td><td><strong>1200 сек</strong></td><td style="color:#1a7d1a;font-weight:700;">🏆 Лучший!</td></tr>
-        </table>
-        <div class="wiki-note">ℹ️ Блок угля = 20 минут — идеально для дальних поездок.</div>
-      </div>
-
-      <div id="wc-dev" class="wiki-sec">
-        <h1>Разработчики</h1>
-        <div style="display:flex;align-items:center;gap:14px;background:#f8f9fa;border:1px solid #a2a9b1;border-radius:6px;padding:14px;margin-bottom:14px;">
-          <img src="https://mc-heads.net/avatar/DUhovka/64" style="width:48px;height:48px;border-radius:8px;" alt="DUhovka" onerror="this.style.display='none'">
-          <div>
-            <div style="font-size:17px;font-weight:800;">DUhovka</div>
-            <div style="font-size:11.5px;color:#0a6cff;margin-bottom:3px;">Владелец и создатель сервера</div>
-            <div style="font-size:12.5px;color:#444;">Создаёт, развивает и играет каждый день.</div>
-          </div>
-        </div>
-        <h2>Ссылки</h2>
-        <ul>
-          <li><strong>Twitch:</strong> <a href="https://www.twitch.tv/duhovkatw" target="_blank">twitch.tv/duhovkatw</a></li>
-          <li><strong>YouTube (личный):</strong> <a href="https://www.youtube.com/@mihahissu" target="_blank">@mihahissu</a></li>
-          <li><strong>YouTube (сервер):</strong> <a href="https://www.youtube.com/@frogshieldofficial" target="_blank">@frogshieldofficial</a></li>
-        </ul>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- ===== CRAFTS ===== -->
-<div id="page-crafts" class="page">
-  <div class="art-head"><h2>Крафты</h2></div>
-  <p class="art-p">Уникальные предметы ToadShield. Рецепты придуманы игроками и администрацией.</p>
-  <div class="info-box">Хочешь предложить крафт? Напиши в <a href="https://discord.gg/6pAg48UMmh" target="_blank">Discord</a>.</div>
-
-  <div class="craft-card">
-    <div class="craft-head">👜 Ловец душ — уникальный предмет</div>
-    <div class="craft-body">
-      <div class="craft-desc">
-        <p>Уникальный мешок, в который можно засунуть до <strong>3 мобов</strong>. После поимки мобов можно разместить в любом месте на карте.</p>
-        <ul>
-          <li>Вмещает до 3 мобов</li>
-          <li>Мобы сохраняются при переносе</li>
-          <li>Можно поставить в любом месте</li>
-        </ul>
-      </div>
-      <div class="craft-img">
-        <img src="https://i.ibb.co/9k9dJVcb/Screenshot-2026-06-08-225428.png" alt="Крафт Ловец душ">
-      </div>
-    </div>
-  </div>
-
-  <div class="craft-card">
-    <div class="craft-head">✨ Блок света — строительный блок</div>
-    <div class="craft-body">
-      <div class="craft-desc">
-        <p>Невидимый источник света. Даёт полный уровень освещённости (15) и не виден в строительстве.</p>
-        <ul>
-          <li>Полностью невидим</li>
-          <li>Уровень света 15</li>
-          <li>Идеально для интерьеров</li>
-        </ul>
-      </div>
-      <div class="craft-img">
-        <img src="https://i.ibb.co/LzRVNmdc/Screenshot-2026-06-08-225725.png" alt="Крафт Блок света">
-      </div>
-    </div>
-  </div>
-
-  <div class="craft-card">
-    <div class="craft-head">🎒 Ловец игроков — уникальный предмет</div>
-    <div class="craft-body">
-      <div class="craft-desc">
-        <p>Позволяет поймать до <strong>3 игроков</strong> в мешок и переместить их в любое место на карте.</p>
-        <ul>
-          <li>Вмещает до 3 игроков</li>
-          <li>Можно поставить в любом месте</li>
-          <li>Соблюдай правила PvP при использовании!</li>
-        </ul>
-      </div>
-      <div class="craft-img">
-        <img src="https://i.ibb.co/27pnw6Th/Screenshot-2026-06-08-230254.png" alt="Крафт Ловец игроков">
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== ABOUT ===== -->
-<div id="page-about" class="page">
-  <div class="art-head"><h2>О сервере</h2></div>
-  <div class="about-tabs">
-    <div class="about-tab active" onclick="showAbout('ab-info',this)">ToadShield</div>
-    <div class="about-tab" onclick="showAbout('ab-seasons',this)">Сезоны</div>
-    <div class="about-tab" onclick="showAbout('ab-commands',this)">Команды</div>
-    <div class="about-tab" onclick="showAbout('ab-dev',this)">Команда</div>
-  </div>
-
-  <div id="ab-info" class="apanel active">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-      <div style="width:44px;height:44px;border-radius:8px;overflow:hidden;border:1px solid #a2a9b1;">
-        <img src="https://i.ibb.co/HTTTqfzx/Chat-GPT-Image-29-2026-17-06-33.png" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
-      </div>
-      <div>
-        <div style="font-size:18px;font-weight:800;">ToadShield</div>
-        <div style="font-size:12px;color:#666;">Приватный Minecraft сервер</div>
-      </div>
-    </div>
-    <p class="art-p">Честная около-ванильная игра с экономикой, Объединениями и живым сообществом. Без доната и привата. Пиратские аккаунты поддерживаются.</p>
-    <div class="stat-grid">
-      <div class="stat-b"><div class="stat-v">5</div><div class="stat-l">Текущий сезон</div></div>
-      <div class="stat-b"><div class="stat-v">1.21</div><div class="stat-l">Версия Java</div></div>
-      <div class="stat-b"><div class="stat-v">FREE</div><div class="stat-l">Доступ</div></div>
-    </div>
-    <p class="art-p"><strong>IP:</strong> <code>chanland.play-network.io</code></p>
-    <p class="art-p"><strong>Награда за онлайн:</strong> За каждый 1 час игры автоматически начисляется 5 АР.</p>
-    <div class="warn-box"><strong>7+ дней без входа без предупреждения — конфискация!</strong> Предупреди: <a href="https://t.me/ToadShield_support" target="_blank">@ToadShield_support</a></div>
-  </div>
-
-  <div id="ab-seasons" class="apanel">
-    <div class="season-grid">
-      <div class="season-b current">
-        <div class="season-name">ToadShield S5</div>
-        <div class="season-dates">5 апр 2026 — сейчас</div>
-        <div class="current-badge">● Текущий</div>
-      </div>
-      <div class="season-b"><div class="season-name">ToadShield S4</div><div class="season-dates">13 окт 2025 — 4 апр 2026</div></div>
-      <div class="season-b"><div class="season-name">ToadShield S3</div><div class="season-dates">1 янв — 10 окт 2025</div></div>
-      <div class="season-b"><div class="season-name">ToadShield S1</div><div class="season-dates">25 апр — 7 июл 2023</div></div>
-    </div>
-  </div>
-
-  <div id="ab-commands" class="apanel">
-    <h2 class="art-h2" style="margin-top:10px;">Все команды сервера</h2>
-    <table class="cmd-table">
-      <tr><th>Команда</th><th>Что делает</th></tr>
-      <tr><td><code>/банк</code></td><td>Показать баланс АР</td></tr>
-      <tr><td><code>/заплатить &lt;ник&gt; &lt;сумма&gt;</code></td><td>Отправить АР</td></tr>
-      <tr><td><code>/топбаланс</code></td><td>Рейтинг по балансу</td></tr>
-      <tr><td><code>/скрытьбаланс</code></td><td>Скрыть свой баланс</td></tr>
-      <tr><td><code>/дуэль &lt;ник&gt;</code></td><td>Вызвать на дуэль</td></tr>
-      <tr><td><code>/дуэльстат</code></td><td>Статистика дуэлей</td></tr>
-      <tr><td><code>/payfine</code></td><td>Оплатить штраф</td></tr>
-      <tr><td><code>/myfineinfo</code></td><td>Посмотреть мои штрафы</td></tr>
-      <tr><td><code>/spawn</code></td><td>На спавн (только из лобби)</td></tr>
-      <tr><td><code>/back</code></td><td>Назад</td></tr>
-      <tr><td><code>/sit · /lay · /spin · /dance</code></td><td>Позы персонажа</td></tr>
-    </table>
-  </div>
-
-  <div id="ab-dev" class="apanel">
-    <div style="display:flex;align-items:center;gap:14px;background:#f8f9fa;border:1px solid #a2a9b1;border-radius:6px;padding:14px;margin-bottom:14px;">
-      <img src="https://mc-heads.net/avatar/DUhovka/64" style="width:48px;height:48px;border-radius:8px;" alt="DUhovka" onerror="this.style.display='none'">
-      <div>
-        <div style="font-size:17px;font-weight:800;">DUhovka</div>
-        <div style="font-size:11.5px;color:#0a6cff;margin-bottom:3px;">Владелец и создатель сервера</div>
-        <div style="font-size:12.5px;color:#444;">Создаёт, развивает и играет каждый день.</div>
-      </div>
-    </div>
-    <p class="art-p"><strong>Twitch:</strong> <a href="https://www.twitch.tv/duhovkatw" target="_blank">twitch.tv/duhovkatw</a></p>
-    <p class="art-p"><strong>YouTube (личный):</strong> <a href="https://www.youtube.com/@mihahissu" target="_blank">@mihahissu</a></p>
-    <p class="art-p"><strong>YouTube (сервер):</strong> <a href="https://www.youtube.com/@frogshieldofficial" target="_blank">@frogshieldofficial</a></p>
-  </div>
-</div>
-
-<!-- ===== PROMO ===== -->
-<div id="page-promo" class="page">
-  <div class="art-head"><h2>Промокоды</h2></div>
-  <p class="art-p">Активируй промокод на сервере и получи АРы. Настоящие промокоды только в официальном <a href="http://t.me/ToadShieldapp" target="_blank">Telegram-канале</a>.</p>
-
-  <div class="promo-card">
-    <div class="promo-tag">День рождения владельца</div>
-    <div class="promo-name">Подарок от сервера</div>
-    <div class="promo-date">Поздравляем DUhovka · 25 апреля 2026</div>
-    <div class="promo-code-row" onclick="copyPromo('DUHOVKADAY2026')">
-      <div><div style="font-size:10px;color:#666;margin-bottom:2px;">Промокод</div><div class="promo-code">DUHOVKADAY2026</div></div>
-      <div class="promo-copy">Копировать</div>
-    </div>
-  </div>
-
-  <div class="promo-card">
-    <div class="promo-tag">Пасхальный промокод · Активен</div>
-    <div class="promo-name">С праздником Пасхи!</div>
-    <div class="promo-date">Используй и получи валюту</div>
-    <div class="promo-code-row" onclick="copyPromo('FROGEGGS1993')">
-      <div><div style="font-size:10px;color:#666;margin-bottom:2px;">Промокод</div><div class="promo-code">FROGEGGS1993</div></div>
-      <div class="promo-copy">Копировать</div>
-    </div>
-  </div>
-
-  <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#666;margin:16px 0 8px;">Все активные</div>
-  <div class="promo-grid">
-    <div class="promo-item" onclick="copyPromo('DUHOVKADAY2026')"><div><div class="promo-item-tag">День рождения</div><div class="promo-item-code">DUHOVKADAY2026</div></div></div>
-    <div class="promo-item" onclick="copyPromo('FROGEGGS1993')"><div><div class="promo-item-tag">Пасха</div><div class="promo-item-code">FROGEGGS1993</div></div></div>
-  </div>
-
-  <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#666;margin:10px 0 8px;">Истёкшие</div>
-  <div class="promo-grid">
-    <div class="promo-item promo-expired"><div><div class="promo-item-tag">Истёк</div><div class="promo-item-code" style="text-decoration:line-through;">NICKJAMESU323</div></div><span class="expired-lbl">Истёк</span></div>
-    <div class="promo-item promo-expired"><div><div class="promo-item-tag">Истёк</div><div class="promo-item-code" style="text-decoration:line-through;">MISHASHISHA90</div></div><span class="expired-lbl">Истёк</span></div>
-    <div class="promo-item promo-expired"><div><div class="promo-item-tag">Истёк</div><div class="promo-item-code" style="text-decoration:line-through;">MIXERG23RANG</div></div><span class="expired-lbl">Истёк</span></div>
-    <div class="promo-item promo-expired"><div><div class="promo-item-tag">Истёк</div><div class="promo-item-code" style="text-decoration:line-through;">384JDJ</div></div><span class="expired-lbl">Истёк</span></div>
-  </div>
-
-  <div style="background:rgba(200,0,0,.04);border:1px solid rgba(200,0,0,.15);border-radius:4px;padding:12px 14px;font-size:12.5px;color:#444;line-height:1.7;margin-top:10px;">
-    <strong style="color:#c00;">⚠ Осторожно — мошенники!</strong> Настоящие промокоды только в официальном <a href="http://t.me/ToadShieldapp" target="_blank">Telegram-канале</a>.
-  </div>
-</div>
-
-<!-- ===== FORMS ===== -->
-<div id="page-forms" class="page">
-  <div class="art-head"><h2>Анкеты</h2></div>
-  <p class="art-p">Официальные анкеты сервера. Заполни — администрация рассмотрит и ответит в Discord или Telegram.</p>
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLScB7DR1HOExsfmURCZBCH1-_MSZS6-H5rIGq4Z-zRBbvyYfjQ/viewform" target="_blank" class="form-card">
-    <div class="form-icon">🛡️</div>
-    <div class="form-title">Вступление в полицию</div>
-    <div class="form-desc">Хочешь следить за порядком? Нужны ответственные игроки. Заявку рассматриваем в течение нескольких часов.</div>
-    <div class="form-go">Подать анкету →</div>
-  </a>
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLSep3NP1NJnbRknxHZTuwau1g2HVP5P7vX3_a9PmH7AoqW2eQA/viewform" target="_blank" class="form-card">
-    <div class="form-icon">🌍</div>
-    <div class="form-title">Создать Объединение</div>
-    <div class="form-desc">Нашёл место, обвёл территорию на скриншоте — заполни анкету. Любое название и форма правления.</div>
-    <div class="form-go">Открыть анкету →</div>
-  </a>
-</div>
-
-</main>
-
-<!-- RIGHT RAIL -->
-<aside class="right-rail">
-  <div class="rail-widget">
-    <h3>Интересное</h3>
-    <p style="font-size:13px;line-height:1.6;">Иногда на небе пятого сезона <a onclick="pg('states')">ToadShield</a> появляются <a>неопознанные тела</a>.</p>
-    <div class="laser-box"><div class="laser-line"></div></div>
-  </div>
-
-  <div class="rail-widget">
-    <h3>Сервер</h3>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px;">
-      <div style="background:#f8f9fa;border:1px solid #ddd;border-radius:4px;padding:9px;text-align:center;">
-        <div style="font-size:16px;font-weight:800;color:#0a6cff;">S5</div>
-        <div style="font-size:9px;color:#888;text-transform:uppercase;margin-top:2px;">Сезон</div>
-      </div>
-      <div style="background:#f8f9fa;border:1px solid #ddd;border-radius:4px;padding:9px;text-align:center;">
-        <div style="font-size:16px;font-weight:800;color:#0a6cff;">1.21</div>
-        <div style="font-size:9px;color:#888;text-transform:uppercase;margin-top:2px;">Версия</div>
-      </div>
-      <div style="background:#f8f9fa;border:1px solid #ddd;border-radius:4px;padding:9px;text-align:center;">
-        <div style="font-size:16px;font-weight:800;color:#0a6cff;">5 АР</div>
-        <div style="font-size:9px;color:#888;text-transform:uppercase;margin-top:2px;">В час</div>
-      </div>
-      <div style="background:#f8f9fa;border:1px solid #ddd;border-radius:4px;padding:9px;text-align:center;">
-        <div style="font-size:16px;font-weight:800;color:#0a6cff;">FREE</div>
-        <div style="font-size:9px;color:#888;text-transform:uppercase;margin-top:2px;">Доступ</div>
-      </div>
-    </div>
-    <button onclick="copyIP('chanland.play-network.io')" style="width:100%;padding:9px;background:#f8f9fa;border:1px solid rgba(10,108,255,.2);border-radius:4px;font-family:monospace;font-size:11px;cursor:pointer;color:#333;display:flex;align-items:center;justify-content:center;gap:5px;">📋 chanland.play-network.io</button>
-  </div>
-
-  <div class="rail-widget">
-    <h3>Инструменты</h3>
-    <div class="rail-links">
-      <a onclick="pg('members')">Участники</a>
-      <a onclick="pg('states')">Объединения</a>
-      <a onclick="pg('buildings')">Постройки</a>
-      <a onclick="pg('crafts')">Предметы</a>
-      <a onclick="pg('rules')">Правила</a>
-      <a onclick="pg('wiki')">Вики</a>
-      <a href="https://toadshieldimap.vercel.app" target="_blank">Карта мира</a>
-      <a onclick="pg('promo')">Промокоды</a>
-    </div>
-  </div>
-
-  <div class="rail-widget">
-    <h3>Недавняя активность</h3>
-    <div class="activity-item"><div class="activity-name">DUhovka</div><div class="activity-meta">ToadShield · 1 день назад</div></div>
-    <div class="activity-item"><div class="activity-name">tillzzzz</div><div class="activity-meta">ToadShield · 2 дня назад</div></div>
-    <div class="activity-item"><div class="activity-name">demkos8224</div><div class="activity-meta">ToadShield · 2 дня назад</div></div>
-    <div class="activity-item"><div class="activity-name">DETKIVPODVALE</div><div class="activity-meta">ГБСТ · 3 дня назад</div></div>
-  </div>
-
-  <div class="rail-widget">
-    <h3>Ссылки</h3>
-    <div style="display:flex;flex-direction:column;gap:6px;">
-      <a href="https://discord.gg/6pAg48UMmh" target="_blank" style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;">💬 Discord</a>
-      <a href="http://t.me/ToadShieldapp" target="_blank" style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;">✈️ Telegram</a>
-      <a href="https://t.me/ToadShield_support" target="_blank" style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;">🎧 Поддержка</a>
-      <a href="https://www.youtube.com/@frogshieldofficial" target="_blank" style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;">🎬 YouTube канал</a>
-      <a href="https://toadshieldimap.vercel.app" target="_blank" style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;">🗺️ Карта мира</a>
-    </div>
-  </div>
-</aside>
-</div>
-</div>
-
-<div class="bottom-bar">
-  <a onclick="pg('rules')" style="color:#555;font-size:11.5px;">Правила</a>
-  <a onclick="pg('forms')" style="color:#555;font-size:11.5px;">Анкеты</a>
-  <a href="https://t.me/ToadShield_support" target="_blank" style="color:#555;font-size:11.5px;">Поддержка</a>
-  <span style="color:#ccc;">|</span>
-  <span style="font-size:11px;color:#888;">© 2023–2026 ToadShield</span>
-</div>
-
-<script>
-// ===== PAGES =====
-var PAGES = ['home','states','rules','wiki','crafts','about','promo','forms','members','buildings'];
-var LB_MAP = {home:'lb-home', states:'lb-states', rules:'lb-rules', wiki:'lb-wiki', members:'lb-members', buildings:'lb-buildings'};
-
-// ===== MEMBERS — добавляй сюда новых игроков =====
-var MEMBERS = [
-  { nick: 'DUhovka' },
-  { nick: 'tillzzzz' },
-  { nick: 'Waffles_bober' },
-  { nick: 'Demkos8224' },
-  { nick: 'Vodbap' },
-  { nick: 'madelyne' },
-  { nick: 'DETKIVPODVALE' }
-];
-
-function renderMembers() {
-  var grids = [
-    { id: 'home-members-grid', type: 'home' },
-    { id: 'members-page-grid', type: 'page' }
-  ];
-  grids.forEach(function(g) {
-    var el = document.getElementById(g.id);
-    if (!el) return;
-    el.innerHTML = MEMBERS.map(function(m) {
-      if (g.type === 'home') {
-        return '<div class="member-card">' +
-          '<div class="member-card-img"><img src="https://mc-heads.net/avatar/' + m.nick + '/64" alt="' + m.nick + '" onerror="this.src=\'https://mc-heads.net/avatar/Steve/64\'"></div>' +
-          '<div class="member-card-name">' + m.nick + '</div>' +
-          '</div>';
-      } else {
-        return '<div class="mpc">' +
-          '<div class="mpc-img"><img src="https://mc-heads.net/player/' + m.nick + '/100" alt="' + m.nick + '" onerror="this.src=\'https://mc-heads.net/avatar/' + m.nick + '/64\'"></div>' +
-          '<div class="mpc-name">' + m.nick + '</div>' +
-          '</div>';
-      }
-    }).join('');
-  });
-}
-
-function pg(id) {
-  PAGES.forEach(function(n) {
-    var el = document.getElementById('page-' + n);
-    if (el) el.classList.toggle('active', n === id);
-  });
-  Object.keys(LB_MAP).forEach(function(k) {
-    var lb = document.getElementById(LB_MAP[k]);
-    if (lb) lb.classList.toggle('active', k === id);
-  });
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function openState(id) {
-  document.getElementById('states-list-view').style.display = 'none';
-  ['urpa', 'gbst'].forEach(function(s) {
-    var el = document.getElementById('state-' + s);
-    if (el) el.style.display = 'none';
-  });
-  var el = document.getElementById('state-' + id);
-  if (el) el.style.display = 'block';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function closeState() {
-  ['urpa', 'gbst'].forEach(function(s) {
-    var el = document.getElementById('state-' + s);
-    if (el) el.style.display = 'none';
-  });
-  document.getElementById('states-list-view').style.display = 'block';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function showRule(id, el) {
-  var secs = ['r-main','r-grief','r-pvp','r-events','r-territory','r-chat','r-activity','r-police','r-fines'];
-  secs.forEach(function(s) {
-    var sec = document.getElementById(s);
-    if (sec) sec.style.display = (s === id) ? 'block' : 'none';
-  });
-  document.querySelectorAll('.rule-tab').forEach(function(b) { b.classList.remove('active'); });
-  if (el) el.classList.add('active');
-}
-
-function showAbout(id, el) {
-  ['ab-info','ab-seasons','ab-commands','ab-dev'].forEach(function(s) {
-    var p = document.getElementById(s);
-    if (p) p.classList.toggle('active', s === id);
-  });
-  document.querySelectorAll('.about-tab').forEach(function(t) { t.classList.remove('active'); });
-  if (el) el.classList.add('active');
-}
-
-function sw(id) {
-  document.querySelectorAll('.wiki-sec').forEach(function(p) { p.classList.remove('active'); });
-  document.querySelectorAll('.wl').forEach(function(a) { a.classList.remove('active'); });
-  var sec = document.getElementById('wc-' + id);
-  if (sec) sec.classList.add('active');
-  var lnk = document.getElementById('wl-' + id);
-  if (lnk) lnk.classList.add('active');
-}
-
-function showToast(msg) {
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(function() { t.classList.remove('show'); }, 2200);
-}
-
-function copyIP(ip) {
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(ip).then(function() { showToast('IP скопирован!'); }).catch(function() { fallbackCopy(ip, 'IP скопирован!'); });
-  } else {
-    fallbackCopy(ip, 'IP скопирован!');
-  }
-}
-
-function copyPromo(c) {
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(c).then(function() { showToast('Промокод скопирован!'); }).catch(function() { fallbackCopy(c, 'Промокод скопирован!'); });
-  } else {
-    fallbackCopy(c, 'Промокод скопирован!');
-  }
-}
-
-function fallbackCopy(text, msg) {
-  var el = document.createElement('textarea');
-  el.value = text;
-  el.style.position = 'fixed';
-  el.style.opacity = '0';
-  document.body.appendChild(el);
-  el.select();
-  try { document.execCommand('copy'); } catch(e) {}
-  document.body.removeChild(el);
-  showToast(msg);
-}
-
-pg('home');
-renderMembers();
-</script>
+    <script>
+        // Состояние трансформаций для каждого экрана по отдельности
+        const transforms = {
+            1: { scale: 1, x: 0, y: 0 },
+            2: { scale: 1, x: 0, y: 0 }
+        };
+
+        function initMapControls(id) {
+            const scene = document.getElementById(`scene${id}`);
+            const target = document.getElementById(`wrapper${id}`); // Исправлено: теперь строго свой wrapper для каждого экрана
+            const state = transforms[id];
+
+            let isDragging = false;
+            let startX, startY;
+
+            function applyTransform() {
+                target.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
+            }
+
+            // Плавный зум
+            scene.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const zoomFactor = 0.15;
+                
+                if (e.deltaY < 0) {
+                    state.scale += zoomFactor;
+                } else {
+                    state.scale -= zoomFactor;
+                }
+
+                state.scale = Math.max(0.4, Math.min(6, state.scale));
+                applyTransform();
+            }, { passive: false });
+
+            // Клик мыши (начало движения)
+            scene.addEventListener('mousedown', (e) => {
+                if (e.target.closest('.ui-panel')) return;
+
+                isDragging = true;
+                startX = e.clientX - state.x;
+                startY = e.clientY - state.y;
+            });
+
+            // Перетаскивание
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                state.x = e.clientX - startX;
+                state.y = e.clientY - startY;
+                applyTransform();
+            });
+
+            // Отпуск мыши
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+        }
+
+        // Переключение на экран 2
+        function goToScreen2(event) {
+            event.stopPropagation(); // Предотвращаем срабатывание drag при клике на кнопку
+            
+            document.getElementById('screen1').classList.remove('active');
+            document.getElementById('screen2').classList.add('active');
+            resetView(2); 
+        }
+
+        // Возврат на экран 1
+        function goToScreen1() {
+            document.getElementById('screen2').classList.remove('active');
+            document.getElementById('screen1').classList.add('active');
+        }
+
+        // Сброс позиции в дефолт
+        function resetView(id) {
+            const state = transforms[id];
+            const target = document.getElementById(`wrapper${id}`);
+            state.scale = 1;
+            state.x = 0;
+            state.y = 0;
+            target.style.transform = `translate(0px, 0px) scale(1)`;
+        }
+
+        // Инициализируем управление раздельно
+        initMapControls(1);
+        initMapControls(2);
+    </script>
 </body>
 </html>
