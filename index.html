@@ -3,19 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToadShield Wiki</title>
+    <title>ToadShield Wiki Map</title>
     <style>
         :root {
-            --bg-color: #0e1114;
-            --wiki-container-bg: #16191d;
-            --wiki-card-bg: #1c2026;
-            --border-color: rgba(255, 255, 255, 0.08);
-            --accent-color: #33AAAA; /* Фирменный бирюзовый */
-            --accent-hover: #45c4c4;
-            --text-color: #e6e7e8;
-            --text-muted: #9fa4a6;
-            --btn-bg: #22272f;
-            --btn-hover: #2b323c;
+            --bg-color: #0c0d0f;
+            --panel-bg: rgba(255, 255, 255, 0.07);
+            --panel-bg-hover: rgba(255, 255, 255, 0.12);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-color: #ffffff;
+            --trigger-bg: rgba(255, 255, 255, 0.08);
+            --trigger-border: rgba(255, 255, 255, 0.2);
         }
 
         * {
@@ -27,81 +24,14 @@
 
         body {
             background-color: var(--bg-color);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: var(--text-color);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 40px 20px;
-            overflow-x: hidden;
-        }
-
-        /* Основной контейнер в стиле статьи Fandom */
-        .wiki-container {
-            width: 100%;
-            max-width: 1200px;
-            background: var(--wiki-container-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 30px;
-            display: grid;
-            grid-template-columns: 1fr 340px;
-            gap: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        @media (max-width: 900px) {
-            .wiki-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Левая колонка: Контент и интерактивная карта */
-        .wiki-main {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .wiki-header {
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 15px;
-        }
-
-        .wiki-header h1 {
-            font-size: 32px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            color: #fff;
-            margin-bottom: 8px;
-        }
-
-        .wiki-category {
-            font-size: 12px;
-            text-transform: uppercase;
-            color: var(--accent-color);
-            letter-spacing: 1.5px;
-            font-weight: 600;
-        }
-
-        .wiki-description {
-            font-size: 15px;
-            line-height: 1.6;
-            color: var(--text-muted);
-        }
-
-        /* Окно вьюера (Интерактивная карта) */
-        .viewer-window {
-            position: relative;
-            width: 100%;
-            height: 550px;
-            background: #090a0c;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            color: var(--text-color);
         }
 
+        /* Экраны */
         .screen {
             position: absolute;
             top: 0;
@@ -115,6 +45,7 @@
             display: block;
         }
 
+        /* Главная сцена для зума */
         .scene {
             width: 100%;
             height: 100%;
@@ -129,6 +60,7 @@
             cursor: grabbing;
         }
 
+        /* Обертка карты */
         .map-wrapper {
             position: relative;
             display: inline-block;
@@ -138,235 +70,134 @@
 
         .map-image {
             display: block;
-            max-width: 100%;
-            max-height: 500px;
+            max-width: 95vw;
+            max-height: 90vh;
             object-fit: contain;
             pointer-events: none;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            border-radius: 4px;
         }
 
-        /* Интерактивный триггер перехода */
+        /* Белая интерактивная зона (Вставка на карте) */
         .map-trigger {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 180px;
-            height: 60px;
-            background: rgba(51, 170, 170, 0.15);
-            border: 2px dashed var(--accent-color);
-            border-radius: 4px;
+            padding: 14px 28px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--trigger-border);
+            border-radius: 6px;
             cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.2s ease;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.25s ease;
             z-index: 5;
-            backdrop-filter: blur(2px);
         }
 
         .map-trigger:hover {
-            background: rgba(51, 170, 170, 0.3);
-            border-color: #fff;
-            box-shadow: 0 0 15px rgba(51, 170, 170, 0.4);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #ffffff;
+            box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1);
+            transform: translate(-50%, -50%) scale(1.02);
         }
 
         .map-trigger span {
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #fff;
+            letter-spacing: 1.5px;
+            color: #ffffff;
             text-align: center;
+            display: block;
         }
 
-        /* Панель управления кнопками внутри карты */
+        /* Панели интерфейса (Белые аккуратные вставки) */
         .ui-panel {
             position: absolute;
-            top: 16px;
-            left: 16px;
+            top: 24px;
+            left: 24px;
             z-index: 10;
             display: flex;
-            gap: 8px;
+            gap: 10px;
             pointer-events: none;
         }
 
         .btn {
             pointer-events: auto;
-            background: var(--btn-bg);
+            background: var(--panel-bg);
             color: var(--text-color);
             border: 1px solid var(--border-color);
-            padding: 8px 16px;
+            padding: 10px 22px;
             font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            font-weight: 500;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.15s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+            transition: all 0.2s ease;
         }
 
         .btn:hover {
-            background: var(--btn-hover);
-            border-color: rgba(255, 255, 255, 0.2);
-            color: #fff;
+            background: var(--panel-bg-hover);
+            border-color: rgba(255, 255, 255, 0.4);
+            color: #ffffff;
         }
 
-        .btn-accent {
-            background: var(--accent-color);
+        .btn-main {
+            background: rgba(255, 255, 255, 0.9);
             color: #0c0d0f;
             border: none;
+            font-weight: 600;
         }
 
-        .btn-accent:hover {
-            background: var(--accent-hover);
-            color: #0c0d0f;
+        .btn-main:hover {
+            background: #ffffff;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
         }
 
         .btn:active {
             transform: scale(0.96);
         }
-
-        /* Правая колонка: Fandom Инфобокс */
-        .wiki-infobox {
-            background: var(--wiki-card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 16px;
-            height: fit-content;
-        }
-
-        .infobox-title {
-            text-align: center;
-            font-size: 18px;
-            font-weight: 700;
-            padding-bottom: 12px;
-            border-bottom: 2px solid var(--accent-color);
-            color: #fff;
-            margin-bottom: 12px;
-        }
-
-        .infobox-image {
-            width: 100%;
-            height: 150px;
-            background: #111418;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 16px;
-            overflow: hidden;
-        }
-
-        .infobox-image img {
-            width: 80px;
-            opacity: 0.7;
-        }
-
-        .infobox-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            font-size: 13px;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-        }
-
-        .infobox-label {
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .infobox-value {
-            color: #fff;
-            font-weight: 600;
-            text-align: right;
-        }
     </style>
 </head>
 <body>
 
-    <div class="wiki-container">
+    <!-- Экран 1 -->
+    <div id="screen1" class="screen active">
+        <div class="ui-panel">
+            <button class="btn" onclick="resetView(1)">Сбросить</button>
+        </div>
         
-        <!-- Основной блок статьи -->
-        <main class="wiki-main">
-            <div class="wiki-header">
-                <div class="wiki-category">География сервера</div>
-                <h1>Картография ToadShield</h1>
-            </div>
-            
-            <p class="wiki-description">
-                Официальный интерактивный атлас территорий. Используйте колесико мыши для масштабирования объектов и зажимайте ЛКМ для перемещения по координатной сетке.
-            </p>
-
-            <!-- Окно интерактивного атласа -->
-            <div class="viewer-window">
-                
-                <!-- Экран 1 -->
-                <div id="screen1" class="screen active">
-                    <div class="ui-panel">
-                        <button class="btn" onclick="resetView(1)">Сбросить</button>
-                    </div>
-                    
-                    <div class="scene" id="scene1">
-                        <div class="map-wrapper" id="wrapper1">
-                            <img src="https://i.ibb.co/j0qf6Pz/Screenshot-2026-06-12-025148.png" class="map-image" alt="Общая карта">
-                            <div class="map-trigger" onclick="goToScreen2(event)">
-                                <span>Открыть карту спавна</span>
-                            </div>
-                        </div>
-                    </div>
+        <div class="scene" id="scene1">
+            <div class="map-wrapper" id="wrapper1">
+                <img src="https://i.ibb.co/j0qf6Pz/Screenshot-2026-06-12-025148.png" class="map-image" alt="Карта мира">
+                <div class="map-trigger" onclick="goToScreen2(event)">
+                    <span>Открыть карту спавна</span>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <!-- Экран 2 -->
-                <div id="screen2" class="screen">
-                    <div class="ui-panel">
-                        <button class="btn btn-accent" onclick="goToScreen1()">← Назад</button>
-                        <button class="btn" onclick="resetView(2)">Сбросить</button>
-                    </div>
+    <!-- Экран 2 -->
+    <div id="screen2" class="screen">
+        <div class="ui-panel">
+            <button class="btn btn-main" onclick="goToScreen1()">← Назад</button>
+            <button class="btn" onclick="resetView(2)">Сбросить</button>
+        </div>
 
-                    <div class="scene" id="scene2">
-                        <div class="map-wrapper" id="wrapper2">
-                            <img src="https://i.ibb.co/ch3G3rKY/Screenshot-2026-06-11-034611.png" class="map-image" alt="Карта Спавна">
-                        </div>
-                    </div>
-                </div>
-
+        <div class="scene" id="scene2">
+            <div class="map-wrapper" id="wrapper2">
+                <img src="https://i.ibb.co/ch3G3rKY/Screenshot-2026-06-11-034611.png" class="map-image" alt="Карта спавна">
             </div>
-        </main>
-
-        <!-- Правая колонка (Классический Fandom Инфобокс) -->
-        <aside class="wiki-infobox">
-            <div class="infobox-title">ToadShield СВЕДЕНИЯ</div>
-            <div class="infobox-image">
-                <!-- Сюда можно поставить иконку или логотип сервера -->
-                <img src="https://cdn-icons-png.flaticon.com/512/3069/3069172.png" alt="Logo">
-            </div>
-            <div class="infobox-row">
-                <div class="infobox-label">Тип объекта</div>
-                <div class="infobox-value">Карта мира</div>
-            </div>
-            <div class="infobox-row">
-                <div class="infobox-label">Центр мира</div>
-                <div class="infobox-value">X: 936 / Z: 2774</div>
-            </div>
-            <div class="infobox-row">
-                <div class="infobox-label">Радиус границы</div>
-                <div class="infobox-value">5,000 блоков</div>
-            </div>
-            <div class="infobox-row">
-                <div class="infobox-label">Валюта обмена</div>
-                <div class="infobox-value">1 AR = 3 Алмаза</div>
-            </div>
-            <div class="infobox-row">
-                <div class="infobox-label">Ключевые локации</div>
-                <div class="infobox-value" style="color: var(--accent-color)">Отель «Херван»<br>Спавн</div>
-            </div>
-        </aside>
-
+        </div>
     </div>
 
     <script>
-        // JS скрипт полностью сохранен и адаптирован под новые размеры окон
         const transforms = {
             1: { scale: 1, x: 0, y: 0 },
             2: { scale: 1, x: 0, y: 0 }
@@ -399,7 +230,7 @@
             }, { passive: false });
 
             scene.addEventListener('mousedown', (e) => {
-                if (e.target.closest('.ui-panel')) return;
+                if (e.target.closest('.ui-panel') || e.target.closest('.map-trigger')) return;
 
                 isDragging = true;
                 startX = e.clientX - state.x;
