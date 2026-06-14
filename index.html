@@ -6,13 +6,13 @@
     <title>ToadShield Wiki Map</title>
     <style>
         :root {
-            --bg-color: #0c0d0f;
-            --panel-bg: rgba(255, 255, 255, 0.07);
-            --panel-bg-hover: rgba(255, 255, 255, 0.12);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --text-color: #ffffff;
-            --trigger-bg: rgba(255, 255, 255, 0.08);
-            --trigger-border: rgba(255, 255, 255, 0.2);
+            --bg-color: #0b0c0e;
+            --panel-bg: rgba(255, 255, 255, 0.03);
+            --panel-bg-hover: rgba(255, 255, 255, 0.08);
+            --border-color: rgba(255, 255, 255, 0.06);
+            --text-color: #efefef;
+            --text-muted: #666666;
+            --accent-disabled: rgba(255, 255, 255, 0.4);
         }
 
         * {
@@ -24,11 +24,12 @@
 
         body {
             background-color: var(--bg-color);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             overflow: hidden;
             width: 100vw;
             height: 100vh;
             color: var(--text-color);
+            letter-spacing: -0.01em;
         }
 
         /* Экраны */
@@ -70,57 +71,53 @@
 
         .map-image {
             display: block;
-            max-width: 95vw;
-            max-height: 90vh;
+            max-width: 90vw;
+            max-height: 85vh;
             object-fit: contain;
             pointer-events: none;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-            border-radius: 4px;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--border-color);
         }
 
-        /* Белая интерактивная зона (Вставка на карте) */
+        /* Заблокированная интерактивная кнопка на карте */
         .map-trigger {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            padding: 14px 28px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--trigger-border);
-            border-radius: 6px;
+            padding: 12px 24px;
+            background: rgba(11, 12, 14, 0.85);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             cursor: pointer;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            transition: all 0.25s ease;
-            z-index: 5;
+            transition: all 0.2s ease;
         }
 
         .map-trigger:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: #ffffff;
-            box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1);
-            transform: translate(-50%, -50%) scale(1.02);
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%) scale(1.01);
         }
 
         .map-trigger span {
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #ffffff;
+            letter-spacing: 2px;
+            color: var(--accent-disabled);
             text-align: center;
             display: block;
         }
 
-        /* Панели интерфейса (Белые аккуратные вставки) */
+        /* Панели интерфейса (Минималистичные плашки без скруглений) */
         .ui-panel {
             position: absolute;
-            top: 24px;
-            left: 24px;
+            top: 32px;
+            left: 32px;
             z-index: 10;
             display: flex;
-            gap: 10px;
+            gap: 8px;
             pointer-events: none;
         }
 
@@ -129,43 +126,63 @@
             background: var(--panel-bg);
             color: var(--text-color);
             border: 1px solid var(--border-color);
-            padding: 10px 22px;
-            font-size: 12px;
+            padding: 8px 18px;
+            font-size: 11px;
             font-weight: 500;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            border-radius: 6px;
             cursor: pointer;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             transition: all 0.2s ease;
         }
 
         .btn:hover {
             background: var(--panel-bg-hover);
-            border-color: rgba(255, 255, 255, 0.4);
-            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .btn-main {
-            background: rgba(255, 255, 255, 0.9);
-            color: #0c0d0f;
+            background: rgba(255, 255, 255, 0.95);
+            color: #0b0c0e;
             border: none;
             font-weight: 600;
         }
 
         .btn-main:hover {
             background: #ffffff;
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
         }
 
-        .btn:active {
-            transform: scale(0.96);
+        /* Всплывающее минималистичное уведомление */
+        .toast {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(11, 12, 14, 0.9);
+            border: 1px solid var(--border-color);
+            padding: 12px 24px;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            color: var(--text-color);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 100;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
     </style>
 </head>
 <body>
+
+    <!-- Уведомление о неготовности спавна -->
+    <div id="mapToast" class="toast">Карта спавна ещё не полностью готова. Объект находится в разработке.</div>
 
     <!-- Экран 1 -->
     <div id="screen1" class="screen active">
@@ -175,15 +192,15 @@
         
         <div class="scene" id="scene1">
             <div class="map-wrapper" id="wrapper1">
-                <img src="https://i.ibb.co/j0qf6Pz/Screenshot-2026-06-12-025148.png" class="map-image" alt="Карта мира">
-                <div class="map-trigger" onclick="goToScreen2(event)">
-                    <span>Открыть карту спавна</span>
+                <img src="https://i.ibb.co/PsyfT2WW/Screenshot-2026-06-14-032404.png" class="map-image" alt="Карта мира">
+                <div class="map-trigger" onclick="showDevelopmentNotice(event)">
+                    <span>Спавн в разработке</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Экран 2 -->
+    <!-- Экран 2 (Зарезервирован на будущее) -->
     <div id="screen2" class="screen">
         <div class="ui-panel">
             <button class="btn btn-main" onclick="goToScreen1()">← Назад</button>
@@ -217,7 +234,7 @@
 
             scene.addEventListener('wheel', (e) => {
                 e.preventDefault();
-                const zoomFactor = 0.15;
+                const zoomFactor = 0.12;
                 
                 if (e.deltaY < 0) {
                     state.scale += zoomFactor;
@@ -225,7 +242,7 @@
                     state.scale -= zoomFactor;
                 }
 
-                state.scale = Math.max(0.4, Math.min(6, state.scale));
+                state.scale = Math.max(0.5, Math.min(5, state.scale));
                 applyTransform();
             }, { passive: false });
 
@@ -249,8 +266,22 @@
             });
         }
 
-        function goToScreen2(event) {
+        // Показ сообщения о разработке
+        let toastTimeout;
+        function showDevelopmentNotice(event) {
             event.stopPropagation();
+            const toast = document.getElementById('mapToast');
+            
+            toast.classList.add('show');
+            
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Функции переключения (Оставлены для будущей интеграции карты)
+        function goToScreen2() {
             document.getElementById('screen1').classList.remove('active');
             document.getElementById('screen2').classList.add('active');
             resetView(2); 
